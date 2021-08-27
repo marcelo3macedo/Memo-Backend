@@ -1,0 +1,9 @@
+{
+    "security": {
+        "origin": [ "http://localhost:3000" ],
+        "allowHeaders": [ "x-access-token", "Accept", "Accept-Language", "Content-Language", "Content-Type", "authorization", "xsrf-token"],
+        "exposedHeaders": [ "set-cookie", "location"],
+        "credentials": true,
+        "preflightMaxAge": 5
+    }
+}
