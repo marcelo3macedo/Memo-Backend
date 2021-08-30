@@ -5,3 +5,26 @@ services:
         ports:
             - "3333:3333"
         container_name: memoapp
+    database:
+        image: postgres
+        container_name: memodb
+        restart: always
+        ports:
+        - 5432:5432
+        environment:
+        - POSTGRES_USER=docker
+        - POSTGRES_PASSWORD=teste
+        - POSTGRES_DB=memo
+        env_file: 
+        - .env
+        volumes:
+        - pgdata:/data/memodb
+    redis:
+        container_name: memoredis
+        image: redis:latest
+        restart: unless-stopped
+        ports:
+        - "6379:6379"
+volumes:
+    pgdata:
+        driver: local
