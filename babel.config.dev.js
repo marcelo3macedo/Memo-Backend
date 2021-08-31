@@ -8,9 +8,9 @@ module.exports = {
             "module-resolver",
             {
                 alias: {
-                    "@modules": "./dist/modules",
-                    "@shared": "./dist/shared",
-                    "@config": "./dist/config"
+                    "@modules": "./src/modules",
+                    "@shared": "./src/shared",
+                    "@config": "./src/config"
                 }
             }
         ],

@@ -1,7 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, JoinColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-import Card from "@modules/cards/entities/Card";
 @Entity('decks')
 export default class Deck {
   @PrimaryColumn()
@@ -19,8 +18,7 @@ export default class Deck {
   @Column()
   active: boolean;
 
-  @OneToMany(() => Card, (card: Card) => card.deck)
-  cards: Card[];
+  cards: [];
 
   @CreateDateColumn()
   createdAt: Date;
