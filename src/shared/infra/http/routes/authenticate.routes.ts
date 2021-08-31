@@ -11,4 +11,4 @@ const refreshTokenController = new RefreshTokenController();
 authenticateRoute.post("/session", authenticateUserController.handle);
 authenticateRoute.post("/refresh-token", refreshTokenController.handle);
 
-export default authenticateRoute;
+export { authenticateRoute };

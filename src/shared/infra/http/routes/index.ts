@@ -1,13 +1,21 @@
 import { Router } from 'express';
 
-import authenticateRoute from "./authenticate.routes";
-import { usersRoute } from "./users.routes";
+import sessionsRoute from "./sessions.routes";
+import { authenticateRoute } from "./authenticate.routes";
 import { decksRoutes } from './decks.routes';
+import { cardsRoutes } from "./cards.routes";
+import { passwordRoutes } from './password.routes';
+import { reviewRoutes } from './review.routes';
+import { usersRoute } from "./users.routes";
 
 const router = Router();
 
-router.use('/decks', decksRoutes);
-router.use('/users', usersRoute);
 router.use(authenticateRoute);
+router.use('/decks', decksRoutes);
+router.use('/cards', cardsRoutes);
+router.use('/users', usersRoute);
+router.use('/sessions', sessionsRoute);
+router.use('/password', passwordRoutes);
+router.use('/review', reviewRoutes);
 
 export { router };

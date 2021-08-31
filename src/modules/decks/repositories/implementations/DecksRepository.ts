@@ -17,6 +17,7 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async list({ userId }: IListDecksDTO): Promise<Deck[]> {
+    return null;
     return this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
       .where('decks.active = true')

@@ -1,0 +1,29 @@
+import { getRepository, Repository } from 'typeorm';
+
+import { ISessionsCardsRepository } from '../ISessionsCardsRepository';
+import SessionCard from '@modules/sessionsCards/entities/SessionCard';
+import IUpdateSessionsCardsDTO from '@modules/sessionsCards/dtos/IUpdateSessionsCardsDTO';
+import IIndexSessionsCardsDTO from '@modules/sessionsCards/dtos/IIndexSessionsCardsDTO';
+import { AppError } from '@shared/errors/AppError';
+
+export class SessionsCardsRepository implements ISessionsCardsRepository {
+  private repository: Repository<SessionCard>;
+
+  constructor() {
+    this.repository = getRepository(SessionCard);
+  }
+
+  async index({ cardId, sessionId }: IIndexSessionsCardsDTO): Promise<SessionCard> {
+    const sessionCard = await this.repository.findOne({ where: { sessionsId:sessionId, cardsId:cardId}});
+    
+    if (!sessionCard) {
+      throw new AppError("Session card not found", 400);      
+    }   
+
+    return sessionCard;
+  }
+
+  async update({ sessionCard }: IUpdateSessionsCardsDTO): Promise<void> {
+    await this.repository.save(sessionCard);
+  }
+}
