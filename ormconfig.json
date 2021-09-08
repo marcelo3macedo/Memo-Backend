@@ -5,8 +5,8 @@
     "username": "docker",
     "password": "teste",
     "database": "memo",
-    "entities": ["./src/modules/*/entities/*.js"],
-    "migrations": ["./src/shared/infra/typeorm/migrations/*.js"],
+    "entities": ["./src/modules/*/entities/*.ts"],
+    "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
     "cli": {
       "migrationsDir": "./src/shared/infra/typeorm/migrations"
     }

@@ -34,9 +34,9 @@ export default class RefreshTokenUseCases {
    async execute({ token }: IRefreshTokenDTO): Promise<ITokenResponse> {
       const { email, sub } = verify(token, auth.secretRefreshToken) as IPayload;
       const userId = sub;
-
+      
       const userToken = await this.usersTokenRepository.findByUserId({ userId, refreshToken: token }); 
-
+      
       await this.usersTokenRepository.removeById({ id: userToken.id });
 
       const refreshToken = sign({ email }, auth.secretRefreshToken, {

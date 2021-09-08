@@ -10,6 +10,10 @@ import IUsersTokenRepository from '@modules/accounts/repositories/IUsersTokenRep
 import { IDecksRepository } from '@modules/decks/repositories/IDecksRepository';
 import { DecksRepository } from '@modules/decks/repositories/implementations/DecksRepository';
 
+import { ISessionsRepository } from '@modules/sessions/repositories/ISessionsRepository';
+import { SessionsRepository } from '@modules/sessions/repositories/implementations/SessionsRepository';
+
 container.registerSingleton<IDecksRepository>('DecksRepository', DecksRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
 container.registerSingleton<IUsersTokenRepository>("UserTokenRepository", UserTokenRepository);
+container.registerSingleton<ISessionsRepository>("SessionsRepository", SessionsRepository);
