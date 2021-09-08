@@ -13,7 +13,15 @@ import { DecksRepository } from '@modules/decks/repositories/implementations/Dec
 import { ISessionsRepository } from '@modules/sessions/repositories/ISessionsRepository';
 import { SessionsRepository } from '@modules/sessions/repositories/implementations/SessionsRepository';
 
+import { IFeaturedTypeRepository } from '@modules/featured/repositories/IFeaturedTypeRepository';
+import { FeaturedTypeRepository } from '@modules/featured/repositories/implementations/FeaturedTypeRepository';
+
+import { IFeaturedDecksRepository } from '@modules/featured/repositories/IFeaturedDecksRepository';
+import { FeaturedDecksRepository } from '@modules/featured/repositories/implementations/FeaturedDecksRepository';
+
 container.registerSingleton<IDecksRepository>('DecksRepository', DecksRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
 container.registerSingleton<IUsersTokenRepository>("UserTokenRepository", UserTokenRepository);
 container.registerSingleton<ISessionsRepository>("SessionsRepository", SessionsRepository);
+container.registerSingleton<IFeaturedDecksRepository>("FeaturedDecksRepository", FeaturedDecksRepository);
+container.registerSingleton<IFeaturedTypeRepository>("FeaturedTypeRepository", FeaturedTypeRepository);
