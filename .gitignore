@@ -2,6 +2,7 @@
 /tmp/*
 /dist
 /node_modules
+ormconfig.json
 package-lock.json
 yarn.lock
 .env
