@@ -1,8 +1,8 @@
 import IIndexSessionsCardsDTO from "@modules/sessionsCards/dtos/IIndexSessionsCardsDTO";
 import SessionCard from "@modules/sessionsCards/entities/SessionCard";
-import IUpdateSessionsCardDTO from "../dtos/IUpdateSessionsCardDTO";
+import IUpdateSessionsCardsDTO from "../dtos/IUpdateSessionsCardsDTO";
 
 export interface ISessionsCardsRepository {
   index(data: IIndexSessionsCardsDTO): Promise<SessionCard>;
-  update(data: IUpdateSessionsCardDTO): Promise<void>;
+  update(data: IUpdateSessionsCardsDTO): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
 export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
 
@@ -34,6 +34,15 @@ export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
               ],
             })
           );
+
+          await queryRunner.createForeignKey(
+            'featured_decks',
+            new TableForeignKey({
+              columnNames: ['deckId'],
+              referencedTableName: 'decks',
+              referencedColumnNames: ['id']
+            })
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

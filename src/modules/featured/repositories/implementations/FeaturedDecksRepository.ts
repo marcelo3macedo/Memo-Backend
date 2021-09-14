@@ -16,6 +16,6 @@ export class FeaturedDecksRepository implements IFeaturedDecksRepository {
   }
 
   async filter(data: IListFeaturedDecks): Promise<FeaturedDecks[]> {
-    return this.repository.find({ where: { active: true, type: data.type }});
+    return this.repository.find({ where: { active: true, type: data.type }, relations: ['deck']});
   }
 }

@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { UpdateSessionsCardsUseCase } from './UpdateSessionsCardsUseCase';
 import { IndexSessionsUseCase } from '@modules/sessions/useCases/indexSessions/IndexSessionsUseCase';
+import { UpdateSessionsUseCase } from '@modules/sessions/useCases/updateSessions/UpdateSessionsUseCase';
 import { IndexCardsUseCase } from '@modules/cards/useCases/indexCards/IndexCardsUseCase';
 import { IndexSessionsCardsUseCase } from '../indexSessionsCards/IndexSessionsCardsUseCase';
 
@@ -19,6 +20,7 @@ export class UpdateSessionsCardsController {
       const indexCardsUseCase = container.resolve(IndexCardsUseCase);
       const indexSessionsCardsUseCase = container.resolve(IndexSessionsCardsUseCase);
       const updateSessionsCardsUseCase = container.resolve(UpdateSessionsCardsUseCase);
+      const updateSessionsUseCase = container.resolve(UpdateSessionsUseCase);      
 
       cards.map(async(c) => {
         let card = await indexCardsUseCase.execute({ cardId: c.id, deck: session.deck });
@@ -37,7 +39,10 @@ export class UpdateSessionsCardsController {
         sessionCard.answeredAt = c.answeredAt ? new Date(c.answeredAt) : null;
         
         await updateSessionsCardsUseCase.execute({ sessionCard });
-      });      
+      });     
+      
+      const finished_at = new Date().toString();
+      await updateSessionsUseCase.execute({ session, finished_at })
 
       return response.status(204).send();
     } catch (error) {

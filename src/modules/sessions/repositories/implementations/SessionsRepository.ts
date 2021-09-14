@@ -9,6 +9,7 @@ import IRemoveSessionsDTO from "@modules/sessions/dtos/IRemoveSessionsDTO";
 import { AppError } from "@shared/errors/AppError";
 import IIndexSessionsDTO from '@modules/sessions/dtos/IIndexSessionsDTO';
 import IFilterSessionsDTO from '@modules/sessions/dtos/IFilterSessionsDTO';
+import IIndexSessionsDeckDTO from '@modules/sessions/dtos/IIndexSessionsDeckDTO';
 
 export class SessionsRepository implements ISessionsRepository {
   private repository: Repository<Session>;
@@ -50,7 +51,13 @@ export class SessionsRepository implements ISessionsRepository {
     return session;
   }
 
-  async create({ userId, deck, cards }: ICreateSessionsDTO): Promise<void> {
+  async indexByDeck({ userId, deck }: IIndexSessionsDeckDTO): Promise<Session> {
+    const session = await this.repository.findOne({ where: { deck, userId: userId, active:true }, relations: [ 'cards', 'deck' ] });
+    
+    return session;
+  }
+
+  async create({ userId, deck, cards }: ICreateSessionsDTO): Promise<Session> {
     if (!deck) {
       throw new AppError("Deck not found", 400);      
     }   
@@ -62,6 +69,8 @@ export class SessionsRepository implements ISessionsRepository {
     });
 
     await this.repository.save(session);
+
+    return session;
   }
 
   async update({ session, finished_at }: IUpdateSessionsDTO): Promise<void> {

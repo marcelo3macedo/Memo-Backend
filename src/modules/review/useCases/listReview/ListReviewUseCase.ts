@@ -23,7 +23,7 @@ export class ListReviewUseCase {
     const type = await this.featuredTypeRepository.find({ name: "home-page" });
     
     if (type) {
-      featuredDecks = await this.featuredDecksRepository.filter({ type });
+      featuredDecks = await this.featuredDecksRepository.filter({ type });      
     }
 
     return {

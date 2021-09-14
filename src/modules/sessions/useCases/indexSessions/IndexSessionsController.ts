@@ -12,7 +12,7 @@ export class IndexSessionsController {
 
       const indexSessionsUseCase = container.resolve(IndexSessionsUseCase);
       const sessions = await indexSessionsUseCase.execute({ userId, sessionId });
-
+      
       const listDifficultiesUseCase = container.resolve(ListDifficultiesUseCase);
       const difficulties = await listDifficultiesUseCase.execute();
 
