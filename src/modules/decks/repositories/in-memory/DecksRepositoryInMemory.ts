@@ -18,14 +18,16 @@ class DecksRepositoryInMemory implements IDecksRepository {
         return this.decks.find(d => d.userId === userId && d.id === deckId)!;
     }
 
-    async create({ name, userId }: ICreateDecksDTO): Promise<void> {
+    async create({ name, parentId, userId }: ICreateDecksDTO): Promise<Deck> {
         const deck = new Deck();
 
         Object.assign(deck, {
-          name, userId  
+          name, userId, parentId
         });
 
         this.decks.push(deck);
+
+        return deck;
     }
 
     async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {

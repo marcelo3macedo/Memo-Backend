@@ -14,10 +14,16 @@ export default class Deck {
   userId: string;
 
   @Column()
+  parentId: string;
+
+  @Column()
   imageId: Number;
 
   @Column()
   active: boolean;
+
+  @OneToMany(() => Deck, (deck: Deck) => deck.parentId)
+  decks: Deck[];
 
   @OneToMany(() => Card, (card: Card) => card.deck)
   cards: Card[];
