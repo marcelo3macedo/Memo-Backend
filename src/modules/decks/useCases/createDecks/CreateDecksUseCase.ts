@@ -11,7 +11,7 @@ export class CreateDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ name, userId }: ICreateDecksDTO): Promise<Deck> {
-    return await this.decksRepository.create({ name, userId });
+  async execute({ name, parentId, userId }: ICreateDecksDTO): Promise<Deck> {
+    return await this.decksRepository.create({ name, parentId, userId });
   }
 }

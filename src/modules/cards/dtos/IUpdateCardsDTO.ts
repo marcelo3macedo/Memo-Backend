@@ -1,5 +1,6 @@
 export default interface IListCardsDTO {
-   cardId: string;   
+   cardId: string;  
+   title: string; 
    content: string;   
    secretContent: string;   
 }

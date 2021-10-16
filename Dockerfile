@@ -1,11 +1,15 @@
-FROM node:13-alpine
-RUN mkdir /app
-WORKDIR /app
-COPY . /app
+FROM node:12
+
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
+
+RUN npm install nodemon -g
+
+COPY package.json /usr/src/app/
 
 RUN npm install
-RUN npm run build
 
 EXPOSE 3333
 
-ENTRYPOINT ["npm", "run"]
+CMD [ "npm", "run", "dev:server" ]

@@ -1,7 +1,8 @@
 import Deck from "@modules/decks/entities/Deck";
 
 export default interface ICreateCardsDTO {
-   deck: Deck;   
+   deck: Deck;
+   title: string;
    content: string;   
    secretContent: string;   
 }

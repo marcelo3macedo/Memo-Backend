@@ -13,7 +13,7 @@ describe("Create Cards", () => {
 
     it("Should be able to create cards", async () => {
         expect(async () => {
-            await createCardsUseCase.execute({ content: 'test', secretContent: 'test', deck: new Deck() })
+            await createCardsUseCase.execute({ title: 'test', content: 'test', secretContent: 'test', deck: new Deck() })
         }).not.toThrow()
     });
 });

@@ -13,6 +13,11 @@ export class CreateCard1623239958218 implements MigrationInterface {
                   isPrimary: true,
                 },
                 {
+                  name: 'title',
+                  type: 'varchar',
+                  isNullable: true,
+                },
+                {
                   name: 'content',
                   type: 'varchar',
                 },
