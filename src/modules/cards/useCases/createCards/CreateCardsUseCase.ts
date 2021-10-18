@@ -11,7 +11,7 @@ export class CreateCardsUseCase {
     private cardsRepository: ICardsRepository
   ) {}
 
-  async execute({ deck, content, secretContent }:ICreateCardsDTO): Promise<void> {
-    this.cardsRepository.create({ deck, content, secretContent });
+  async execute({ deck, content, secretContent }:ICreateCardsDTO): Promise<Card> {
+    return this.cardsRepository.create({ deck, content, secretContent });
   }
 }

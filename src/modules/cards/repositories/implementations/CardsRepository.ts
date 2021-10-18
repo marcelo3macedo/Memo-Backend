@@ -21,7 +21,7 @@ export class CardsRepository implements ICardsRepository {
     return this.repository.find({ where: { active: true, deck: { id : deckId } }});
   }
 
-  async create({ deck, content, secretContent }: ICreateCardsDTO): Promise<void> {
+  async create({ deck, content, secretContent }: ICreateCardsDTO): Promise<Card> {
     if (!deck) {
       throw new AppError("Deck not found", 400);      
     }    
@@ -30,9 +30,9 @@ export class CardsRepository implements ICardsRepository {
       content,
       secretContent,
       deck
-   });
+    });
 
-   await this.repository.save(card);
+    return await this.repository.save(card);
   }
 
   async index({ deck, cardId }: IIndexCardsDTO): Promise<Card> {

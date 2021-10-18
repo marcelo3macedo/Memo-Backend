@@ -8,7 +8,7 @@ import IRemoveCardsDTO from "@modules/cards/dtos/IRemoveCardsDTO";
 
 export default interface ICardsRepository {
   list(data: IListCardsDTO): Promise<Card[]>;
-  create(data: ICreateCardsDTO): Promise<void>;
+  create(data: ICreateCardsDTO): Promise<Card>;
   index(data: IIndexCardsDTO): Promise<Card>;
   update(data: IUpdateCardsDTO): Promise<void>;
   remove(data: IRemoveCardsDTO): Promise<void>;
