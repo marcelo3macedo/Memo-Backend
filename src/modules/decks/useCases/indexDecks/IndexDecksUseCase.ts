@@ -11,7 +11,7 @@ export class IndexDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ deckId, userId }: IIndexDecksDTO): Promise<Deck> {
-    return this.decksRepository.index({ deckId, userId });
+  async execute({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
+    return this.decksRepository.index({ deckId, userId, isPublic });
   }
 }

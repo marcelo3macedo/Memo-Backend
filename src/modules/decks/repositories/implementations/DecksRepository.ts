@@ -21,18 +21,28 @@ export class DecksRepository implements IDecksRepository {
       .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
       .where('decks.active = true')
       .andWhere('decks.userId = :userId')
+      .andWhere('decks.parentId IS NULL')
       .setParameter('userId', userId)
       .getMany();
   }
 
-  async index({ deckId, userId }: IIndexDecksDTO): Promise<Deck> {
-    const deck = await this.repository.findOne({ where: { id: deckId, userId: userId }, relations: ['cards'] });
+  async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
+    const deck = isPublic ? 
+      await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] }) :
+      await this.repository.findOne({ where: { id: deckId, userId: userId }, relations: ['cards'] });
     
     if (!deck) {
       throw new AppError("Deck not found", 400);      
     }
 
-    deck.decks = await this.repository.find({ where: { parentId: deckId, userId: userId } });
+    deck.decks = await this.repository.createQueryBuilder('decks')
+      .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
+      .where('decks.active = true')
+      .andWhere('decks.userId = :userId')
+      .andWhere('decks.parentId = :parentId')
+      .setParameter('userId', userId)
+      .setParameter('parentId', deck.id)
+      .getMany();
 
     return deck;
   }

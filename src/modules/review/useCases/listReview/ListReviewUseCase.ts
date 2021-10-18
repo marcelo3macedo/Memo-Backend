@@ -17,14 +17,9 @@ export class ListReviewUseCase {
   ) {}
 
   async execute({ userId }:IListSessionsDTO): Promise<IReviewDTO> {
-    let featuredDecks = [];
     const lastSession = await this.sessionsRepository.last({ userId });
     const sessions = await this.sessionsRepository.list({ userId });
-    const type = await this.featuredTypeRepository.find({ name: "home-page" });
-    
-    if (type) {
-      featuredDecks = await this.featuredDecksRepository.filter({ type });      
-    }
+    const featuredDecks = await this.featuredDecksRepository.all();      
 
     return {
       lastSession,
