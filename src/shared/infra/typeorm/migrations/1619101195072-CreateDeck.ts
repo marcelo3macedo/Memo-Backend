@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner,  Table} from "typeorm";
+import {MigrationInterface, QueryRunner,  Table, TableForeignKey} from "typeorm";
 
 export class CreateDeck1619101195072 implements MigrationInterface {
 
@@ -26,6 +26,11 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                   isNullable: true,
                 },
                 {
+                  name: 'parentId',
+                  type: 'uuid',
+                  isNullable: true,
+                },
+                {
                    name: "active",
                    type: "boolean",
                    default: true,
@@ -38,9 +43,16 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                 },
               ],
             })
-          );
-
-        
+          );    
+          
+        await queryRunner.createForeignKey(
+          'decks',
+          new TableForeignKey({
+            columnNames: ['parentId'],
+            referencedTableName: 'decks',
+            referencedColumnNames: ['id']
+          })
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

@@ -14,7 +14,7 @@ describe("Creating Decks", () => {
     it("Should be create a deck", async () => {
         expect(async () => {
             const userId = uuid();
-            await createDecksUseCase.execute({ name: 'test', userId: userId })
+            await createDecksUseCase.execute({ name: 'test', parentId: null, userId: userId })
         }).not.toThrow()
     });
 });

@@ -1,12 +1,5 @@
 version: "3"
 services:
-    memoapp:
-        build: .
-        volumes:
-            - ../:/app
-        ports:
-            - "3333:3333"
-        container_name: memoapp
     database:
         image: postgres
         container_name: memodb
@@ -21,6 +14,15 @@ services:
         - .env
         volumes:
         - pgdata:/data/memodb
+    memoapp:
+        build: .
+        command: npm run dev:server
+        ports:
+        - "3333:3333"
+        links:
+        - database
+        volumes:
+        - ./:/usr/src/app
     redis:
         container_name: memoredis
         image: redis:latest

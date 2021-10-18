@@ -8,14 +8,14 @@ export class CreateCardsController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { deckId } = request.params;
-      const { content, secretContent } = request.body;
+      const { title, content, secretContent } = request.body;
       const userId = request['user'].id;
 
       const indexDecksUseCase = container.resolve(IndexDecksUseCase);
       const deck = await indexDecksUseCase.execute({ deckId, userId });
       
       const createCardsUseCase = container.resolve(CreateCardsUseCase);
-      const card = await createCardsUseCase.execute({ deck, content, secretContent });
+      const card = await createCardsUseCase.execute({ deck, title, content, secretContent });
 
       return response.status(201).send(card);
     } catch (error) {

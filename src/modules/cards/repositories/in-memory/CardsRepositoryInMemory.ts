@@ -16,7 +16,7 @@ class CardsRepositoryInMemory implements ICardsRepository {
         return this.cards.filter(d => d.deck.id === deckId);
     }
 
-    async create({ deck, content, secretContent }: ICreateCardsDTO): Promise<void> {
+    async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<void> {
         if (!deck) {
             throw new AppError("Deck not found", 400);      
         }
@@ -24,6 +24,7 @@ class CardsRepositoryInMemory implements ICardsRepository {
         const card = new Card();
 
         Object.assign(card, {
+            title,
             content,
             secretContent,
             deck
@@ -36,15 +37,16 @@ class CardsRepositoryInMemory implements ICardsRepository {
         return this.cards.find(d => d.id == cardId)!;
     }
 
-    async update({ cardId, content, secretContent }: IUpdateCardsDTO): Promise<void> {
+    async update({ cardId, title, content, secretContent }: IUpdateCardsDTO): Promise<void> {
         const card = this.cards.find(d => d.id === cardId)!
 
         this.cards.unshift(card)
         
+        card.title = title;
         card.content = content;
         card.secretContent = secretContent;
 
-        this.cards.push(card)   
+        this.cards.push(card);
     }
 
     async remove({ cardId }: IRemoveCardsDTO): Promise<void> {

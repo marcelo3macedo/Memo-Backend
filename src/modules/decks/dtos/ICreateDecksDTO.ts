@@ -1,4 +1,5 @@
 export default interface ICreateDecksDTO {
    name: string;
-   userId: string;   
+   userId: string;
+   parentId: string;
 }

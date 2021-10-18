@@ -8,6 +8,9 @@ export default class Card {
   id: string;
 
   @Column()
+  title: string;
+
+  @Column()
   content: string;
 
   @Column()

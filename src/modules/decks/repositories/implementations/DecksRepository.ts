@@ -30,15 +30,18 @@ export class DecksRepository implements IDecksRepository {
     
     if (!deck) {
       throw new AppError("Deck not found", 400);      
-    }      
+    }
+
+    deck.decks = await this.repository.find({ where: { parentId: deckId, userId: userId } });
 
     return deck;
   }
 
-  async create({ name, userId }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, userId, parentId }: ICreateDecksDTO): Promise<Deck> {
     const user = this.repository.create({
        name,
-       userId
+       userId,
+       parentId
     });
 
     return await this.repository.save(user);

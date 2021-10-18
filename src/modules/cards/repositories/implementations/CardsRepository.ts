@@ -21,12 +21,13 @@ export class CardsRepository implements ICardsRepository {
     return this.repository.find({ where: { active: true, deck: { id : deckId } }});
   }
 
-  async create({ deck, content, secretContent }: ICreateCardsDTO): Promise<Card> {
+  async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
     if (!deck) {
       throw new AppError("Deck not found", 400);      
     }    
 
     const card = this.repository.create({
+      title,
       content,
       secretContent,
       deck
@@ -45,8 +46,9 @@ export class CardsRepository implements ICardsRepository {
     return card;
   }
 
-  async update({ cardId, content, secretContent }: IUpdateCardsDTO): Promise<void> {
+  async update({ cardId, title, content, secretContent }: IUpdateCardsDTO): Promise<void> {
     const card = {
+      title,
       content,
       secretContent
     }

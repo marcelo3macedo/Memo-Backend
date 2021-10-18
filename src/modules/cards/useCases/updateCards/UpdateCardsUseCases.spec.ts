@@ -25,12 +25,12 @@ describe("Update Cards", () => {
         const deck = new Deck();
         deck.id = uuid();
 
-        await createCardsUseCase.execute({ deck, content: 'test', secretContent: 'test' })
+        await createCardsUseCase.execute({ deck, title: 'test', content: 'test', secretContent: 'test' })
 
         const cards = await listCardsUseCase.execute({ deckId: deck.id })
         const cardId = cards[0]["id"]
 
-        await updateCardsUseCase.execute({ cardId, content: 'updated', secretContent: 'updated' })
+        await updateCardsUseCase.execute({ cardId, title: 'test', content: 'updated', secretContent: 'updated' })
 
         const card = await indexCardsUseCase.execute({ deck, cardId })
 
