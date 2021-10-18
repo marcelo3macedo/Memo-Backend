@@ -15,9 +15,9 @@ export class CreateCardsController {
       const deck = await indexDecksUseCase.execute({ deckId, userId });
       
       const createCardsUseCase = container.resolve(CreateCardsUseCase);
-      await createCardsUseCase.execute({ deck, title, content, secretContent });
+      const card = await createCardsUseCase.execute({ deck, title, content, secretContent });
 
-      return response.status(201).send();
+      return response.status(201).send(card);
     } catch (error) {
       return response.status(error.statusCode).json({ error: error.message });
     }

@@ -18,8 +18,7 @@ export class CreateDecksController {
       const createDecksUseCase = container.resolve(CreateDecksUseCase);
       const deck = await createDecksUseCase.execute({ name, parentId, userId });
 
-      response.setHeader("Location", deck.id);
-      return response.status(201).json();
+      return response.status(201).json(deck);
     } catch (error) {
       return response.status(error.statusCode).json({ error: error.message });
     }
