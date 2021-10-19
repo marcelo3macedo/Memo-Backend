@@ -8,6 +8,7 @@ import { passwordRoutes } from './password.routes';
 import { reviewRoutes } from './review.routes';
 import { usersRoute } from "./users.routes";
 import { featuredRoutes } from "./featured.routes";
+import { categoriesRoutes } from "./categories.routes";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/users', usersRoute);
 router.use('/sessions', sessionsRoute);
 router.use('/password', passwordRoutes);
 router.use('/review', reviewRoutes);
+router.use('/categories', categoriesRoutes);
 
 export { router };

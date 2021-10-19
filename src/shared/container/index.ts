@@ -10,7 +10,7 @@ import IUsersTokenRepository from '@modules/accounts/repositories/IUsersTokenRep
 import { IDecksRepository } from '@modules/decks/repositories/IDecksRepository';
 import { DecksRepository } from '@modules/decks/repositories/implementations/DecksRepository';
 
-import { ICardsRepository } from '@modules/cards/repositories/ICardsRepository';
+import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import { CardsRepository } from '@modules/cards/repositories/implementations/CardsRepository';
 
 import { ISessionsRepository } from '@modules/sessions/repositories/ISessionsRepository';
@@ -28,6 +28,9 @@ import { DifficultiesRepository } from '@modules/difficulties/repositories/imple
 import { ISessionsCardsRepository } from '@modules/sessionsCards/repositories/ISessionsCardsRepository';
 import { SessionsCardsRepository } from '@modules/sessionsCards/repositories/implementations/SessionsCardsRepository';
 
+import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
+import { CategoriesRepository } from '@modules/categories/repositories/implementations/CategoriesRepository';
+
 container.registerSingleton<IDecksRepository>('DecksRepository', DecksRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
@@ -37,3 +40,4 @@ container.registerSingleton<ISessionsCardsRepository>("SessionsCardsRepository",
 container.registerSingleton<IFeaturedDecksRepository>("FeaturedDecksRepository", FeaturedDecksRepository);
 container.registerSingleton<IFeaturedTypeRepository>("FeaturedTypeRepository", FeaturedTypeRepository);
 container.registerSingleton<IDifficultiesRepository>("DifficultiesRepository", DifficultiesRepository);
+container.registerSingleton<ICategoriesRepository>("CategoriesRepository", CategoriesRepository);

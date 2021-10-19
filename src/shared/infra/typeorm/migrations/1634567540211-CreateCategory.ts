@@ -1,11 +1,11 @@
 import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
-export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
+export class CreateCategory1634567540211 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-              name: 'featured_decks',
+              name: 'categories',
               columns: [
                 {
                   name: 'id',
@@ -13,13 +13,13 @@ export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
                   isPrimary: true,
                 },
                 {
-                  name: 'deckId',
-                  type: 'uuid',
+                  name: 'name',
+                  type: 'varchar',
                 },
                 {
-                    name: 'typeId',
-                    type: 'uuid',
-                    isNullable: true,
+                  name: 'parentId',
+                  type: 'uuid',
+                  isNullable: true,
                 },
                 {
                    name: "active",
@@ -34,20 +34,20 @@ export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
                 },
               ],
             })
-          );
-
-          await queryRunner.createForeignKey(
-            'featured_decks',
+          );  
+          
+        await queryRunner.createForeignKey(
+            'categories',
             new TableForeignKey({
-              columnNames: ['deckId'],
-              referencedTableName: 'decks',
+              columnNames: ['parentId'],
+              referencedTableName: 'categories',
               referencedColumnNames: ['id']
             })
-        );
+          );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('featured_decks');
+        await queryRunner.dropTable('categories');
     }
 
 }
