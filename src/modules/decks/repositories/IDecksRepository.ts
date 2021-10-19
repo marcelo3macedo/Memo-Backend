@@ -11,4 +11,5 @@ export interface IDecksRepository {
   create(data: ICreateDecksDTO): Promise<Deck>;
   remove(data: IRemoveDecksDTO): Promise<void>;
   filter(data: IFilterDecksDTO): Promise<Deck[]>;
+  search(): Promise<Deck[]>;
 }

@@ -26,6 +26,10 @@ export class DecksRepository implements IDecksRepository {
       .getMany();
   }
 
+  async search(): Promise<Deck[]> {
+    return await this.repository.find({ relations: ['cards'] });
+  }
+
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
     const deck = isPublic ? 
       await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] }) :
