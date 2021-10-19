@@ -21,4 +21,8 @@ export class CategoriesRepository implements ICategoriesRepository {
 
     await this.repository.save(category);
   }
+
+  async index({ categoryId }): Promise<Category> {
+    return this.repository.findOne({ id: categoryId });
+  }
 }
