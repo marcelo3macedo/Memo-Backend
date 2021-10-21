@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, JoinColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import Card from "@modules/cards/entities/Card";
 
