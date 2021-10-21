@@ -1,5 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
-
+import { getRepository, ILike, In, Repository } from 'typeorm';
 import Deck from '../../entities/Deck';
 import { IDecksRepository } from '../IDecksRepository';
 import IListDecksDTO from "@modules/decks/dtos/IListDecksDTO";
@@ -26,8 +25,19 @@ export class DecksRepository implements IDecksRepository {
       .getMany();
   }
 
-  async search(): Promise<Deck[]> {
-    return await this.repository.find({ relations: ['cards'] });
+  async search({ query }): Promise<Deck[]> {
+    if (!query) {
+      return await this.repository.find({ relations: ['cards'] });
+    }
+
+    const likeDivisior = '%';
+    
+    return await this.repository.find({ 
+      where: [
+        { name: ILike(likeDivisior.concat(query, likeDivisior)) }
+      ],
+      relations: ['cards'] 
+    });
   }
 
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {

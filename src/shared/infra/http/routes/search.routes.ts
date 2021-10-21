@@ -8,5 +8,6 @@ const listSearchController = new ListSearchController();
 
 searchRoutes.use(ensureAuthenticate);
 searchRoutes.get('/', listSearchController.handle);
+searchRoutes.get('/:query', listSearchController.handle);
 
 export { searchRoutes };
