@@ -2,6 +2,7 @@ import { getRepository, Repository } from "typeorm";
 import Users from "../../entities/Users";
 import IUsersRepository from "../IUsersRepository";
 import ICreateUsersDTO from "../../dtos/ICreateUsersDTO";
+import IUpdateProfileUserDTO from "@modules/accounts/dtos/IUpdateProfileUserDTO";
 
 class UserRepository implements IUsersRepository {
    private repository: Repository<Users>;
@@ -30,6 +31,14 @@ class UserRepository implements IUsersRepository {
       });
 
       await this.repository.save(user);
+   }
+
+   async update({ id, name }: IUpdateProfileUserDTO): Promise<void> {
+      const profile = {
+         name
+       }
+   
+       this.repository.update({ id }, profile);
    }
 }
 
