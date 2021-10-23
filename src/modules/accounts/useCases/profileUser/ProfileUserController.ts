@@ -6,8 +6,8 @@ class ProfileUserController {
    async handle(request: Request, response: Response): Promise<Response> {
       try {
          const { id } = request.user;
-         const profileUserUseCases = container.resolve(ProfileUserUseCases);
 
+         const profileUserUseCases = container.resolve(ProfileUserUseCases);
          const user = await profileUserUseCases.execute({ id });
 
          return response.json(user);
