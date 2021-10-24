@@ -14,6 +14,11 @@ export default class ProfileUserUseCases {
 
    async execute({ id }:IProfileUserDTO): Promise<IUserResponseDTO> {
       const user = await this.userRepository.findById(id);
-      return UserMap.toDTO(user);
+      
+      if (!user) {
+         return;
+      }
+      
+      return UserMap.toDTO(user);      
    }
 }

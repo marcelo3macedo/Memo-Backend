@@ -4,14 +4,13 @@ import Users from "../entities/Users";
 
 class UserMap {
     static toDTO({
-        email, name, id, avatar, avatarUrl,
+        email, name, id, createdAt,
     }:Users):IUserResponseDTO {
         const user = classToClass({
             email,
             name, 
             id,
-            avatar,
-            avatarUrl
+            createdAt,
         });
 
         return user;
