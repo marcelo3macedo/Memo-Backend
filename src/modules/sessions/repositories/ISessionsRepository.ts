@@ -6,6 +6,7 @@ import IRemoveSessionsDTO from "@modules/sessions/dtos/IRemoveSessionsDTO";
 import IIndexSessionsDTO from '../dtos/IIndexSessionsDTO';
 import IFilterSessionsDTO from '../dtos/IFilterSessionsDTO';
 import IIndexSessionsDeckDTO from '../dtos/IIndexSessionsDeckDTO';
+import IListHistorySessionsDTO from '../dtos/IListHistorySessionsDTO';
 
 export interface ISessionsRepository {
   list(data: IListSessionsDTO): Promise<Session[]>;
@@ -16,4 +17,5 @@ export interface ISessionsRepository {
   update(data: IUpdateSessionsDTO): Promise<void>;
   remove(data: IRemoveSessionsDTO): Promise<void>;
   filter(data: IFilterSessionsDTO): Promise<Session[]>;
+  history(data: IListHistorySessionsDTO): Promise<Session[]>;
 }

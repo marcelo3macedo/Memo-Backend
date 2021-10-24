@@ -10,6 +10,7 @@ import { AppError } from "@shared/errors/AppError";
 import IIndexSessionsDTO from '@modules/sessions/dtos/IIndexSessionsDTO';
 import IFilterSessionsDTO from '@modules/sessions/dtos/IFilterSessionsDTO';
 import IIndexSessionsDeckDTO from '@modules/sessions/dtos/IIndexSessionsDeckDTO';
+import IListHistorySessionsDTO from '@modules/sessions/dtos/IListHistorySessionsDTO';
 
 export class SessionsRepository implements ISessionsRepository {
   private repository: Repository<Session>;
@@ -25,6 +26,17 @@ export class SessionsRepository implements ISessionsRepository {
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
       .where('sessions.active = true')
       .andWhere('sessions.userId = :userId')
+      .setParameter('userId', userId)
+      .getMany();
+  }
+
+  async history({ userId }: IListHistorySessionsDTO): Promise<Session[]> {
+    return this.repository.createQueryBuilder('sessions')
+      .leftJoinAndSelect('sessions.deck', 'deck')
+      .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
+      .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
+      .where('sessions.userId = :userId')
+      .andWhere('sessions.finishedAt IS NOT NULL')
       .setParameter('userId', userId)
       .getMany();
   }
