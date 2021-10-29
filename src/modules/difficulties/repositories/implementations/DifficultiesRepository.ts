@@ -15,6 +15,14 @@ export class DifficultiesRepository implements IDifficultiesRepository {
     return this.repository.find();
   }
 
+  async create({ name }): Promise<void> {
+    const difficulty = this.repository.create({
+        name
+    });
+
+    await this.repository.save(difficulty);
+  }
+
   async remove({ difficultyId }: IRemoveDifficultiesDTO): Promise<void> {
     await this.repository.softDelete(difficultyId);
   }
