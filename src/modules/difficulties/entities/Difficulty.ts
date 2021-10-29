@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity('difficulty')
@@ -9,8 +9,11 @@ export default class Difficulty {
   @Column()
   name: string;
   
-  @Column()
-  active: boolean;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();
