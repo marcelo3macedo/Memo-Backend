@@ -4,9 +4,8 @@ import { IDecksRepository } from '../IDecksRepository';
 import IListDecksDTO from "@modules/decks/dtos/IListDecksDTO";
 import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
-import IFilterDecksDTO from '@modules/decks/dtos/IFilterDecksDTO';
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
-import { AppError } from "@shared/errors/AppError";
+import { AppError } from '@shared/errors/AppError';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -15,29 +14,38 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async list({ userId }: IListDecksDTO): Promise<Deck[]> {
-    return this.repository.createQueryBuilder('decks')
-      .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
-      .where('decks.active = true')
-      .andWhere('decks.userId = :userId')
-      .andWhere('decks.parentId IS NULL')
-      .setParameter('userId', userId)
-      .getMany();
+  async create({ name, userId, parentId, isPublic }: ICreateDecksDTO): Promise<Deck> {
+    const deck = this.repository.create({
+       name,
+       userId,
+       parentId,
+       isPublic
+    });
+
+    return await this.repository.save(deck);
   }
 
-  async search({ query }): Promise<Deck[]> {
-    if (!query) {
-      return await this.repository.find({ relations: ['cards'] });
+  async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
+    this.repository.softDelete({ userId: userId, id: deckId });
+  }
+
+  async list({ userId, isPublic, name }: IListDecksDTO): Promise<Deck[]> {
+    const repository = this.repository.createQueryBuilder('decks')
+      .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
+      .where('decks.parentId IS NULL')
+      .andWhere('decks.isPublic = :isPublic')
+      .setParameter('isPublic', isPublic);
+    
+    if (!isPublic) {
+      repository.andWhere('decks.userId = :userId')
+        .setParameter('userId', userId);
+    }
+    
+    if (name) {
+      repository.andWhere("decks.name ilike :name", { name:`%${name}%` })
     }
 
-    const likeDivisior = '%';
-    
-    return await this.repository.find({ 
-      where: [
-        { name: ILike(likeDivisior.concat(query, likeDivisior)) }
-      ],
-      relations: ['cards'] 
-    });
+    return repository.getMany();
   }
 
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
@@ -49,46 +57,14 @@ export class DecksRepository implements IDecksRepository {
       throw new AppError("Deck not found", 400);      
     }
 
-    deck.decks = await this.repository.createQueryBuilder('decks')
+    deck.children = await this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
-      .where('decks.active = true')
-      .andWhere('decks.userId = :userId')
+      .where('decks.userId = :userId')
       .andWhere('decks.parentId = :parentId')
       .setParameter('userId', userId)
       .setParameter('parentId', deck.id)
       .getMany();
 
     return deck;
-  }
-
-  async create({ name, userId, parentId }: ICreateDecksDTO): Promise<Deck> {
-    const user = this.repository.create({
-       name,
-       userId,
-       parentId
-    });
-
-    return await this.repository.save(user);
-  }
-
-  async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
-    const update = await this.repository.update({ id: deckId, userId  }, {
-      active: false
-    })
-
-    if (update.affected == 0) {
-      throw new AppError("Deck not found", 400);
-    }
-  }
-
-  async filter({ olderThen }:IFilterDecksDTO): Promise<Deck[]> {
-    let queryBuilder = this.repository.createQueryBuilder("decks")
-      .where("decks.active = :active", { active: true });
-      
-    if (olderThen) {
-      queryBuilder.andWhere("decks.createdAt > :createdAt", { createdAt: olderThen });
-    }
-
-    return queryBuilder.getMany();
   }
 }

@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
 import Card from "@modules/cards/entities/Card";
 
 @Entity('decks')
@@ -17,19 +17,22 @@ export default class Deck {
   parentId: string;
 
   @Column()
-  imageId: Number;
+  isPublic: boolean;
 
-  @Column()
-  active: boolean;
+  @ManyToOne(type => Deck, deck => deck.children)
+  parent: Deck;
 
-  @OneToMany(() => Deck, (deck: Deck) => deck.parentId)
-  decks: Deck[];
+  @OneToMany(type => Deck, deck => deck.parent)
+  children: Deck[];
 
   @OneToMany(() => Card, (card: Card) => card.deck)
   cards: Card[];
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();

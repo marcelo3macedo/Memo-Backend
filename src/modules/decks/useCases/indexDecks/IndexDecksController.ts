@@ -7,10 +7,15 @@ export class IndexDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { deckId } = request.params;
+      const { isPublic } = request.query;
       const userId = request['user'].id;
 
       const indexDecksUseCase = container.resolve(IndexDecksUseCase);
-      const deck = await indexDecksUseCase.execute({ deckId, userId });
+      const deck = await indexDecksUseCase.execute({ 
+        deckId, 
+        userId,
+        isPublic: !!isPublic 
+      });
 
       return response.json(deck);
     } catch (error) {
