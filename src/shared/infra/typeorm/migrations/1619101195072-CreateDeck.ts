@@ -21,9 +21,9 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                   type: 'uuid',
                 },
                 {
-                  name: 'imageId',
-                  type: 'integer',
-                  isNullable: true,
+                  name: 'isPublic',
+                  type: 'boolean',
+                  default: false,
                 },
                 {
                   name: 'parentId',
@@ -31,14 +31,14 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                   isNullable: true,
                 },
                 {
-                   name: "active",
-                   type: "boolean",
-                   default: true,
-                },
-                {
                   name: 'createdAt',
                   type: 'timestamp',
                   default: 'now()',
+                  isNullable: true,
+                },
+                {
+                  name: 'deletedAt',
+                  type: 'timestamp',
                   isNullable: true,
                 },
               ],

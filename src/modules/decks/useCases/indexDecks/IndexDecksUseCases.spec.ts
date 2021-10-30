@@ -20,9 +20,9 @@ describe("Indexes Decks", () => {
 
     it("Should be search for a deck", async () => {
         const userId = uuid();
-        await createDecksUseCase.execute({ name: 'test', userId: userId })
+        await createDecksUseCase.execute({ name: 'test', userId: userId, parentId: null, isPublic: false })
 
-        const decks = await listDecksUseCase.execute({ userId })
+        const decks = await listDecksUseCase.execute({ userId, name: null, isPublic: false })
         const deckId = decks[0]["id"]
 
         const deck = await indexDecksUseCase.execute({ deckId, userId })

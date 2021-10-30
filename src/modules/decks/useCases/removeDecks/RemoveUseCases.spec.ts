@@ -22,16 +22,16 @@ describe("Remove Decks", () => {
 
     it("Should be able to remove a deck", async () => {
         const userId = uuid();
-        await createDecksUseCase.execute({ name: 'test', userId })
+        await createDecksUseCase.execute({ name: 'test', userId, isPublic: false, parentId: null })
 
-        const decks = await listDecksUseCase.execute({ userId })
+        const decks = await listDecksUseCase.execute({ userId, isPublic:false, name:null })
         const { id: deckId } = decks[0]
 
         await removeDecksUseCase.execute({ deckId, userId })
 
         const deck = await indexDecksUseCase.execute({ deckId, userId })
 
-        expect(deck.active).toBe(false)
+        expect(deck).toBeNull();
     });
 
     it("Should not be able to remove a non existing deck", async () => {

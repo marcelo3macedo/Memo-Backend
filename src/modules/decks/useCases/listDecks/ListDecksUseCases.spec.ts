@@ -16,16 +16,16 @@ describe("List Decks", () => {
 
     it("Should be list your decks", async () => {
         const userId = uuid();
-        const response = await listDecksUseCase.execute({ userId })
+        const response = await listDecksUseCase.execute({ userId, isPublic:false, name:null })
         expect(response).toBeInstanceOf(Array);
     });
 
     it("Should not be able to view another user deck", async () => {
         const anotherUserId = uuid();
-        await createDecksUseCase.execute({ name: 'test', userId: anotherUserId })
+        await createDecksUseCase.execute({ name: 'test', userId: anotherUserId, isPublic: false, parentId: null })
 
         const userId = uuid();
-        const response = await listDecksUseCase.execute({ userId })
+        const response = await listDecksUseCase.execute({ userId, isPublic:false, name:null })
         expect(response.length).toBe(0);
     });
 });
