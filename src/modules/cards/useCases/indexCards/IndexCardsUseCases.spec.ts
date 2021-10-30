@@ -23,7 +23,7 @@ describe("Index Cards", () => {
         const deck = new Deck();
         deck.id = uuid();
 
-        await createCardsUseCase.execute({ deck, content: 'test', secretContent: 'test' })
+        await createCardsUseCase.execute({ deck, title: 'test', content: 'test', secretContent: 'test' })
 
         const cards = await listCardsUseCase.execute({ deckId: deck.id })
         const cardId = cards[0]["id"]

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn, DeleteDateColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import Deck from "@modules/decks/entities/Deck";
 
@@ -20,11 +20,11 @@ export default class Card {
   @JoinColumn()
   deck: Deck;
 
-  @Column()
-  active: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();

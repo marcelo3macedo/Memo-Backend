@@ -1,12 +1,11 @@
-import Card from "../../entities/Card";
-import IListCardsDTO from "../../dtos/IListCardsDTO";
-import ICreateCardsDTO from "../../dtos/ICreateCardsDTO";
-import IIndexCardsDTO from "../../dtos/IIndexCardsDTO";
-import IUpdateCardsDTO from "../../dtos/IUpdateCardsDTO";
-import IRemoveCardsDTO from "../../dtos/IRemoveCardsDTO";
-import IFilterCardsDTO from "../../dtos/IFilterCardsDTO";
-import ICardsRepository from "../ICardsRepository";
-
+import IListCardsDTO from "@modules/cards/dtos/IListCardsDTO";
+import ICreateCardsDTO from "@modules/cards/dtos/ICreateCardsDTO";
+import IIndexCardsDTO from "@modules/cards/dtos/IIndexCardsDTO";
+import IUpdateCardsDTO from "@modules/cards/dtos/IUpdateCardsDTO";
+import IRemoveCardsDTO from "@modules/cards/dtos/IRemoveCardsDTO";
+import IFilterCardsDTO from "@modules/cards/dtos/IFilterCardsDTO";
+import Card from "@modules/cards/entities/Card";
+import ICardsRepository from "@modules/cards/repositories/ICardsRepository";
 import { AppError } from "@shared/errors/AppError";
 
 class CardsRepositoryInMemory implements ICardsRepository {
@@ -16,7 +15,7 @@ class CardsRepositoryInMemory implements ICardsRepository {
         return this.cards.filter(d => d.deck.id === deckId);
     }
 
-    async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<void> {
+    async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
         if (!deck) {
             throw new AppError("Deck not found", 400);      
         }
@@ -31,6 +30,8 @@ class CardsRepositoryInMemory implements ICardsRepository {
         });
 
         this.cards.push(card);
+
+        return card;
     }
 
     async index({ deck, cardId }:IIndexCardsDTO): Promise<Card> {
@@ -38,9 +39,9 @@ class CardsRepositoryInMemory implements ICardsRepository {
     }
 
     async update({ cardId, title, content, secretContent }: IUpdateCardsDTO): Promise<void> {
-        const card = this.cards.find(d => d.id === cardId)!
+        const card = this.cards.find(d => d.id === cardId)!;
 
-        this.cards.unshift(card)
+        this.cards.unshift(card);
         
         card.title = title;
         card.content = content;
@@ -56,13 +57,11 @@ class CardsRepositoryInMemory implements ICardsRepository {
             throw new AppError("Card not found", 400);
         }
 
-        this.cards.unshift(card)
-        card.active = false
-        this.cards.push(card)    
+        this.cards.unshift(card) 
     }
 
     async filter({ deckId, cards, limit }:IFilterCardsDTO): Promise<Card[]>{
-        const cardsSelected = this.cards.filter(d => d.deck.id === deckId && d.active === true)!;
+        const cardsSelected = this.cards.filter(d => d.deck.id === deckId)!;
         
         if (cards && cards.length > 0) {
             return cardsSelected.filter(c=> c.id in (cards));
