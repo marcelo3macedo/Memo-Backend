@@ -1,13 +1,13 @@
 import { getRepository, Repository } from 'typeorm';
 
-import Card from '../../entities/Card';
-import ICardsRepository from '../ICardsRepository';
 import IListCardsDTO from "@modules/cards/dtos/IListCardsDTO";
 import ICreateCardsDTO from "@modules/cards/dtos/ICreateCardsDTO";
 import IIndexCardsDTO from "@modules/cards/dtos/IIndexCardsDTO";
 import IFilterCardsDTO from "@modules/cards/dtos/IFilterCardsDTO";
 import IUpdateCardsDTO from "@modules/cards/dtos/IUpdateCardsDTO";
 import IRemoveCardsDTO from "@modules/cards/dtos/IRemoveCardsDTO";
+import Card from '@modules/cards/entities/Card';
+import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import { AppError } from "@shared/errors/AppError";
 
 export class CardsRepository implements ICardsRepository {
@@ -18,7 +18,7 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async list({ deckId }: IListCardsDTO): Promise<Card[]> {
-    return this.repository.find({ where: { active: true, deck: { id : deckId } }});
+    return this.repository.find({ where: { deck: { id : deckId } }});
   }
 
   async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
@@ -37,7 +37,7 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async index({ deck, cardId }: IIndexCardsDTO): Promise<Card> {
-    const card = await this.repository.findOne({ where: { id: cardId, deck, active:true } });
+    const card = await this.repository.findOne({ where: { id: cardId, deck } });
     
     if (!card) {
       throw new AppError("Card not found", 400);      
@@ -57,26 +57,18 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async remove({ cardId }: IRemoveCardsDTO): Promise<void> {
-    const update = await this.repository.update({ id: cardId, active:true  }, {
-      active: false
-    })
-
-    if (update.affected == 0) {
-      throw new AppError("Card not found", 400);
-    }
+    this.repository.softDelete(cardId);
   }
 
   async filter({ deckId, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
     let queryBuilder = this.repository.createQueryBuilder("cards")
-      .where("cards.active = :active", { active: true })
-      .andWhere("cards.deck.id = :deckId", { deckId })
-      .limit(limit);
+      .where("cards.deck.id = :deckId", { deckId });      
 
     if (cards && cards.length > 0) {
       let cardsIds = cards.map(c => { return c.id }).toString();
       queryBuilder.andWhere("cards.id NOT IN (:cards)", { cards: cardsIds });
     }
 
-    return queryBuilder.getMany();
+    return queryBuilder.limit(limit).getMany();
   }
 }

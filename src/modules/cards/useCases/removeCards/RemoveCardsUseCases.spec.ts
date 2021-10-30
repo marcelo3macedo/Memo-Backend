@@ -4,7 +4,6 @@ import { IndexCardsUseCase } from "../indexCards/IndexCardsUseCase";
 import { ListCardsUseCase } from "../listCards/ListCardsUseCase";
 import { RemoveCardsUseCase } from "./RemoveCardsUseCase";
 import Deck from "@modules/decks/entities/Deck";
-import Card from "@modules/cards/entities/Card";
 import { CreateCardsUseCase } from "../createCards/CreateCardsUseCase";
 
 let cardsRepositoryInMemory: CardsRepositoryInMemory;
@@ -26,7 +25,7 @@ describe("Remove Cards", () => {
         const deck = new Deck();
         deck.id = uuid();
 
-        await createCardsUseCase.execute({ deck, content: 'test', secretContent: 'test' })
+        await createCardsUseCase.execute({ deck, title: 'test', content: 'test', secretContent: 'test' })
 
         const cards = await listCardsUseCase.execute({ deckId: deck.id })
         const cardId = cards[0]["id"]
@@ -35,7 +34,7 @@ describe("Remove Cards", () => {
 
         const card = await indexCardsUseCase.execute({ deck, cardId })
 
-        expect(card.active).toBe(false);
+        expect(card).toBeNull();
     });
 
     it("Should not be able to remove a non existing card", async () => {
