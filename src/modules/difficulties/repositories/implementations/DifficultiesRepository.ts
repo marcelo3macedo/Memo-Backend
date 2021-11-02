@@ -1,3 +1,4 @@
+import cache from '@config/cache';
 import { getRepository, Repository } from 'typeorm';
 
 import Difficulty from '@modules/difficulties/entities/Difficulty';
@@ -12,7 +13,7 @@ export class DifficultiesRepository implements IDifficultiesRepository {
   }
 
   async all(): Promise<Difficulty[]> {
-    return this.repository.find();
+    return this.repository.find({ cache: cache.milliseconds });
   }
 
   async create({ name }): Promise<void> {

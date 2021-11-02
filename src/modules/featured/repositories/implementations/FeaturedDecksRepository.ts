@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 
 import { IFeaturedDecksRepository } from '../IFeaturedDecksRepository';
 import FeaturedDecks from '@modules/featured/entities/FeaturedDecks';
+import cache from '@config/cache';
 
 export class FeaturedDecksRepository implements IFeaturedDecksRepository {
   private repository: Repository<FeaturedDecks>;
@@ -11,11 +12,11 @@ export class FeaturedDecksRepository implements IFeaturedDecksRepository {
   }
 
   async all(): Promise<FeaturedDecks[]> {
-    return this.repository.find({ relations: ['deck']});
+    return this.repository.find({ relations: ['deck'], cache: cache.milliseconds });
   }
 
   async filter({ type }): Promise<FeaturedDecks[]> {
-    return this.repository.find({ where: { type }, relations: ['deck']});
+    return this.repository.find({ where: { type }, relations: ['deck'], cache: cache.milliseconds });
   }
 
   async create({ deck }): Promise<void> {
