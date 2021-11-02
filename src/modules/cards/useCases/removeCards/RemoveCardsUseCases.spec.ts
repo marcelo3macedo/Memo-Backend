@@ -34,7 +34,7 @@ describe("Remove Cards", () => {
 
         const card = await indexCardsUseCase.execute({ deck, cardId })
 
-        expect(card).toBeNull();
+        expect(card).toBeUndefined();
     });
 
     it("Should not be able to remove a non existing card", async () => {

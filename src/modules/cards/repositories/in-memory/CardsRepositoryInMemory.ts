@@ -57,7 +57,7 @@ class CardsRepositoryInMemory implements ICardsRepository {
             throw new AppError("Card not found", 400);
         }
 
-        this.cards.unshift(card) 
+        this.cards.shift();
     }
 
     async filter({ deckId, cards, limit }:IFilterCardsDTO): Promise<Card[]>{

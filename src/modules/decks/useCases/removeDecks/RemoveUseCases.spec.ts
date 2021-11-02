@@ -31,7 +31,7 @@ describe("Remove Decks", () => {
 
         const deck = await indexDecksUseCase.execute({ deckId, userId })
 
-        expect(deck).toBeNull();
+        expect(deck).toBeUndefined();
     });
 
     it("Should not be able to remove a non existing deck", async () => {
