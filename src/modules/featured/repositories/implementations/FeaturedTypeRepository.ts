@@ -1,4 +1,3 @@
-import IIndexFeaturedType from '@modules/featured/dtos/IIndexFeaturedType';
 import FeaturedType from '@modules/featured/entities/FeaturedType';
 import { getRepository, Repository } from 'typeorm';
 
@@ -12,10 +11,14 @@ export class FeaturedTypeRepository implements IFeaturedTypeRepository {
   }
 
   async all(): Promise<FeaturedType[]> {
-    return this.repository.find({ where: { active: true }});
+    return this.repository.find();
   }
 
-  async find(data: IIndexFeaturedType): Promise<FeaturedType> {
-    return this.repository.findOne({ where: { active: true, name: data.name }});
+  async find({ name }): Promise<FeaturedType> {
+    return this.repository.findOne({ where: { name }});
+  }
+
+  async remove({ featuredTypeId }): Promise<void> {
+    await this.repository.softDelete(featuredTypeId);
   }
 }

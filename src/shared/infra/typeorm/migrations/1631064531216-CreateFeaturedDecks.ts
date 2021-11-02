@@ -22,14 +22,14 @@ export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
                     isNullable: true,
                 },
                 {
-                   name: "active",
-                   type: "boolean",
-                   default: true,
-                },
-                {
                   name: 'createdAt',
                   type: 'timestamp',
                   default: 'now()',
+                  isNullable: true,
+                },
+                {
+                  name: 'deletedAt',
+                  type: 'timestamp',
                   isNullable: true,
                 },
               ],

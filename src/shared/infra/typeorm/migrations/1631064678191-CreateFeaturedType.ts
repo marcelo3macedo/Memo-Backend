@@ -17,16 +17,16 @@ export class CreateFeaturedType1631064678191 implements MigrationInterface {
                   type: 'varchar',
                 },
                 {
-                   name: "active",
-                   type: "boolean",
-                   default: true,
-                },
-                {
                   name: 'createdAt',
                   type: 'timestamp',
                   default: 'now()',
                   isNullable: true,
-                }
+                },
+                {
+                  name: 'deletedAt',
+                  type: 'timestamp',
+                  isNullable: true,
+                },
               ],
             })
         );

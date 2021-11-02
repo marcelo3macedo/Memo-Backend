@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import ICreateFeaturedDecks from '@modules/featured/dtos/ICreateFeaturedDecks';
+import ICreateFeaturedDecksDTO from '@modules/featured/dtos/ICreateFeaturedDecksDTO';
 import { IFeaturedDecksRepository } from '@modules/featured/repositories/IFeaturedDecksRepository';
 
 @injectable()
@@ -10,7 +10,7 @@ export class CreateFeaturedUseCase {
     private featuredDecksRepository: IFeaturedDecksRepository
   ) {}
 
-  async execute({ deck }:ICreateFeaturedDecks): Promise<void> {
+  async execute({ deck }:ICreateFeaturedDecksDTO): Promise<void> {
     this.featuredDecksRepository.create({ deck });
   }
 }

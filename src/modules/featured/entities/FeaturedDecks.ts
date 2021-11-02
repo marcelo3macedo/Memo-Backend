@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, OneToOne, JoinColumn, DeleteDateColumn, CreateDateColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import Deck from "@modules/decks/entities/Deck";
 import FeaturedType from './FeaturedType';
@@ -16,8 +16,11 @@ export default class FeaturedDecks {
   @JoinColumn()
   type: FeaturedType;
 
-  @Column()
-  active: boolean;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();
