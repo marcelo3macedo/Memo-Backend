@@ -18,4 +18,8 @@ export class CategoriesDeckRepository implements ICategoriesDeckRepository {
 
     await this.repository.save(categoryDeck);
   }
+
+  async remove({ categoryId, deckId }):Promise<void> {
+    this.repository.softDelete({ categoryId: categoryId, deckId: deckId });
+  }
 }

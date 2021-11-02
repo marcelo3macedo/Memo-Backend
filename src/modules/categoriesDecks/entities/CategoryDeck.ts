@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { CreateDateColumn, Entity, PrimaryColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity('categories_decks')
 export default class CategoryDeck {
@@ -10,4 +10,7 @@ export default class CategoryDeck {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
