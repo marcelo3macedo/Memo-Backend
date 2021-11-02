@@ -39,7 +39,7 @@ class DecksRepositoryInMemory implements IDecksRepository {
             throw new AppError("Deck not found", 400);
         }
 
-        this.decks.unshift(deck)     
+        this.decks.shift()
     }
 }
 
