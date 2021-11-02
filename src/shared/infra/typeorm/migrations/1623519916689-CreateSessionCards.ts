@@ -32,6 +32,11 @@ export class CreateSessionCards1623519916689 implements MigrationInterface {
                     type: 'timestamp',
                     isNullable: true,
                 },
+                {
+                    name: 'deletedAt',
+                    type: 'timestamp',
+                    isNullable: true,
+                },
             ],
             foreignKeys: [
                 {

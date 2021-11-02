@@ -1,7 +1,7 @@
+import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn, JoinTable, ManyToMany, DeleteDateColumn } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 import Card from '@modules/cards/entities/Card';
 import Deck from '@modules/decks/entities/Deck';
-import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn, JoinTable, ManyToMany } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 
 @Entity('sessions')
 export default class Session {
@@ -19,14 +19,14 @@ export default class Session {
   @JoinTable()
   cards: Card[];
 
-  @Column()
-  active: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @CreateDateColumn()
   finishedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();

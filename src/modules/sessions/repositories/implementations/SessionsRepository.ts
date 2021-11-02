@@ -1,16 +1,8 @@
 import { getRepository, MoreThan, Repository } from 'typeorm';
 
+import { AppError } from "@shared/errors/AppError";
 import Session from '../../entities/Session';
 import { ISessionsRepository } from '../ISessionsRepository';
-import IListSessionsDTO from "@modules/sessions/dtos/IListSessionsDTO";
-import ICreateSessionsDTO from "@modules/sessions/dtos/ICreateSessionsDTO";
-import IUpdateSessionsDTO from "@modules/sessions/dtos/IUpdateSessionsDTO";
-import IRemoveSessionsDTO from "@modules/sessions/dtos/IRemoveSessionsDTO";
-import { AppError } from "@shared/errors/AppError";
-import IIndexSessionsDTO from '@modules/sessions/dtos/IIndexSessionsDTO';
-import IFilterSessionsDTO from '@modules/sessions/dtos/IFilterSessionsDTO';
-import IIndexSessionsDeckDTO from '@modules/sessions/dtos/IIndexSessionsDeckDTO';
-import IListHistorySessionsDTO from '@modules/sessions/dtos/IListHistorySessionsDTO';
 
 export class SessionsRepository implements ISessionsRepository {
   private repository: Repository<Session>;
@@ -19,18 +11,17 @@ export class SessionsRepository implements ISessionsRepository {
     this.repository = getRepository(Session);
   }
 
-  async list({ userId }: IListSessionsDTO): Promise<Session[]> {
+  async list({ userId }): Promise<Session[]> {
     return this.repository.createQueryBuilder('sessions')
       .leftJoinAndSelect('sessions.deck', 'deck')
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
-      .where('sessions.active = true')
-      .andWhere('sessions.userId = :userId')
+      .where('sessions.userId = :userId')
       .setParameter('userId', userId)
       .getMany();
   }
 
-  async history({ userId }: IListHistorySessionsDTO): Promise<Session[]> {
+  async history({ userId }): Promise<Session[]> {
     return this.repository.createQueryBuilder('sessions')
       .leftJoinAndSelect('sessions.deck', 'deck')
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
@@ -41,20 +32,19 @@ export class SessionsRepository implements ISessionsRepository {
       .getMany();
   }
 
-  async last({ userId }: IListSessionsDTO): Promise<Session> {
+  async last({ userId }): Promise<Session> {
     return this.repository.createQueryBuilder('sessions')
       .leftJoinAndSelect('sessions.deck', 'deck')
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
-      .where('sessions.active = true')
-      .andWhere('sessions.userId = :userId')
+      .where('sessions.userId = :userId')
       .setParameter('userId', userId)
       .orderBy("sessions.createdAt", "DESC")
       .getOne();
   }
 
-  async index({ userId, sessionId }: IIndexSessionsDTO): Promise<Session> {
-    const session = await this.repository.findOne({ where: { id:sessionId, userId: userId, active:true }, relations: [ 'cards', 'deck' ] });
+  async index({ userId, sessionId }): Promise<Session> {
+    const session = await this.repository.findOne({ where: { id:sessionId, userId: userId }, relations: [ 'cards', 'deck' ] });
     
     if (!session) {
       throw new AppError("Session not found", 400);      
@@ -63,13 +53,11 @@ export class SessionsRepository implements ISessionsRepository {
     return session;
   }
 
-  async indexByDeck({ userId, deck }: IIndexSessionsDeckDTO): Promise<Session> {
-    const session = await this.repository.findOne({ where: { deck, userId: userId, active:true }, relations: [ 'cards', 'deck' ] });
-    
-    return session;
+  async indexByDeck({ userId, deck }): Promise<Session> {
+    return await this.repository.findOne({ where: { deck, userId: userId }, relations: [ 'cards', 'deck' ] });
   }
 
-  async create({ userId, deck, cards }: ICreateSessionsDTO): Promise<Session> {
+  async create({ userId, deck, cards }): Promise<Session> {
     if (!deck) {
       throw new AppError("Deck not found", 400);      
     }   
@@ -85,31 +73,22 @@ export class SessionsRepository implements ISessionsRepository {
     return session;
   }
 
-  async update({ session, finished_at }: IUpdateSessionsDTO): Promise<void> {
+  async update({ session, finished_at }): Promise<void> {
     if (!finished_at) {
       return;
     }
     
-    session.finishedAt = new Date(finished_at);
-    session.active = false;
-    await this.repository.save(session);
+    await this.repository.softDelete(session.id);
   }
 
-  async remove({ userId, sessionId }: IRemoveSessionsDTO): Promise<void> {
-    const update = await this.repository.update({ id: sessionId, userId, active:true  }, {
-      active: false
-    })
-
-    if (update.affected == 0) {
-      throw new AppError("Session not found", 400);
-    }
+  async remove({ userId, sessionId }): Promise<void> {
+    await this.repository.softDelete({ id: sessionId, userId });
   }
 
-  async filter({ olderThen, deckId }:IFilterSessionsDTO):Promise<Session[]> {
+  async filter({ olderThen, deckId }):Promise<Session[]> {
     let queryBuilder = this.repository.createQueryBuilder("sessions")
       .leftJoinAndSelect("sessions.deck", "deck")
-      .leftJoinAndSelect("sessions.cards", "cards")
-      .where("sessions.active = :active", { active: true });
+      .leftJoinAndSelect("sessions.cards", "cards");
       
     if (olderThen) {
       queryBuilder.andWhere("sessions.createdAt > :createdAt", { createdAt: olderThen });

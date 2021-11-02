@@ -42,6 +42,6 @@ export class CreateFeaturedType1631064678191 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('featured_type');
+      await queryRunner.dropTable('featured_type');
     }
 }

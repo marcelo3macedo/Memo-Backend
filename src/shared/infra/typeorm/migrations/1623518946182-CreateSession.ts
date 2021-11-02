@@ -21,11 +21,6 @@ export class CreateSession1623518946182 implements MigrationInterface {
                   type: 'uuid',
                 },
                 {
-                   name: "active",
-                   type: "boolean",
-                   default: true,
-                },
-                {
                   name: 'createdAt',
                   type: 'timestamp',
                   default: 'now()',
@@ -35,7 +30,12 @@ export class CreateSession1623518946182 implements MigrationInterface {
                     name: 'finishedAt',
                     type: 'timestamp',
                     isNullable: true,
-                  },
+                },
+                {
+                  name: 'deletedAt',
+                  type: 'timestamp',
+                  isNullable: true,
+                },
               ],
             })
           );
