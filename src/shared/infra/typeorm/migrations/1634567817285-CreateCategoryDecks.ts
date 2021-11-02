@@ -22,6 +22,11 @@ export class CreateCategoryDecks1634567817285 implements MigrationInterface {
                     default: 'now()',
                     isNullable: true,
                 },
+                {
+                    name: "deletedAt",
+                    type: "timestamp",
+                    isNullable: true,
+                },
             ],
             foreignKeys: [
                 {

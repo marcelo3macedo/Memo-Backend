@@ -25,4 +25,8 @@ export class CategoriesRepository implements ICategoriesRepository {
   async index({ categoryId }): Promise<Category> {
     return this.repository.findOne({ id: categoryId });
   }
+
+  async remove({ categoryId }): Promise<void> {
+    await this.repository.softDelete(categoryId);
+  }
 }

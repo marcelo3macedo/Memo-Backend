@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity('categories')
 export default class Category {
@@ -12,11 +12,11 @@ export default class Category {
   @Column()
   parentId: string;
 
-  @Column()
-  active: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   constructor() {
     this.id = uuid();
