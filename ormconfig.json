@@ -1,19 +1,19 @@
 {
     "type": "postgres",
-    "host": "localhost",
+    "host": "backend_database_1",
     "port": 5432,
     "username": "docker",
     "password": "teste",
     "database": "memo",
-    "entities": ["./src/modules/*/entities/*.ts"],
-    "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
+    "entities": ["src/modules/*/entities/*.ts"],
+    "migrations": ["src/shared/infra/typeorm/migrations/*.ts"],
     "cli": {
-      "migrationsDir": "./src/shared/infra/typeorm/migrations"
+      "migrationsDir": "src/shared/infra/typeorm/migrations"
     },
     "cache": {
       "type": "redis",
       "options": {
-        "host": "localhost",
+        "host": "redis",
         "port": 6379
       },
       "ignoreErrors": true

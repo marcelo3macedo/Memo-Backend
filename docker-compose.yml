@@ -2,7 +2,6 @@ version: "3"
 services:
     database:
         image: postgres
-        container_name: memodb
         restart: always
         ports:
         - 5432:5432
@@ -12,23 +11,36 @@ services:
         - POSTGRES_DB=memo
         env_file: 
         - .env
+        networks:
+        - app-connect
         volumes:
         - pgdata:/data/memodb
-    memoapp:
-        build: .
-        command: npm run dev:server
-        ports:
-        - "3333:3333"
-        links:
-        - database
-        volumes:
-        - ./:/usr/src/app
     redis:
         container_name: memoredis
         image: redis:latest
         restart: unless-stopped
         ports:
         - "6379:6379"
+        networks:
+        - app-connect
+    memoapp:
+        build: .
+        command: npm run dev:server
+        ports:
+        - "3333:3333"
+        depends_on:
+        - database
+        - redis
+        links:
+        - database
+        volumes:
+        - ./:/usr/src/app
+        networks:
+        - app-connect
 volumes:
     pgdata:
         driver: local
+
+networks:
+    app-connect:
+        driver: bridge
