@@ -60,9 +60,11 @@ export class CardsRepository implements ICardsRepository {
     this.repository.softDelete(cardId);
   }
 
-  async filter({ deckId, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
+  async filter({ deck, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
+    let deckIds = deck.children.map(d => { return d.id }).toString();
+    
     let queryBuilder = this.repository.createQueryBuilder("cards")
-      .where("cards.deck.id = :deckId", { deckId });      
+      .where("cards.deck.id IN (:deckIds)", { deckIds });
 
     if (cards && cards.length > 0) {
       let cardsIds = cards.map(c => { return c.id }).toString();
