@@ -17,6 +17,9 @@ export default class Deck {
   parentId: string;
 
   @Column()
+  clonedBy: string;
+
+  @Column()
   isPublic: boolean;
 
   @ManyToOne(type => Deck, deck => deck.children)

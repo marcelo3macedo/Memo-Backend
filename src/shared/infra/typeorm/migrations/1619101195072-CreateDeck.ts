@@ -31,6 +31,11 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                   isNullable: true,
                 },
                 {
+                  name: 'clonedBy',
+                  type: 'uuid',
+                  isNullable: true,
+                },
+                {
                   name: 'createdAt',
                   type: 'timestamp',
                   default: 'now()',
