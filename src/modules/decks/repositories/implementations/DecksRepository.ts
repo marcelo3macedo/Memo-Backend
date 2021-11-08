@@ -14,12 +14,13 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, isPublic }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, userId, parentId, isPublic, clonedBy }: ICreateDecksDTO): Promise<Deck> {
     const deck = this.repository.create({
        name,
        userId,
        parentId,
-       isPublic
+       isPublic,
+       clonedBy
     });
 
     return await this.repository.save(deck);
@@ -59,9 +60,7 @@ export class DecksRepository implements IDecksRepository {
 
     deck.children = await this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
-      .where('decks.userId = :userId')
-      .andWhere('decks.parentId = :parentId')
-      .setParameter('userId', userId)
+      .where('decks.parentId = :parentId')
       .setParameter('parentId', deck.id)
       .getMany();
 
