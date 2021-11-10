@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, OneToOne, JoinColumn, JoinTable, ManyToMany, OneToMany, DeleteDateColumn } from 'typeorm';
 
 @Entity('sessions_cards_cards')
 export default class SessionCard {
@@ -13,4 +13,7 @@ export default class SessionCard {
 
   @Column()
   answeredAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

@@ -1,5 +1,7 @@
 import SessionCard from "../entities/SessionCard";
 
 export default interface IUpdateSessionsCardsDTO {
-   sessionCard: SessionCard;
+   cards?: any[];
+   sessionId?: string;
+   sessionCard?: SessionCard;
 }

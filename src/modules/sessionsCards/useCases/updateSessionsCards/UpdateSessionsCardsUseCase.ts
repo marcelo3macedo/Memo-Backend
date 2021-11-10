@@ -10,7 +10,17 @@ export class UpdateSessionsCardsUseCase {
     private sessionsCardsRepository: ISessionsCardsRepository
   ) {}
 
-  async execute({ sessionCard }:IUpdateSessionsCardsDTO): Promise<void> {
-    return this.sessionsCardsRepository.update({ sessionCard });
+  async execute({ sessionId, cards }:IUpdateSessionsCardsDTO): Promise<void> {
+    cards.map(async(c) => {
+      let sessionCard = await this.sessionsCardsRepository.index({ cardId: c.id, sessionId });
+
+      if (!sessionCard) {
+        return;
+      }
+
+      sessionCard.difficultyId = c.difficultyId ? c.difficultyId : null;
+      
+      await this.sessionsCardsRepository.update({ sessionCard });
+    });
   }
 }
