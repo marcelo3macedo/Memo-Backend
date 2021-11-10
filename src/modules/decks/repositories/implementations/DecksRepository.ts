@@ -58,10 +58,12 @@ export class DecksRepository implements IDecksRepository {
       throw new AppError("Deck not found", 400);      
     }
 
+    const parentId = deck.clonedBy ? deck.clonedBy : deck.id;
+
     deck.children = await this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
       .where('decks.parentId = :parentId')
-      .setParameter('parentId', deck.id)
+      .setParameter('parentId', parentId)
       .getMany();
 
     return deck;

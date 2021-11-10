@@ -12,6 +12,6 @@ export class FeedSessionsUseCase {
   ) {}
 
   async execute({ deck }:IFeedSessionsDTO): Promise<Card[]> {
-    return await this.cardsRepository.filter({ deckId: deck.id, limit: parseInt(process.env.PROCESSOR_CARDS_LIMIT) });
+    return await this.cardsRepository.filter({ deck, limit: parseInt(process.env.PROCESSOR_CARDS_LIMIT) });
   }
 }

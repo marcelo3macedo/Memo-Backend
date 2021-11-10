@@ -25,5 +25,10 @@ export class SessionsCardsRepository implements ISessionsCardsRepository {
 
   async update({ sessionCard }: IUpdateSessionsCardsDTO): Promise<void> {
     await this.repository.save(sessionCard);
+    
+    await this.repository.softDelete({ 
+      sessionsId: sessionCard.sessionsId, 
+      cardsId: sessionCard.cardsId 
+    });
   }
 }
