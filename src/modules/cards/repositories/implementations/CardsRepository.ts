@@ -61,14 +61,14 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async filter({ deck, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
-    let deckIds = deck.children.map(d => { return d.id }).toString();
-    
+    let deckIds = deck.children.map(d => { return d.id });
+
     let queryBuilder = this.repository.createQueryBuilder("cards")
-      .where("cards.deck.id IN (:deckIds)", { deckIds });
+      .where("cards.deck.id IN (:...deckIds)", { deckIds });
 
     if (cards && cards.length > 0) {
       let cardsIds = cards.map(c => { return c.id }).toString();
-      queryBuilder.andWhere("cards.id NOT IN (:cards)", { cards: cardsIds });
+      queryBuilder.andWhere("cards.id NOT IN (:...cards)", { cards: cardsIds });
     }
 
     return queryBuilder.limit(limit).getMany();
