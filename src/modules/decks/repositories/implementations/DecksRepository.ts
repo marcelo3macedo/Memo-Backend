@@ -15,6 +15,12 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async create({ name, userId, parentId, isPublic, clonedBy }: ICreateDecksDTO): Promise<Deck> {
+    if (!isPublic && clonedBy) {
+      const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
+
+      if (deckExists) return deckExists;
+    }
+
     const deck = this.repository.create({
        name,
        userId,
