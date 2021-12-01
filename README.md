@@ -16,7 +16,7 @@
     <a><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a>View Demo</a>
+    <a href="https://memo.professoraantenada.com.br/">View Demo</a>
     ·
     <a href="https://github.com/marcelo3macedo/Memo-Backend/issues">Report Bug</a>
     ·
