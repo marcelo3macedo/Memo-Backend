@@ -37,6 +37,8 @@ export default class Deck {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  owner: boolean;
+
   constructor() {
     this.id = uuid();
   }

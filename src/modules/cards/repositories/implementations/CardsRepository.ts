@@ -62,6 +62,7 @@ export class CardsRepository implements ICardsRepository {
 
   async filter({ deck, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
     let deckIds = deck.children.map(d => { return d.id });
+    deckIds.push(deck.id);
 
     let queryBuilder = this.repository.createQueryBuilder("cards")
       .where("cards.deck.id IN (:...deckIds)", { deckIds });

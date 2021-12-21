@@ -27,8 +27,10 @@ export class SessionsRepository implements ISessionsRepository {
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
       .where('sessions.userId = :userId')
-      .andWhere('sessions.finishedAt IS NOT NULL')
       .setParameter('userId', userId)
+      .andWhere('sessions.deletedAt IS NOT NULL')
+      .withDeleted() 
+      .orderBy('sessions.deletedAt', 'DESC')
       .getMany();
   }
 

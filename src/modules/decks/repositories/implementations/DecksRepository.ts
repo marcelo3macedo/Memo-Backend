@@ -29,6 +29,8 @@ export class DecksRepository implements IDecksRepository {
        clonedBy
     });
 
+    deck.owner = true;
+
     return await this.repository.save(deck);
   }
 
@@ -44,7 +46,7 @@ export class DecksRepository implements IDecksRepository {
       .setParameter('isPublic', isPublic);
     
     if (!isPublic) {
-      repository.andWhere('decks.userId = :userId')
+      repository.orWhere('decks.userId = :userId')
         .setParameter('userId', userId);
     }
     
@@ -71,6 +73,8 @@ export class DecksRepository implements IDecksRepository {
       .where('decks.parentId = :parentId')
       .setParameter('parentId', parentId)
       .getMany();
+
+    deck.owner = userId === deck.userId;
 
     return deck;
   }

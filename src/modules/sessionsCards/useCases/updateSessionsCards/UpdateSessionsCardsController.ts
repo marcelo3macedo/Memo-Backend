@@ -10,8 +10,9 @@ export class UpdateSessionsCardsController {
     try {
       const userId = request['user'].id;
       const { sessionId } = request.params;
-      const cards = request.body;
+      const { cards } = request.body;
       const finished_at = new Date().toString();
+
       const indexSessionsUseCase = container.resolve(IndexSessionsUseCase);
       const session = await indexSessionsUseCase.execute({ userId, sessionId });
 
