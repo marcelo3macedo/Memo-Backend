@@ -36,7 +36,7 @@ services:
         - database
         volumes:
         - ./:/usr/src/app
-        - /usr/app/node_modules
+        - /usr/src/app/node_modules
         networks:
         - app-connect
 volumes:

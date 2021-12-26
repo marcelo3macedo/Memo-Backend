@@ -1,21 +1,15 @@
-FROM node:16-alpine
-
-WORKDIR /usr/src/app
+FROM node:12-alpine
 
 ENV NODE_ENV=development
 
+WORKDIR /usr/src/app
+
 COPY package*.json ./
 
-RUN npm install
-
-RUN npm install ts-node-dev@1.1.6 -g
-
-RUN npm i -g typescript@4.2.4
-
-RUN yarn add tsconfig-paths
+RUN npm install && npm install --only=dev
 
 COPY . .
 
 EXPOSE 3333
 
-CMD [ "npm", "run", "dev:server" ]
+ENTRYPOINT ["sh", "./entrypoint.sh"]
