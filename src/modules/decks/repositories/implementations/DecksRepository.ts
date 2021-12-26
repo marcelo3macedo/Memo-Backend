@@ -14,7 +14,7 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, isPublic, clonedBy }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy }: ICreateDecksDTO): Promise<Deck> {
     if (!isPublic && clonedBy) {
       const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
 
@@ -25,6 +25,7 @@ export class DecksRepository implements IDecksRepository {
        name,
        userId,
        parentId,
+       frequencyId,
        isPublic,
        clonedBy
     });
@@ -41,6 +42,7 @@ export class DecksRepository implements IDecksRepository {
   async list({ userId, isPublic, name }: IListDecksDTO): Promise<Deck[]> {
     const repository = this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
+      .leftJoinAndSelect("decks.frequency", "frequency")
       .where('decks.parentId IS NULL')
       .andWhere('decks.isPublic = :isPublic')
       .setParameter('isPublic', isPublic);
@@ -53,14 +55,14 @@ export class DecksRepository implements IDecksRepository {
     if (name) {
       repository.andWhere("decks.name ilike :name", { name:`%${name}%` })
     }
-
+    
     return repository.getMany();
   }
 
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
     const deck = isPublic ? 
       await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] }) :
-      await this.repository.findOne({ where: { id: deckId, userId: userId }, relations: ['cards'] });
+      await this.repository.findOne({ where: { id: deckId, userId: userId }, relations: ['cards', 'frequency'] });
     
     if (!deck) {
       throw new AppError("Deck not found", 400);      
