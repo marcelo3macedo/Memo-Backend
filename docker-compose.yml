@@ -11,7 +11,7 @@ services:
         - POSTGRES_PASSWORD=teste
         - POSTGRES_DB=memo
         env_file: 
-        - .env
+        - .env.example
         networks:
         - app-connect
         volumes:
@@ -32,8 +32,6 @@ services:
         depends_on:
         - database
         - redis
-        links:
-        - database
         volumes:
         - ./:/usr/src/app
         - /usr/app/node_modules
