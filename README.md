@@ -97,14 +97,10 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-* yarn
-  ```sh
-  npm install --global yarn
-  ```
+* Docker
+  https://docs.docker.com/engine/install/
+* Docker-compose
+  https://docs.docker.com/compose/install/
    
 
 ### Installation
@@ -113,19 +109,12 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcelo3macedo/Memo-Backend.git
+   git clone https://github.com/marcelo3macedo/Memo-Backend.git   
    ```
-2. Install Yarn packages
+2. Copy .env.example to .env
+3. Build with Docker
    ```sh
-   yarn
-   ```
-3. Run database with docker
-   ```sh
-   docker-compose up -d
-   ```
-4. Run project for development
-   ```sh
-   yarn run dev
+   docker-compose up --build -d
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
