@@ -12,5 +12,5 @@ export default interface ICardsRepository {
   index(data: IIndexCardsDTO): Promise<Card>;
   update(data: IUpdateCardsDTO): Promise<void>;
   remove(data: IRemoveCardsDTO): Promise<void>;
-  filter(data:IFilterCardsDTO): Promise<Card[]>
+  filter(data:IFilterCardsDTO): Promise<Card[]>;
 }

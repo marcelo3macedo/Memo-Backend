@@ -16,6 +16,9 @@ export default class Card {
   @Column()
   secretContent: string;
 
+  @Column()
+  difficultyFactor: number;
+
   @OneToOne(() => Deck)
   @JoinColumn()
   deck: Deck;

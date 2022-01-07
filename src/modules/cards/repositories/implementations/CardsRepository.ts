@@ -46,11 +46,12 @@ export class CardsRepository implements ICardsRepository {
     return card;
   }
 
-  async update({ cardId, title, content, secretContent }: IUpdateCardsDTO): Promise<void> {
+  async update({ cardId, title, content, secretContent, difficultyFactor=0 }: IUpdateCardsDTO): Promise<void> {
     const card = {
       title,
       content,
-      secretContent
+      secretContent,
+      difficultyFactor
     }
 
     this.repository.update({ id:cardId }, card);
