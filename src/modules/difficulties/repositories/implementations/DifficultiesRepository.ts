@@ -16,6 +16,10 @@ export class DifficultiesRepository implements IDifficultiesRepository {
     return this.repository.find({ cache: cache.milliseconds });
   }
 
+  async find({ id }): Promise<Difficulty> {
+    return this.repository.findOne(id);
+  }
+
   async create({ name }): Promise<void> {
     const difficulty = this.repository.create({
         name

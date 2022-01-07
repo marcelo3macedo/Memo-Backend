@@ -44,6 +44,9 @@ export default class Deck {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @Column()
+  reviewAt: Date;
+
   owner: boolean;
 
   constructor() {

@@ -8,6 +8,9 @@ export default class Difficulty {
 
   @Column()
   name: string;
+
+  @Column()
+  factor: number;
   
   @CreateDateColumn()
   createdAt: Date;
