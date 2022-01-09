@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import Card from "@modules/cards/entities/Card";
 import Frequency from '@modules/frequencies/entities/Frequency';
+import Category from '@modules/categories/entities/Category';
 
 @Entity('decks')
 export default class Deck {
@@ -26,6 +27,9 @@ export default class Deck {
   @Column()
   frequencyId: string;  
 
+  @Column()
+  categoryId: string; 
+
   @ManyToOne(type => Deck, deck => deck.children)
   parent: Deck;
 
@@ -37,6 +41,9 @@ export default class Deck {
 
   @ManyToOne(type => Frequency, frequency => frequency.id)
   frequency: Frequency;
+
+  @ManyToOne(type => Category, category => category.id)
+  category: Category;
 
   @CreateDateColumn()
   createdAt: Date;

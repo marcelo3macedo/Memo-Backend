@@ -31,9 +31,6 @@ import { SessionsCardsRepository } from '@modules/sessionsCards/repositories/imp
 import ICategoriesRepository from '@modules/categories/repositories/ICategoriesRepository';
 import { CategoriesRepository } from '@modules/categories/repositories/implementations/CategoriesRepository';
 
-import ICategoriesDeckRepository from '@modules/categoriesDecks/repositories/ICategoriesDeckRepository';
-import { CategoriesDeckRepository } from '@modules/categoriesDecks/repositories/implementations/CategoriesDeckRepository';
-
 import IFrequenciesRepository from "@modules/frequencies/repositories/IFrequenciesRepository";
 import { FrequenciesRepository } from "@modules/frequencies/repositories/implementations/FrequenciesRepository";
 
@@ -47,5 +44,4 @@ container.registerSingleton<IFeaturedDecksRepository>("FeaturedDecksRepository",
 container.registerSingleton<IFeaturedTypeRepository>("FeaturedTypeRepository", FeaturedTypeRepository);
 container.registerSingleton<IDifficultiesRepository>("DifficultiesRepository", DifficultiesRepository);
 container.registerSingleton<ICategoriesRepository>("CategoriesRepository", CategoriesRepository);
-container.registerSingleton<ICategoriesDeckRepository>("CategoriesDeckRepository", CategoriesDeckRepository);
 container.registerSingleton<IFrequenciesRepository>("FrequenciesRepository", FrequenciesRepository);

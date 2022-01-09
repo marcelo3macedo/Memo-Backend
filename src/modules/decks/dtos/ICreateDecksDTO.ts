@@ -3,6 +3,7 @@ export default interface ICreateDecksDTO {
    userId: string;
    parentId: string;
    frequencyId: string;
+   categoryId?: string;
    isPublic?: boolean;
    clonedBy?: string;
 }
