@@ -14,7 +14,7 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId }: ICreateDecksDTO): Promise<Deck> {
     if (!isPublic && clonedBy) {
       const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
 
@@ -26,6 +26,7 @@ export class DecksRepository implements IDecksRepository {
        userId,
        parentId,
        frequencyId,
+       categoryId,
        isPublic,
        clonedBy
     });
@@ -43,6 +44,7 @@ export class DecksRepository implements IDecksRepository {
     const repository = this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
+      .leftJoinAndSelect("decks.category", "categories")
       .where('decks.parentId IS NULL')
       .andWhere('decks.isPublic = :isPublic')
       .setParameter('isPublic', isPublic);
