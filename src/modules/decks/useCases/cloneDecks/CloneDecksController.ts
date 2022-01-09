@@ -12,7 +12,7 @@ export class CloneDecksController {
 
       const indexDecksUseCase = container.resolve(IndexDecksUseCase);
       const deck = await indexDecksUseCase.execute({ deckId, isPublic: true });
-        
+
       const cloneDecksUseCase = container.resolve(CloneDecksUseCase);
       const clonedDeck = await cloneDecksUseCase.execute({ deck, userId });
 

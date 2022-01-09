@@ -65,6 +65,10 @@ export class CardsRepository implements ICardsRepository {
     let deckIds = deck.children.map(d => { return d.id });
     deckIds.push(deck.id);
 
+    if (deck.clonedBy) {
+      deckIds.push(deck.clonedBy);
+    }
+
     let queryBuilder = this.repository.createQueryBuilder("cards")
       .where("cards.deck.id IN (:...deckIds)", { deckIds });
 

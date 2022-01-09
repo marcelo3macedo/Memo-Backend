@@ -14,4 +14,8 @@ export class FrequenciesRepository implements IFrequenciesRepository {
   async list(): Promise<Frequency[]> {
     return this.repository.find({ cache: cache.milliseconds });
   }
+
+  async getDefault(): Promise<Frequency> {
+    return this.repository.findOne({ where: { default: true } });
+  }
 }
