@@ -11,7 +11,7 @@ export class ListDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ userId, name, isPublic }:IListDecksDTO): Promise<Deck[]> {
-    return this.decksRepository.list({ userId, name, isPublic });
+  async execute({ userId, name, isPublic, page }:IListDecksDTO): Promise<Deck[]> {
+    return this.decksRepository.list({ userId, name, isPublic, page });
   }
 }
