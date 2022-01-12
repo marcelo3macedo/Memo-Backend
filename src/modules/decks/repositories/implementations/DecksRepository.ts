@@ -64,9 +64,7 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
-    const deck = isPublic ? 
-      await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] }) :
-      await this.repository.findOne({ where: { id: deckId, userId: userId }, relations: ['cards', 'frequency'] });
+    const deck = await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] });
     
     if (!deck) {
       throw new AppError("Deck not found", 400);      
