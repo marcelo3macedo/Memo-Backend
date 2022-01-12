@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ValueManager from 'lib/ValueManager';
+import ValueManager from "../../../../lib/ValueManager";
 import { container } from 'tsyringe';
 
 import { ListDecksUseCase } from './ListDecksUseCase';
