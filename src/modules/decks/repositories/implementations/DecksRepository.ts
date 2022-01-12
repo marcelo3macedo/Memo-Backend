@@ -6,6 +6,7 @@ import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import { AppError } from '@shared/errors/AppError';
+import pagination from '@config/pagination';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -40,14 +41,15 @@ export class DecksRepository implements IDecksRepository {
     this.repository.softDelete({ userId: userId, id: deckId });
   }
 
-  async list({ userId, isPublic, name }: IListDecksDTO): Promise<Deck[]> {
+  async list({ userId, isPublic, name, page=0 }: IListDecksDTO): Promise<Deck[]> {
+    const offset = page * pagination.limit
     const repository = this.repository.createQueryBuilder('decks')
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
       .where('decks.parentId IS NULL')
       .andWhere('decks.isPublic = :isPublic')
-      .setParameter('isPublic', isPublic);
+      .setParameter('isPublic', isPublic);      
     
     if (!isPublic) {
       repository.orWhere('decks.userId = :userId')
@@ -58,7 +60,7 @@ export class DecksRepository implements IDecksRepository {
       repository.andWhere("decks.name ilike :name", { name:`%${name}%` })
     }
     
-    return repository.getMany();
+    return repository.limit(pagination.limit).offset(offset).getMany();
   }
 
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
