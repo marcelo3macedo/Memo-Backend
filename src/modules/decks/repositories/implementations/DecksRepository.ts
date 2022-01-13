@@ -63,6 +63,23 @@ export class DecksRepository implements IDecksRepository {
     return repository.limit(pagination.limit).offset(offset).getMany();
   }
 
+  async personal({ userId, name, page=0 }): Promise<Deck[]> {
+    const offset = page * pagination.limit
+    const repository = this.repository.createQueryBuilder('decks')
+      .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
+      .leftJoinAndSelect("decks.frequency", "frequency")
+      .leftJoinAndSelect("decks.category", "categories")
+      .where('decks.parentId IS NULL')
+      .andWhere('decks.userId = :userId')
+      .setParameter('userId', userId);
+
+    if (name) {
+      repository.andWhere("decks.name ilike :name", { name:`%${name}%` })
+    }
+    
+    return repository.limit(pagination.limit).offset(offset).getMany();
+  }
+
   async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
     const deck = await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] });
     
