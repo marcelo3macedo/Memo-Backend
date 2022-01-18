@@ -6,4 +6,5 @@ export default {
     expiresInRefreshTokenDays: parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN_DAYS),
     expiresInForgotPasswordRefreshTokenHours: parseInt(process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN_DAYS),
     forgotPasswordMail: process.env.FORGOT_PASSWORD_EMAIL,
+    activationLink: process.env.ACTIVATION_LINK,
 };

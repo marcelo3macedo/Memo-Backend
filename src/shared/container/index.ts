@@ -34,6 +34,9 @@ import { CategoriesRepository } from '@modules/categories/repositories/implement
 import IFrequenciesRepository from "@modules/frequencies/repositories/IFrequenciesRepository";
 import { FrequenciesRepository } from "@modules/frequencies/repositories/implementations/FrequenciesRepository";
 
+import IMailSchedulerRepository from "@modules/validation/repositories/IMailSchedulerRepository";
+import { MailSchedulerRepository } from "@modules/validation/repositories/implementations/MailSchedulerRepository";
+
 container.registerSingleton<IDecksRepository>('DecksRepository', DecksRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
@@ -45,3 +48,4 @@ container.registerSingleton<IFeaturedTypeRepository>("FeaturedTypeRepository", F
 container.registerSingleton<IDifficultiesRepository>("DifficultiesRepository", DifficultiesRepository);
 container.registerSingleton<ICategoriesRepository>("CategoriesRepository", CategoriesRepository);
 container.registerSingleton<IFrequenciesRepository>("FrequenciesRepository", FrequenciesRepository);
+container.registerSingleton<IMailSchedulerRepository>("MailSchedulerRepository", MailSchedulerRepository);
