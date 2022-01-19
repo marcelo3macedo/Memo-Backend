@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { IndexCardsUseCase } from './IndexCardsUseCase';
 import { IndexDecksUseCase } from '@modules/decks/useCases/indexDecks/IndexDecksUseCase';
+import logger from '@config/logger';
 
 
 export class IndexCardsController {
@@ -19,6 +20,7 @@ export class IndexCardsController {
 
       return response.json(card);
     } catch (error) {
+      logger.error(`[IndexCardsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

@@ -1,3 +1,4 @@
+import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import ResetPasswordUseCases from "./ResetPasswordUseCases";
@@ -13,6 +14,7 @@ class ResetPasswordController {
 
          return response.send(200);
       } catch (error) {
+         logger.error(`[ResetPasswordController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

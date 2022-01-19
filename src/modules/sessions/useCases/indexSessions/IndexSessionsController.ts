@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { ListDifficultiesUseCase } from '@modules/difficulties/useCases/listDifficulties/ListDifficultiesUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
@@ -22,6 +23,7 @@ export class IndexSessionsController {
 
       return response.json(sessions);
     } catch (error) {
+      logger.error(`[IndexSessionsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -14,6 +15,7 @@ export class UpdateCardsController {
 
       return response.status(200).send();
     } catch (error) {
+      logger.error(`[UpdateCardsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

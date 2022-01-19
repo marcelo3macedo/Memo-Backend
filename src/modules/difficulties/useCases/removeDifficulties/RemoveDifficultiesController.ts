@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -13,6 +14,7 @@ export class RemoveDifficultiesController {
 
       return response.status(200).json();
     } catch (error) {
+      logger.error(`[RemoveDifficultiesController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

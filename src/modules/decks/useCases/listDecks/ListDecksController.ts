@@ -3,6 +3,7 @@ import ValueManager from "../../../../lib/ValueManager";
 import { container } from 'tsyringe';
 
 import { ListDecksUseCase } from './ListDecksUseCase';
+import logger from '@config/logger';
 
 export class ListDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -20,6 +21,7 @@ export class ListDecksController {
 
       return response.json(decks);
     } catch (error) {
+      logger.error(`[ListDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

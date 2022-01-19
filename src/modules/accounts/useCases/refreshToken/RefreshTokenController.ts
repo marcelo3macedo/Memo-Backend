@@ -1,3 +1,4 @@
+import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import RefreshTokenUseCases from "./RefreshTokenUseCases";
@@ -12,6 +13,7 @@ class RefreshTokenController {
 
          return response.json(refreshToken);
       } catch (error) {
+         logger.error(`[RefreshTokenController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

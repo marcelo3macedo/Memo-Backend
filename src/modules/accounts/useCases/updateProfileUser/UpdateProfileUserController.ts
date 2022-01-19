@@ -1,3 +1,4 @@
+import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import UpdateProfileUserUseCases from "./UpdateProfileUserUseCases";
@@ -13,6 +14,7 @@ class UpdateProfileUserController {
 
          return response.status(200);
       } catch (error) {
+         logger.error(`[UpdateProfileUserController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }
