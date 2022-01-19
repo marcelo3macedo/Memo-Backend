@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { CreateDecksUseCase } from './CreateDecksUseCase';
 import { IndexDecksUseCase } from '../indexDecks/IndexDecksUseCase';
+import logger from '@config/logger';
 
 export class CreateDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -20,6 +21,7 @@ export class CreateDecksController {
 
       return response.status(201).json(deck);
     } catch (error) {
+      logger.error(`[CreateDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

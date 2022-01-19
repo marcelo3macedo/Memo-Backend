@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { CloneDecksUseCase } from './CloneDecksUseCase';
 import { IndexDecksUseCase } from '../indexDecks/IndexDecksUseCase';
+import logger from '@config/logger';
 
 export class CloneDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -18,6 +19,7 @@ export class CloneDecksController {
 
       return response.status(201).json(clonedDeck);
     } catch (error) {
+      logger.error(`[CloneDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

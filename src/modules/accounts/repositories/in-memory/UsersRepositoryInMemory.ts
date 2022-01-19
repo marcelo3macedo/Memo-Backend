@@ -20,6 +20,10 @@ class UsersRepositoryInMemory implements IUsersRepository {
         return this.users.find(user => user.email === email)!;
     }
 
+    async findByToken({ authToken }): Promise<Users> {
+        return this.users.find(user => user.authToken === authToken)!;
+    }
+
     async findById(id: string): Promise<Users> {
         return this.users.find(user => user.id === id)!;
     }

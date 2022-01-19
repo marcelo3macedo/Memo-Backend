@@ -21,13 +21,19 @@ class UserRepository implements IUsersRepository {
       return user!;
    }
 
-   async create({ name, email, password, id, avatar }: ICreateUsersDTO): Promise<void> {
+   async findByToken({ authToken }): Promise<Users> {
+      const user = await this.repository.findOne({ authToken });
+      return user!;
+   }
+
+   async create({ name, email, password, id, avatar, authToken }: ICreateUsersDTO): Promise<void> {
       const user = this.repository.create({
          name,
          email,
          password,
          id,
          avatar,
+         authToken
       });
 
       await this.repository.save(user);
@@ -39,6 +45,10 @@ class UserRepository implements IUsersRepository {
        }
    
        this.repository.update({ id }, profile);
+   }
+
+   async active({ id }): Promise<void> {
+      await this.repository.update({ id }, { validated: true });
    }
 }
 

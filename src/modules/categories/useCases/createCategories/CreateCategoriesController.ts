@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -13,6 +14,7 @@ export class CreateCategoriesController {
 
       return response.status(201).json();
     } catch (error) {
+      logger.error(`[ListCategoriesController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

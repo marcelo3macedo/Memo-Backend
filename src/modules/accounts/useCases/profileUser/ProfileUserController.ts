@@ -1,3 +1,4 @@
+import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import ProfileUserUseCases from "./ProfileUserUseCases";
@@ -12,6 +13,7 @@ class ProfileUserController {
 
          return response.json(user);
       } catch (error) {
+         logger.error(`[ProfileUserController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -19,6 +20,7 @@ export class IndexDecksController {
 
       return response.json(deck);
     } catch (error) {
+      logger.error(`[IndexDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

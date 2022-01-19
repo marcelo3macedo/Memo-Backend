@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -11,6 +12,7 @@ export class ListDifficultiesController {
 
       return response.json(difficulties);
     } catch (error) {
+      logger.error(`[ListDifficultiesController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

@@ -21,6 +21,12 @@ export default class Users {
    @Column()
    avatar: string;
 
+   @Column()
+   authToken: string;
+
+   @Column()
+   validated: boolean;
+
    @CreateDateColumn()
    createdAt: Date;
 

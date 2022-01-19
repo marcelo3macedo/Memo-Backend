@@ -4,4 +4,5 @@ export default interface ICreateUsersDTO {
    password: string;
    id?: string;
    avatar?: string;
+   authToken?: string;
 }

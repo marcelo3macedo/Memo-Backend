@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { IndexSessionsCardsUseCase } from './IndexSessionsCardsUseCase';
 import { IndexSessionsUseCase } from '@modules/sessions/useCases/indexSessions/IndexSessionsUseCase';
+import logger from '@config/logger';
 
 export class IndexSessionsCardsController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -19,6 +20,7 @@ export class IndexSessionsCardsController {
 
       return response.status(204).send();
     } catch (error) {
+      logger.error(`[IndexSessionsCardsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }
