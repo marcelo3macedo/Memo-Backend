@@ -1,3 +1,4 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -14,6 +15,7 @@ export class RemoveSessionsController {
 
       return response.status(200).send();
     } catch (error) {
+      logger.error(`[RemoveSessionsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

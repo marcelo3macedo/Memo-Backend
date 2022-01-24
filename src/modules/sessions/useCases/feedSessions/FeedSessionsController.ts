@@ -6,6 +6,7 @@ import { CreateSessionsUseCase } from '@modules/sessions/useCases/createSessions
 import { FeedSessionsUseCase } from './FeedSessionsUseCase';
 import { IndexDeckSessionsUseCase } from '../indexDeckSessions/IndexDeckSessionsUseCase';
 import { ListDifficultiesUseCase } from '@modules/difficulties/useCases/listDifficulties/ListDifficultiesUseCase';
+import logger from '@config/logger';
 
 export class FeedSessionsController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -42,6 +43,7 @@ export class FeedSessionsController {
 
       return response.json(session);
     } catch (error) {
+      logger.error(`[FeedSessionsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

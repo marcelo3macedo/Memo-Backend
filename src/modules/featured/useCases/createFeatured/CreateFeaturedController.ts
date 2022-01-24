@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { CreateFeaturedUseCase } from './CreateFeaturedUseCase';
 import { IndexDecksUseCase } from '@modules/decks/useCases/indexDecks/IndexDecksUseCase';
+import logger from '@config/logger';
 
 export class CreateFeaturedController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -19,6 +20,7 @@ export class CreateFeaturedController {
 
       return response.status(201).send();
     } catch (error) {
+      logger.error(`[CreateFeaturedController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

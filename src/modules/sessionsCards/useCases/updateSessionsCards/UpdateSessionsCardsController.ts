@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import { UpdateSessionsCardsUseCase } from './UpdateSessionsCardsUseCase';
 import { IndexSessionsUseCase } from '@modules/sessions/useCases/indexSessions/IndexSessionsUseCase';
 import { UpdateSessionsUseCase } from '@modules/sessions/useCases/updateSessions/UpdateSessionsUseCase';
+import logger from '@config/logger';
 
 export class UpdateSessionsCardsController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -24,6 +25,7 @@ export class UpdateSessionsCardsController {
 
       return response.status(204).send();
     } catch (error) {
+      logger.error(`[UpdateSessionsCardsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

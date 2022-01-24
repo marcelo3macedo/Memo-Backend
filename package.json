@@ -32,7 +32,8 @@
     "tsyringe": "^4.5.0",
     "typeorm": "^0.2.32",
     "uuid": "^8.3.2",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "winston": "^3.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
