@@ -9,7 +9,8 @@ export class CreateCategory1634567540211 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'char',
+                  length: '64',
                   isPrimary: true,
                 },
                 {
@@ -18,7 +19,8 @@ export class CreateCategory1634567540211 implements MigrationInterface {
                 },
                 {
                   name: 'parentId',
-                  type: 'uuid',
+                  type: 'char',
+                  length: '64',
                   isNullable: true,
                 },
                 {
