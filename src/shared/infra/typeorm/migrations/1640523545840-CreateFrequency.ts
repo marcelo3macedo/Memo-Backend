@@ -9,7 +9,8 @@ export class CreateFrequency1640523545840 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'varchar',
+                  type: 'char',
+                  length: '64',
                   isPrimary: true,
                 },
                 {

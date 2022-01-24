@@ -9,7 +9,8 @@ export class CreateDeck1619101195072 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'varchar',
+                  type: 'char',
+                  length: '64',
                   isPrimary: true,
                 },
                 {
@@ -18,7 +19,8 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                 },
                 {
                   name: 'userId',
-                  type: 'varchar',
+                  type: 'char',
+                  length: '64',
                 },
                 {
                   name: 'isPublic',
@@ -27,7 +29,8 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                 },
                 {
                   name: 'parentId',
-                  type: 'varchar',
+                  type: 'char',
+                  length: '64',
                   isNullable: true,
                 },
                 {

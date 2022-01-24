@@ -9,7 +9,8 @@ export class CreateMailScheduler1642268830774 implements MigrationInterface {
                columns: [
                   {
                      name: "id",
-                     type: "varchar",
+                     type: 'char',
+                     length: '64',
                      isPrimary: true,
                   },
                   {

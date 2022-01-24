@@ -9,7 +9,8 @@ export class CreateUsersToken1624476102408 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'varchar',
+                  type: 'char',
+                  length: '64',
                   isPrimary: true,
                 },
                 {
@@ -18,7 +19,8 @@ export class CreateUsersToken1624476102408 implements MigrationInterface {
                 },
                 {
                    name: "userId",
-                   type: "varchar",
+                   type: 'char',
+                   length: '64',
                 },
                 {
                     name: 'expiresDate',
