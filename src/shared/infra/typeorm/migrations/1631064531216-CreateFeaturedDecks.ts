@@ -9,16 +9,16 @@ export class CreateFeaturedDecks1631064531216 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'varchar',
                   isPrimary: true,
                 },
                 {
                   name: 'deckId',
-                  type: 'uuid',
+                  type: 'varchar',
                 },
                 {
                     name: 'typeId',
-                    type: 'uuid',
+                    type: 'varchar',
                     isNullable: true,
                 },
                 {

@@ -5,7 +5,7 @@ export class AddCategoryToDecks1641572941464 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.addColumn("decks", new TableColumn({
             name: "categoryId",
-            type: "uuid",
+            type: "varchar",
             isNullable: true
         }));
 

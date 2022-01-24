@@ -9,7 +9,7 @@ export class CreateDifficulty1623519911162 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'varchar',
                   isPrimary: true,
                 },
                 {

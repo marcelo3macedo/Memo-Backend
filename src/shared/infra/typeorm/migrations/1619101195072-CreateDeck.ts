@@ -9,7 +9,7 @@ export class CreateDeck1619101195072 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'varchar',
                   isPrimary: true,
                 },
                 {
@@ -18,7 +18,7 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                 },
                 {
                   name: 'userId',
-                  type: 'uuid',
+                  type: 'varchar',
                 },
                 {
                   name: 'isPublic',
@@ -27,12 +27,12 @@ export class CreateDeck1619101195072 implements MigrationInterface {
                 },
                 {
                   name: 'parentId',
-                  type: 'uuid',
+                  type: 'varchar',
                   isNullable: true,
                 },
                 {
                   name: 'clonedBy',
-                  type: 'uuid',
+                  type: 'varchar',
                   isNullable: true,
                 },
                 {
