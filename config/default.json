@@ -5,5 +5,11 @@
         "exposedHeaders": [ "set-cookie", "location"],
         "credentials": true,
         "preflightMaxAge": 5
-    }
+    },
+    "cache": {
+        "connectionString": "redis://localhost:6379",
+        "expireTimeInSeconds": 35000,
+        "hashKey": "backend",
+        "mailKey": "mail-sender"
+    }    
 }
