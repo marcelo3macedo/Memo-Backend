@@ -5,6 +5,8 @@ import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IMailSchedulerRepository from "@modules/validation/repositories/IMailSchedulerRepository";
 import { AppError } from "@shared/errors/AppError";
 import MailManager from "lib/MailManager";
+import CacheManager from "lib/CacheManager";
+import cache from "@config/cache";
 
 @injectable()
 export default class CreateUserUseCases {
@@ -34,5 +36,7 @@ export default class CreateUserUseCases {
       ]
 
       await this.mailSchedulerRepository.create({ type: 'new-user', destination: email, params: JSON.stringify(params) });
+
+      CacheManager.remove('scheduled', cache.mailKey)
    }
 }
