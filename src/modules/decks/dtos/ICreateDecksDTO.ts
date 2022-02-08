@@ -6,4 +6,5 @@ export default interface ICreateDecksDTO {
    categoryId?: string;
    isPublic?: boolean;
    clonedBy?: string;
+   themeId?: string;
 }

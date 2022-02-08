@@ -16,7 +16,7 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
     if (!isPublic && clonedBy) {
       const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
 
@@ -30,7 +30,8 @@ export class DecksRepository implements IDecksRepository {
        frequencyId,
        categoryId,
        isPublic,
-       clonedBy
+       clonedBy,
+       themeId
     });
 
     deck.owner = true;
@@ -48,6 +49,7 @@ export class DecksRepository implements IDecksRepository {
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
+      .leftJoinAndSelect("decks.theme", "themes")
       .where('decks.parentId IS NULL')
       .andWhere('decks.isPublic = :isPublic')
       .setParameter('isPublic', isPublic)
@@ -76,6 +78,7 @@ export class DecksRepository implements IDecksRepository {
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
+      .leftJoinAndSelect("decks.theme", "themes")
       .where('decks.parentId IS NULL')
       .andWhere('decks.userId = :userId')
       .setParameter('userId', userId);
