@@ -9,6 +9,7 @@ import { AppError } from "@shared/errors/AppError";
 
 import { router } from './routes';
 import { corsConfig } from './cors';
+import CacheManager from 'lib/CacheManager';
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(corsConfig);
 app.use(express.json());
 
 app.use(router);
+
+CacheManager.connect()
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {

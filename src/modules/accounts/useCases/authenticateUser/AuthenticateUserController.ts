@@ -13,7 +13,7 @@ export default class AuthenticateUserController {
 
          return response.json(responseUser);
       } catch (error) {
-        logger.error(`[AuthenticateUserController] ${error}`)
+        logger.error(`[AuthenticateUserController] ${error.message}`)
         return response.status(error.statusCode).json({ error: error.message });
       }
    }
