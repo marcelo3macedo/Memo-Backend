@@ -6,6 +6,7 @@ import { IndexDecksController } from '@modules/decks/useCases/indexDecks/IndexDe
 import { CreateDecksController } from '@modules/decks/useCases/createDecks/CreateDecksController';
 import { RemoveDecksController } from '@modules/decks/useCases/removeDecks/RemoveDecksController';
 import { CloneDecksController } from '@modules/decks/useCases/cloneDecks/CloneDecksController';
+import { OptionDecksController } from '@modules/decks/useCases/optionDecks/OptionDecksController';
 
 const decksRoutes = Router();
 
@@ -15,12 +16,14 @@ const indexDecksController = new IndexDecksController();
 const createDecksController = new CreateDecksController();
 const removeDecksController = new RemoveDecksController();
 const cloneDecksController = new CloneDecksController();
+const optionDecksController = new OptionDecksController();
 
 decksRoutes.use(ensureAuthenticate);
 decksRoutes.get('/', listDecksController.handle);
-decksRoutes.get('/personal', personalDecksController.handle);
-decksRoutes.get('/:deckId', indexDecksController.handle);
 decksRoutes.post('/', createDecksController.handle);
+decksRoutes.get('/personal', personalDecksController.handle);
+decksRoutes.get('/options', optionDecksController.handle);
+decksRoutes.get('/:deckId', indexDecksController.handle);
 decksRoutes.delete('/:deckId', removeDecksController.handle);
 decksRoutes.get('/clone/:deckId', cloneDecksController.handle);
 
