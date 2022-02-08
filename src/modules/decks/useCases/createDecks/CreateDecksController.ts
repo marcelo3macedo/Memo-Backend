@@ -21,7 +21,7 @@ export class CreateDecksController {
 
       return response.status(201).json(deck);
     } catch (error) {
-      logger.error(`[CreateDecksController] ${error}`)
+      logger.error(`[CreateDecksController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

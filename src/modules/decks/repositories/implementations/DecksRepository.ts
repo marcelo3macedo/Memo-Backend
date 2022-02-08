@@ -8,6 +8,8 @@ import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import { AppError } from '@shared/errors/AppError';
 import pagination from '@config/pagination';
 import CacheManager from 'lib/CacheManager';
+import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
+import { USER_DECKS } from 'constants/cacheKeys';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -17,6 +19,8 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
+    CacheManager.hdel(USER_DECKS, userId)
+
     if (!isPublic && clonedBy) {
       const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
 
@@ -40,6 +44,8 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
+    CacheManager.hdel(USER_DECKS, userId)
+
     this.repository.softDelete({ userId: userId, id: deckId });
   }
 
@@ -108,5 +114,23 @@ export class DecksRepository implements IDecksRepository {
     deck.owner = userId === deck.userId;
 
     return deck;
+  }
+
+  async count({ userId }: ICountDecksDTO): Promise<number> {
+    if (!userId) {
+      throw new AppError("User not found", 400);      
+    }
+
+    const cached = await CacheManager.hget(USER_DECKS, userId)
+    
+    if (cached) {
+      return cached
+    }
+
+    const data = await this.repository.count({ userId })
+    
+    CacheManager.hset(USER_DECKS, userId, data)
+
+    return data
   }
 }

@@ -20,7 +20,7 @@ export class CreateCardsController {
 
       return response.status(201).send(card);
     } catch (error) {
-      logger.error(`[CreateCardsController] ${error}`)
+      logger.error(`[CreateCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }
