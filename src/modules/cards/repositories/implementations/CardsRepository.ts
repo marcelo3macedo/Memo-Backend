@@ -9,10 +9,6 @@ import IRemoveCardsDTO from "@modules/cards/dtos/IRemoveCardsDTO";
 import Card from '@modules/cards/entities/Card';
 import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import { AppError } from "@shared/errors/AppError";
-import ICountCardsDTO from '@modules/cards/dtos/ICountCardsDTO';
-import CacheManager from 'lib/CacheManager';
-import { DECK_CARDS } from 'constants/cacheKeys';
-import { CARD_NOTFOUND, DECK_NOTFOUND } from 'constants/logger';
 
 export class CardsRepository implements ICardsRepository {
   private repository: Repository<Card>;
@@ -27,11 +23,9 @@ export class CardsRepository implements ICardsRepository {
 
   async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
     if (!deck) {
-      throw new AppError(DECK_NOTFOUND, 400);      
+      throw new AppError("Deck not found", 400);      
     }    
 
-    CacheManager.hdel(DECK_CARDS, deck.id)
-    
     const card = this.repository.create({
       title,
       content,
@@ -46,7 +40,7 @@ export class CardsRepository implements ICardsRepository {
     const card = await this.repository.findOne({ where: { id: cardId, deck } });
     
     if (!card) {
-      throw new AppError(CARD_NOTFOUND, 400);      
+      throw new AppError("Card not found", 400);      
     }   
 
     return card;
@@ -64,14 +58,6 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async remove({ cardId }: IRemoveCardsDTO): Promise<void> {
-    const card = await this.repository.findOne({ where: { id: cardId } });
-    
-    if (!card) {
-      throw new AppError(CARD_NOTFOUND, 400);      
-    }
-
-    CacheManager.hdel(DECK_CARDS, card.deckId)
-
     this.repository.softDelete(cardId);
   }
 
@@ -92,23 +78,5 @@ export class CardsRepository implements ICardsRepository {
     }
 
     return queryBuilder.limit(limit).getMany();
-  }
-
-  async count({ deckId }: ICountCardsDTO): Promise<number> {
-    if (!deckId) {
-      throw new AppError(DECK_NOTFOUND, 400);      
-    }
-
-    const cached = await CacheManager.hget(DECK_CARDS, deckId)
-    
-    if (cached) {
-      return cached
-    }
-
-    const data = await this.repository.count({ deckId })
-    
-    CacheManager.hset(DECK_CARDS, deckId, data)
-
-    return data
   }
 }

@@ -8,7 +8,7 @@ import logger from '@config/logger';
 export class CreateDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const { name, parentId, isPublic, clonedBy, frequencyId, categoryId, themeId } = request.body;
+      const { name, parentId, isPublic, clonedBy, frequencyId, categoryId } = request.body;
       const userId = request['user'].id;
         
       if (parentId) {
@@ -17,11 +17,11 @@ export class CreateDecksController {
       }
 
       const createDecksUseCase = container.resolve(CreateDecksUseCase);
-      const deck = await createDecksUseCase.execute({ name, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });
+      const deck = await createDecksUseCase.execute({ name, parentId, userId, frequencyId, isPublic, clonedBy, categoryId });
 
       return response.status(201).json(deck);
     } catch (error) {
-      logger.error(`[CreateDecksController] ${error.message}`)
+      logger.error(`[CreateDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

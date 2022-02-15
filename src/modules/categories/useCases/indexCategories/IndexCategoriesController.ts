@@ -14,7 +14,7 @@ export class IndexCategoriesController {
 
       return response.json(category);
     } catch (error) {
-      logger.error(`[IndexCategoriesController] ${error.message}`)
+      logger.error(`[IndexCategoriesController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

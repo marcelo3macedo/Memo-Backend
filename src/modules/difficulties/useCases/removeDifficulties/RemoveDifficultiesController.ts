@@ -14,7 +14,7 @@ export class RemoveDifficultiesController {
 
       return response.status(200).json();
     } catch (error) {
-      logger.error(`[RemoveDifficultiesController] ${error.message}`)
+      logger.error(`[RemoveDifficultiesController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

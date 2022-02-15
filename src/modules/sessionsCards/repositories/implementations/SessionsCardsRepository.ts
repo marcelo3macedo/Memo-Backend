@@ -5,7 +5,6 @@ import SessionCard from '@modules/sessionsCards/entities/SessionCard';
 import IUpdateSessionsCardsDTO from '@modules/sessionsCards/dtos/IUpdateSessionsCardsDTO';
 import IIndexSessionsCardsDTO from '@modules/sessionsCards/dtos/IIndexSessionsCardsDTO';
 import { AppError } from '@shared/errors/AppError';
-import { SESSIONCARD_NOTFOUND } from 'constants/logger';
 
 export class SessionsCardsRepository implements ISessionsCardsRepository {
   private repository: Repository<SessionCard>;
@@ -18,7 +17,7 @@ export class SessionsCardsRepository implements ISessionsCardsRepository {
     const sessionCard = await this.repository.findOne({ where: { sessionsId:sessionId, cardsId:cardId}});
     
     if (!sessionCard) {
-      throw new AppError(SESSIONCARD_NOTFOUND, 400);      
+      throw new AppError("Session card not found", 400);      
     }   
 
     return sessionCard;

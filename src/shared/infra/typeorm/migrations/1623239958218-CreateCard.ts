@@ -9,8 +9,7 @@ export class CreateCard1623239958218 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                   isPrimary: true,
                 },
                 {
@@ -28,8 +27,7 @@ export class CreateCard1623239958218 implements MigrationInterface {
                 },
                 {
                   name: 'deckId',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                 },
                 {
                   name: 'createdAt',

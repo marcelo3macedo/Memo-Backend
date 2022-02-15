@@ -23,7 +23,7 @@ export class IndexSessionsController {
 
       return response.json(sessions);
     } catch (error) {
-      logger.error(`[IndexSessionsController] ${error.message}`)
+      logger.error(`[IndexSessionsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

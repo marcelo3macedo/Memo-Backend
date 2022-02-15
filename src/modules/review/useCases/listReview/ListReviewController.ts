@@ -13,7 +13,7 @@ export class ListReviewController {
 
       return response.json(review);
     } catch (error) {
-      logger.error(`[ListReviewController] ${error.message}`)
+      logger.error(`[ListReviewController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

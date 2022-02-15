@@ -9,19 +9,16 @@ export class CreateSession1623518946182 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                   isPrimary: true,
                 },
                 {
                   name: 'userId',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                 },
                 {
                   name: 'deckId',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                 },
                 {
                   name: 'createdAt',

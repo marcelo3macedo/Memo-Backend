@@ -14,7 +14,7 @@ class ResetPasswordController {
 
          return response.send(200);
       } catch (error) {
-         logger.error(`[ResetPasswordController] ${error.message}`)
+         logger.error(`[ResetPasswordController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

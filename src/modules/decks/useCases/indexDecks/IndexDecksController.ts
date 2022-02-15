@@ -20,7 +20,7 @@ export class IndexDecksController {
 
       return response.json(deck);
     } catch (error) {
-      logger.error(`[IndexDecksController] ${error.message}`)
+      logger.error(`[IndexDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

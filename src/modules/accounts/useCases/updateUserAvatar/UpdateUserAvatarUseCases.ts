@@ -1,4 +1,6 @@
 import { inject, injectable } from "tsyringe";
+import { v4 as uuid } from 'uuid';
+import { resolve } from "path";
 
 import IUpdateUserAvatarDTO from "@modules/accounts/dtos/IUpdateUserAvatarDTO";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";

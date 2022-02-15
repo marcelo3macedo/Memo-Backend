@@ -14,7 +14,7 @@ class CreateUserController {
 
          return response.status(201).send();
       } catch (error) {
-         logger.error(`[CreateUserController] ${error.message}`)
+         logger.error(`[CreateUserController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

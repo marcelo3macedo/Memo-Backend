@@ -14,7 +14,7 @@ export class ListCardsController {
 
       return response.json(cards);
     } catch (error) {
-      logger.error(`[ListCardsController] ${error.message}`)
+      logger.error(`[ListCardsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

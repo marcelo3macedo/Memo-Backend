@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, ILike, In, Repository } from 'typeorm';
 import Deck from '../../entities/Deck';
 import { IDecksRepository } from '../IDecksRepository';
 import IListDecksDTO from "@modules/decks/dtos/IListDecksDTO";
@@ -7,10 +7,6 @@ import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import { AppError } from '@shared/errors/AppError';
 import pagination from '@config/pagination';
-import CacheManager from 'lib/CacheManager';
-import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
-import { USER_DECKS } from 'constants/cacheKeys';
-import { DECK_NOTFOUND, USER_NOTFOUND } from 'constants/logger';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -19,9 +15,7 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
-    CacheManager.hdel(USER_DECKS, userId)
-
+  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId }: ICreateDecksDTO): Promise<Deck> {
     if (!isPublic && clonedBy) {
       const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
 
@@ -35,8 +29,7 @@ export class DecksRepository implements IDecksRepository {
        frequencyId,
        categoryId,
        isPublic,
-       clonedBy,
-       themeId
+       clonedBy
     });
 
     deck.owner = true;
@@ -45,8 +38,6 @@ export class DecksRepository implements IDecksRepository {
   }
 
   async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
-    CacheManager.hdel(USER_DECKS, userId)
-
     this.repository.softDelete({ userId: userId, id: deckId });
   }
 
@@ -56,10 +47,9 @@ export class DecksRepository implements IDecksRepository {
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
-      .leftJoinAndSelect("decks.theme", "themes")
       .where('decks.parentId IS NULL')
       .andWhere('decks.isPublic = :isPublic')
-      .setParameter('isPublic', isPublic)
+      .setParameter('isPublic', isPublic);      
     
     if (!isPublic) {
       repository.orWhere('decks.userId = :userId')
@@ -69,14 +59,8 @@ export class DecksRepository implements IDecksRepository {
     if (name) {
       repository.andWhere("decks.name ilike :name", { name:`%${name}%` })
     }
-
-    repository.limit(pagination.limit).offset(offset)
-
-    if (isPublic) {
-      repository.cache(CacheManager.getId(repository), CacheManager.getHighTtl());
-    }    
     
-    return repository.getMany();
+    return repository.limit(pagination.limit).offset(offset).getMany();
   }
 
   async personal({ userId, name, page=0 }): Promise<Deck[]> {
@@ -85,7 +69,6 @@ export class DecksRepository implements IDecksRepository {
       .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
-      .leftJoinAndSelect("decks.theme", "themes")
       .where('decks.parentId IS NULL')
       .andWhere('decks.userId = :userId')
       .setParameter('userId', userId);
@@ -101,7 +84,7 @@ export class DecksRepository implements IDecksRepository {
     const deck = await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] });
     
     if (!deck) {
-      throw new AppError(DECK_NOTFOUND, 400);      
+      throw new AppError("Deck not found", 400);      
     }
 
     const parentId = deck.clonedBy ? deck.clonedBy : deck.id;
@@ -115,23 +98,5 @@ export class DecksRepository implements IDecksRepository {
     deck.owner = userId === deck.userId;
 
     return deck;
-  }
-
-  async count({ userId }: ICountDecksDTO): Promise<number> {
-    if (!userId) {
-      throw new AppError(USER_NOTFOUND, 400);      
-    }
-
-    const cached = await CacheManager.hget(USER_DECKS, userId)
-    
-    if (cached) {
-      return cached
-    }
-
-    const data = await this.repository.count({ userId })
-    
-    CacheManager.hset(USER_DECKS, userId, data)
-
-    return data
   }
 }

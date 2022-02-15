@@ -1,4 +1,4 @@
-import CacheManager from 'lib/CacheManager';
+import cache from '@config/cache';
 import { getRepository, Repository } from 'typeorm';
 
 import Category from '../../entities/Category';
@@ -12,11 +12,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async list(): Promise<Category[]> {
-    const repository = this.repository.createQueryBuilder('categories')
-    
-    repository.cache(CacheManager.getId(repository), CacheManager.getHighTtl());
-
-    return repository.getMany();
+    return this.repository.find({ cache: cache.milliseconds });
   }
 
   async create({ name }): Promise<void> {

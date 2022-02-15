@@ -4,7 +4,6 @@ import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import IPersonalDecksDTO from '../dtos/IPersonalDecksDTO';
-import ICountDecksDTO from '../dtos/ICountDecksDTO';
 
 export interface IDecksRepository {
   list(data: IListDecksDTO): Promise<Deck[]>;
@@ -12,5 +11,4 @@ export interface IDecksRepository {
   index(data: IIndexDecksDTO): Promise<Deck>;
   create(data: ICreateDecksDTO): Promise<Deck>;
   remove(data: IRemoveDecksDTO): Promise<void>;
-  count(data: ICountDecksDTO): Promise<number>;
 }

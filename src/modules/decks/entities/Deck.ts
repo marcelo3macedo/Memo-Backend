@@ -3,7 +3,6 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, DeleteDateC
 import Card from "@modules/cards/entities/Card";
 import Frequency from '@modules/frequencies/entities/Frequency';
 import Category from '@modules/categories/entities/Category';
-import Theme from '@modules/themes/entities/Theme';
 
 @Entity('decks')
 export default class Deck {
@@ -31,9 +30,6 @@ export default class Deck {
   @Column()
   categoryId: string; 
 
-  @Column()
-  themeId: string; 
-
   @ManyToOne(type => Deck, deck => deck.children)
   parent: Deck;
 
@@ -48,9 +44,6 @@ export default class Deck {
 
   @ManyToOne(type => Category, category => category.id)
   category: Category;
-
-  @ManyToOne(type => Theme, theme => theme.id)
-  theme: Theme;
 
   @CreateDateColumn()
   createdAt: Date;

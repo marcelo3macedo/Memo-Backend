@@ -14,7 +14,7 @@ class UpdateUserAvatarController {
 
         return response.status(204).send();
       } catch (error) {
-         logger.error(`[UpdateUserAvatarController] ${error.message}`)
+         logger.error(`[UpdateUserAvatarController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

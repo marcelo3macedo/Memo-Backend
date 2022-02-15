@@ -5,8 +5,7 @@ export class AddFrequencyToDecks1640523830107 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.addColumn("decks", new TableColumn({
             name: "frequencyId",
-            type: 'char',
-            length: '64',
+            type: "uuid",
             isNullable: true
         }));
 

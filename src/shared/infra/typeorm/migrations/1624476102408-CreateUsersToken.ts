@@ -9,8 +9,7 @@ export class CreateUsersToken1624476102408 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'char',
-                  length: '64',
+                  type: 'uuid',
                   isPrimary: true,
                 },
                 {
@@ -19,8 +18,7 @@ export class CreateUsersToken1624476102408 implements MigrationInterface {
                 },
                 {
                    name: "userId",
-                   type: 'char',
-                   length: '64',
+                   type: "uuid",
                 },
                 {
                     name: 'expiresDate',

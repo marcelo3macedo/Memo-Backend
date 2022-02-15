@@ -20,7 +20,7 @@ export class PersonalDecksController {
 
       return response.json(decks);
     } catch (error) {
-      logger.error(`[PersonalDecksController] ${error.message}`)
+      logger.error(`[PersonalDecksController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

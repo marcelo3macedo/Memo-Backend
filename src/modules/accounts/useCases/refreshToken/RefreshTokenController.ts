@@ -13,7 +13,7 @@ class RefreshTokenController {
 
          return response.json(refreshToken);
       } catch (error) {
-         logger.error(`[RefreshTokenController] ${error.message}`)
+         logger.error(`[RefreshTokenController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

@@ -1,9 +1,6 @@
 import { container } from 'tsyringe';
 import './providers';
 
-import IThemeRepository from "@modules/themes/repositories/IThemeRepository";
-import { ThemeRepository } from "@modules/themes/repositories/implementations/ThemeRepository";
-
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import UserRepository from "@modules/accounts/repositories/implementations/UserRepository";
 
@@ -40,7 +37,6 @@ import { FrequenciesRepository } from "@modules/frequencies/repositories/impleme
 import IMailSchedulerRepository from "@modules/validation/repositories/IMailSchedulerRepository";
 import { MailSchedulerRepository } from "@modules/validation/repositories/implementations/MailSchedulerRepository";
 
-container.registerSingleton<IThemeRepository>('ThemeRepository', ThemeRepository);
 container.registerSingleton<IDecksRepository>('DecksRepository', DecksRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);

@@ -13,7 +13,7 @@ class ProfileUserController {
 
          return response.json(user);
       } catch (error) {
-         logger.error(`[ProfileUserController] ${error.message}`)
+         logger.error(`[ProfileUserController] ${error}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

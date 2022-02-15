@@ -1,11 +1,9 @@
 
 import { inject, injectable } from "tsyringe";
-
-import Users from "@modules/accounts/entities/Users";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IActivateUsersDTO from "@modules/accounts/dtos/IActivateUsersDTO";
 import { AppError } from "@shared/errors/AppError";
-import { USER_NOTFOUND } from "constants/logger";
+import Users from "@modules/accounts/entities/Users";
 
 @injectable()
 export default class ActivateUserUseCases {
@@ -18,7 +16,7 @@ export default class ActivateUserUseCases {
       const user = await this.usersRepository.findByToken({ authToken: token });
       
       if (!user) {
-         throw new AppError(USER_NOTFOUND, 401)
+         throw new AppError("User not Found", 401)
       }
 
       await this.usersRepository.active({ id: user.id })

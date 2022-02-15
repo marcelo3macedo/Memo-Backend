@@ -43,7 +43,7 @@ export class FeedSessionsController {
 
       return response.json(session);
     } catch (error) {
-      logger.error(`[FeedSessionsController] ${error.message}`)
+      logger.error(`[FeedSessionsController] ${error}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }
