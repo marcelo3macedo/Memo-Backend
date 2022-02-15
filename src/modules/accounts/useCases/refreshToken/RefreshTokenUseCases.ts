@@ -6,18 +6,11 @@ import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRep
 import IRefreshTokenDTO from "@modules/accounts/dtos/IRefreshTokenDTO";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
-import { UserMap } from "@modules/accounts/mapper/UserMap";
-
+import ITokenResponseDTO from "@modules/accounts/dtos/ITokenResponseDTO";
 
 interface IPayload {
    sub: string;
    email: string;
-}
-
-interface ITokenResponse {
-   token: string;
-   refreshToken: string;
-   user: UserMap
 }
 
 @injectable()
@@ -31,7 +24,7 @@ export default class RefreshTokenUseCases {
       private dateProvider: IDateProvider
    ) {}
 
-   async execute({ token }: IRefreshTokenDTO): Promise<ITokenResponse> {
+   async execute({ token }: IRefreshTokenDTO): Promise<ITokenResponseDTO> {
       const { email, sub } = verify(token, auth.secretRefreshToken) as IPayload;
       const userId = sub;
       

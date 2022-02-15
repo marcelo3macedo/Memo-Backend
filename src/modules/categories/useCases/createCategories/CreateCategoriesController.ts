@@ -14,7 +14,7 @@ export class CreateCategoriesController {
 
       return response.status(201).json();
     } catch (error) {
-      logger.error(`[ListCategoriesController] ${error}`)
+      logger.error(`[ListCategoriesController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

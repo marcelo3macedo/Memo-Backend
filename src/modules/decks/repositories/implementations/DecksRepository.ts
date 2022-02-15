@@ -10,6 +10,7 @@ import pagination from '@config/pagination';
 import CacheManager from 'lib/CacheManager';
 import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
 import { USER_DECKS } from 'constants/cacheKeys';
+import { DECK_NOTFOUND, USER_NOTFOUND } from 'constants/logger';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -100,7 +101,7 @@ export class DecksRepository implements IDecksRepository {
     const deck = await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] });
     
     if (!deck) {
-      throw new AppError("Deck not found", 400);      
+      throw new AppError(DECK_NOTFOUND, 400);      
     }
 
     const parentId = deck.clonedBy ? deck.clonedBy : deck.id;
@@ -118,7 +119,7 @@ export class DecksRepository implements IDecksRepository {
 
   async count({ userId }: ICountDecksDTO): Promise<number> {
     if (!userId) {
-      throw new AppError("User not found", 400);      
+      throw new AppError(USER_NOTFOUND, 400);      
     }
 
     const cached = await CacheManager.hget(USER_DECKS, userId)

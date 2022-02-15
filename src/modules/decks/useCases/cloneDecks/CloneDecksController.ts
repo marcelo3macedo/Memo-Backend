@@ -19,7 +19,7 @@ export class CloneDecksController {
 
       return response.status(201).json(clonedDeck);
     } catch (error) {
-      logger.error(`[CloneDecksController] ${error}`)
+      logger.error(`[CloneDecksController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

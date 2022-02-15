@@ -15,7 +15,7 @@ export class UpdateCardsController {
 
       return response.status(200).send();
     } catch (error) {
-      logger.error(`[UpdateCardsController] ${error}`)
+      logger.error(`[UpdateCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

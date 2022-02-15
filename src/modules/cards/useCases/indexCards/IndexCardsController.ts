@@ -20,7 +20,7 @@ export class IndexCardsController {
 
       return response.json(card);
     } catch (error) {
-      logger.error(`[IndexCardsController] ${error}`)
+      logger.error(`[IndexCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

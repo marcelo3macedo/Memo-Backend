@@ -15,7 +15,7 @@ export class RemoveSessionsController {
 
       return response.status(200).send();
     } catch (error) {
-      logger.error(`[RemoveSessionsController] ${error}`)
+      logger.error(`[RemoveSessionsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

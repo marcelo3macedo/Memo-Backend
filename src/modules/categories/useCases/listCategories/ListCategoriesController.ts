@@ -12,7 +12,7 @@ export class ListCategoriesController {
 
       return response.json(categories);
     } catch (error) {
-      logger.error(`[ListCategoriesController] ${error}`)
+      logger.error(`[ListCategoriesController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

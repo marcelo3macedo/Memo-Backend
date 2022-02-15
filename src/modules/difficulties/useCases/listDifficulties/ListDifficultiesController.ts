@@ -12,7 +12,7 @@ export class ListDifficultiesController {
 
       return response.json(difficulties);
     } catch (error) {
-      logger.error(`[ListDifficultiesController] ${error}`)
+      logger.error(`[ListDifficultiesController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

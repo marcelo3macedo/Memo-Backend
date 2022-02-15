@@ -2,13 +2,14 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuid } from 'uuid';
 import { resolve } from "path";
 
+import auth from "@config/auth";
 import ISendForgotPasswordMailDTO from "@modules/accounts/dtos/ISendForgotPasswordMailDTO";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
-import auth from "@config/auth";
 import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { USER_NOTFOUND } from "constants/logger";
 
 @injectable()
 export default class SendForgotPasswordMailUseCases {
@@ -28,7 +29,7 @@ export default class SendForgotPasswordMailUseCases {
        const templatePath = resolve(__dirname, "..", "..", "views", "emails", "forgotPassword.hbs");
 
        if (!user) {
-           throw new AppError("User not found")
+           throw new AppError(USER_NOTFOUND)
        }
 
        const token = uuid();

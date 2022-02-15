@@ -1,7 +1,8 @@
-import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import AuthenticateUseCases from "../authenticateUser/AuthenticateUseCases";
+
+import logger from "@config/logger";
+import AuthenticateUserUseCases from "../authenticateUser/AuthenticateUserUseCases";
 import ActivateUserUseCases from "./ActivateUserUseCases";
 
 export default class ActivateUserController {
@@ -14,12 +15,12 @@ export default class ActivateUserController {
 
          const { password, email } = user
 
-         const authenticateUseCases = container.resolve(AuthenticateUseCases);
-         const responseUser = await authenticateUseCases.execute({ password, email });
+         const authenticateUserUseCases = container.resolve(AuthenticateUserUseCases);
+         const responseUser = await authenticateUserUseCases.execute({ password, email });
 
          return response.status(200).send(responseUser);
       } catch (error) {
-        logger.error(`[ActivateUserController] ${error}`)
+        logger.error(`[ActivateUserController] ${error.message}`)
         return response.status(error.statusCode).json({ error: error.message });
       }
    }

@@ -14,7 +14,7 @@ class UpdateProfileUserController {
 
          return response.status(200);
       } catch (error) {
-         logger.error(`[UpdateProfileUserController] ${error}`)
+         logger.error(`[UpdateProfileUserController] ${error.message}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

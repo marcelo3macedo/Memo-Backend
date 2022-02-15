@@ -16,10 +16,10 @@ export class ListSearchUseCase {
     private featuredDecksRepository: IFeaturedDecksRepository
   ) {}
 
-  async execute({ query }): Promise<IListSearchDTO> {
+  async execute({ query, page }): Promise<IListSearchDTO> {
     const categories = await this.categoriesRepository.list();
     const featured = await this.featuredDecksRepository.all();
-    const decks = await this.decksRepository.list({ userId: null, name: query, isPublic: true });
+    const decks = await this.decksRepository.list({ userId: null, name: query, isPublic: true, page });
 
     return {
       decks,

@@ -2,28 +2,18 @@
 import { inject, injectable } from "tsyringe";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
+
+import auth from "@config/auth";
 import { AppError } from "@shared/errors/AppError";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRepository";
-import auth from "@config/auth";
+import IAuthenticateUsersDTO from "@modules/accounts/dtos/IAuthenticateUsersDTO";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 
-interface IRequest {
-   email: string;
-   password: string;
-}
-
-interface IResponse {
-   user: {
-      name: string;
-      email: string;
-   };
-   token: string;
-   refreshToken: string;
-}
+import { EMAIL_OR_PASSWORD_INCORRECT, VALIDATION_REQUIRED } from "constants/logger";
 
 @injectable()
-export default class AuthenticateUseCases {
+export default class AuthenticateUserUseCases {
    constructor(
       @inject("UserRepository")
       private usersRepository: IUsersRepository,
@@ -33,22 +23,22 @@ export default class AuthenticateUseCases {
       private dateProvider: IDateProvider
    ) {}
 
-   async execute({ email, password }: IRequest): Promise<IResponse> {
+   async execute({ email, password }: IAuthenticateUsersDTO): Promise<any> {
       const user = await this.usersRepository.findByEmail(email);
       const { secret, secretRefreshToken, expiresIn, expiresInRefreshToken, expiresInRefreshTokenDays } = auth;
 
       if (!user) {
-         throw new AppError("Email or password incorrect", 401);
+         throw new AppError(EMAIL_OR_PASSWORD_INCORRECT, 401);
       }
 
       if (!user.validated) {
-         throw new AppError("Validation Required", 401);
+         throw new AppError(VALIDATION_REQUIRED, 401);
       }
 
       const passwordMatch = await compare(password, user.password) || (password === user.password);
 
       if (!passwordMatch) {
-         throw new AppError("Email or password incorrect", 401);
+         throw new AppError(EMAIL_OR_PASSWORD_INCORRECT, 401);
       }
 
       const token = sign({}, secret, {
@@ -69,7 +59,7 @@ export default class AuthenticateUseCases {
          refreshToken
       })
 
-      const returnData: IResponse = {
+      const returnData = {
          token,
          user: {
             name: user.name,
