@@ -20,7 +20,7 @@ export class CreateFeaturedController {
 
       return response.status(201).send();
     } catch (error) {
-      logger.error(`[CreateFeaturedController] ${error}`)
+      logger.error(`[CreateFeaturedController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

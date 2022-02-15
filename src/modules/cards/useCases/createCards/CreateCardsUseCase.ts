@@ -3,6 +3,9 @@ import { inject, injectable } from 'tsyringe';
 import Card from '@modules/cards/entities/Card';
 import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import ICreateCardsDTO from "@modules/cards/dtos/ICreateCardsDTO";
+import limit from '@config/limit';
+import { AppError } from '@shared/errors/AppError';
+import { CARDS_LIMIT_REACHED } from 'constants/logger';
 
 @injectable()
 export class CreateCardsUseCase {
@@ -12,6 +15,12 @@ export class CreateCardsUseCase {
   ) {}
 
   async execute({ deck, title, content, secretContent }:ICreateCardsDTO): Promise<Card> {
+    const deckCards = await this.cardsRepository.count({ deckId: deck.id })
+    
+    if (deckCards > limit.cards) {
+      throw new AppError(CARDS_LIMIT_REACHED, 401);
+    }
+
     return this.cardsRepository.create({ deck, title, content, secretContent });
   }
 }

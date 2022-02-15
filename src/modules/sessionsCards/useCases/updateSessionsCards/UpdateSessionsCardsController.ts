@@ -25,7 +25,7 @@ export class UpdateSessionsCardsController {
 
       return response.status(204).send();
     } catch (error) {
-      logger.error(`[UpdateSessionsCardsController] ${error}`)
+      logger.error(`[UpdateSessionsCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

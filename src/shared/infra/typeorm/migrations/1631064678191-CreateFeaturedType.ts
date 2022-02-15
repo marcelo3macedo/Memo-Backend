@@ -9,7 +9,8 @@ export class CreateFeaturedType1631064678191 implements MigrationInterface {
               columns: [
                 {
                   name: 'id',
-                  type: 'uuid',
+                  type: 'char',
+                  length: '64',
                   isPrimary: true,
                 },
                 {

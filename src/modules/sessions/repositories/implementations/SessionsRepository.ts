@@ -3,6 +3,7 @@ import { getRepository, MoreThan, Repository } from 'typeorm';
 import { AppError } from "@shared/errors/AppError";
 import Session from '../../entities/Session';
 import { ISessionsRepository } from '../ISessionsRepository';
+import { DECK_NOTFOUND, SESSION_NOTFOUND } from 'constants/logger';
 
 export class SessionsRepository implements ISessionsRepository {
   private repository: Repository<Session>;
@@ -49,7 +50,7 @@ export class SessionsRepository implements ISessionsRepository {
     const session = await this.repository.findOne({ where: { id:sessionId, userId: userId }, relations: [ 'cards', 'deck' ] });
     
     if (!session) {
-      throw new AppError("Session not found", 400);      
+      throw new AppError(SESSION_NOTFOUND, 400);      
     }   
 
     return session;
@@ -61,7 +62,7 @@ export class SessionsRepository implements ISessionsRepository {
 
   async create({ userId, deck, cards }): Promise<Session> {
     if (!deck) {
-      throw new AppError("Deck not found", 400);      
+      throw new AppError(DECK_NOTFOUND, 400);      
     }   
 
     const session = this.repository.create({

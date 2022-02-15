@@ -14,7 +14,7 @@ export class CreateDifficultiesController {
 
       return response.status(201).json();
     } catch (error) {
-      logger.error(`[CreateDifficultiesController] ${error}`)
+      logger.error(`[CreateDifficultiesController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

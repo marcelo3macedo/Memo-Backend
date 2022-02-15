@@ -20,7 +20,7 @@ export class IndexSessionsCardsController {
 
       return response.status(204).send();
     } catch (error) {
-      logger.error(`[IndexSessionsCardsController] ${error}`)
+      logger.error(`[IndexSessionsCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

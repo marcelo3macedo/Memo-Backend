@@ -8,17 +8,20 @@ export class CreateSessionCards1623519916689 implements MigrationInterface {
             columns: [
                 {
                      name: 'sessionsId',
-                     type: 'uuid',
+                     type: 'char',
+                     length: '64',
                      isPrimary: true,
                 },
                 {
                      name: 'cardsId',
-                     type: 'uuid',
+                     type: 'char',
+                     length: '64',
                      isPrimary: true,
                 },
                 {
                      name: 'difficultyId',
-                     type: 'uuid',
+                     type: 'char',
+                     length: '64',
                      isNullable: true,
                 },
                 {

@@ -8,12 +8,14 @@ export class CreateCategoryDecks1634567817285 implements MigrationInterface {
             columns: [
                 {
                      name: 'categoryId',
-                     type: 'uuid',
+                     type: 'char',
+                     length: '64',
                      isPrimary: true,
                 },
                 {
                      name: 'deckId',
-                     type: 'uuid',
+                     type: 'char',
+                     length: '64',
                      isPrimary: true,
                 },
                 {

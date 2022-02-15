@@ -1,10 +1,13 @@
+import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
+
 import IResetPasswordDTO from "@modules/accounts/dtos/IResetPasswordDTO";
 import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRepository";
+import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
-import { hash } from "bcrypt";
+
+import { TOKEN_EXPIRED, USER_NOTFOUND } from "constants/logger";
 
 @injectable()
 export default class ResetPasswordUseCases {
@@ -21,11 +24,11 @@ export default class ResetPasswordUseCases {
       const userToken = await this.usersTokenRepository.findByRefreshToken({ refreshToken });  
       
       if (!userToken) {
-         throw new AppError("User does not exists")
+         throw new AppError(USER_NOTFOUND)
       }
 
       if (this.dateProvider.compareIfBefore(userToken.expiresDate, this.dateProvider.dateNow())) {
-         throw new AppError("Token expired")
+         throw new AppError(TOKEN_EXPIRED)
       }
 
       const user = await this.usersRepository.findById(userToken.userId);
