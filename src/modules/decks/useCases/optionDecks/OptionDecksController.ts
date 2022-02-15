@@ -12,7 +12,7 @@ export class OptionDecksController {
             
       return response.json(options);
     } catch (error) {
-      logger.error(`[OptionDecksController] ${error}`)
+      logger.error(`[OptionDecksController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

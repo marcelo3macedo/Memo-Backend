@@ -14,7 +14,7 @@ export class RemoveCardsController {
 
       return response.status(200).send();
     } catch (error) {
-      logger.error(`[RemoveCardsController] ${error}`)
+      logger.error(`[RemoveCardsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

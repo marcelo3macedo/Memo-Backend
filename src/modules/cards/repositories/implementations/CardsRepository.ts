@@ -12,6 +12,7 @@ import { AppError } from "@shared/errors/AppError";
 import ICountCardsDTO from '@modules/cards/dtos/ICountCardsDTO';
 import CacheManager from 'lib/CacheManager';
 import { DECK_CARDS } from 'constants/cacheKeys';
+import { CARD_NOTFOUND, DECK_NOTFOUND } from 'constants/logger';
 
 export class CardsRepository implements ICardsRepository {
   private repository: Repository<Card>;
@@ -26,7 +27,7 @@ export class CardsRepository implements ICardsRepository {
 
   async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
     if (!deck) {
-      throw new AppError("Deck not found", 400);      
+      throw new AppError(DECK_NOTFOUND, 400);      
     }    
 
     CacheManager.hdel(DECK_CARDS, deck.id)
@@ -45,7 +46,7 @@ export class CardsRepository implements ICardsRepository {
     const card = await this.repository.findOne({ where: { id: cardId, deck } });
     
     if (!card) {
-      throw new AppError("Card not found", 400);      
+      throw new AppError(CARD_NOTFOUND, 400);      
     }   
 
     return card;
@@ -66,7 +67,7 @@ export class CardsRepository implements ICardsRepository {
     const card = await this.repository.findOne({ where: { id: cardId } });
     
     if (!card) {
-      throw new AppError("Card not found", 400);      
+      throw new AppError(CARD_NOTFOUND, 400);      
     }
 
     CacheManager.hdel(DECK_CARDS, card.deckId)
@@ -95,7 +96,7 @@ export class CardsRepository implements ICardsRepository {
 
   async count({ deckId }: ICountCardsDTO): Promise<number> {
     if (!deckId) {
-      throw new AppError("Deck not found", 400);      
+      throw new AppError(DECK_NOTFOUND, 400);      
     }
 
     const cached = await CacheManager.hget(DECK_CARDS, deckId)

@@ -5,6 +5,7 @@ import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import Deck from '@modules/decks/entities/Deck';
 import limit from '@config/limit';
 import { AppError } from '@shared/errors/AppError';
+import { DECK_LIMIT_REACHED } from 'constants/logger';
 
 @injectable()
 export class CreateDecksUseCase {
@@ -17,7 +18,7 @@ export class CreateDecksUseCase {
     const userDecks = await this.decksRepository.count({ userId })
     
     if (userDecks > limit.decks) {
-      throw new AppError(`Decks Limit reached for User: ${userId}`, 401);
+      throw new AppError(DECK_LIMIT_REACHED, 401);
     }
 
     return await this.decksRepository.create({ name, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });

@@ -1,15 +1,15 @@
 import logger from "@config/logger";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import AuthenticateUseCases from "./AuthenticateUseCases";
+import AuthenticateUserUseCases from "./AuthenticateUserUseCases";
 
 export default class AuthenticateUserController {
    async handle(request: Request, response: Response): Promise<Response> {
       try {
          const { password, email } = request.body;
 
-         const authenticateUseCases = container.resolve(AuthenticateUseCases);
-         const responseUser = await authenticateUseCases.execute({ password, email });
+         const authenticateUserUseCases = container.resolve(AuthenticateUserUseCases);
+         const responseUser = await authenticateUserUseCases.execute({ password, email });
 
          return response.json(responseUser);
       } catch (error) {

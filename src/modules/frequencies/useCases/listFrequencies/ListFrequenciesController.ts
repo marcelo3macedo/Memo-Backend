@@ -12,7 +12,7 @@ export class ListFrequenciesController {
 
       return response.json(frequencies);
     } catch (error) {
-      logger.error(`[ListFrequenciesController] ${error}`)
+      logger.error(`[ListFrequenciesController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

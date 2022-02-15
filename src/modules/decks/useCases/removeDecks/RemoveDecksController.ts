@@ -15,7 +15,7 @@ export class RemoveDecksController {
 
       return response.json(deck);
     } catch (error) {
-      logger.error(`[RemoveDecksController] ${error}`)
+      logger.error(`[RemoveDecksController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

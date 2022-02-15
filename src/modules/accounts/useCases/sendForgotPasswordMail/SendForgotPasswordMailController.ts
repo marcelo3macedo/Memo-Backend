@@ -13,7 +13,7 @@ class SendForgotPasswordMailController {
 
         return response.send(200)
       } catch (error) {
-         logger.error(`[SendForgotPasswordMailController] ${error}`)
+         logger.error(`[SendForgotPasswordMailController] ${error.message}`)
          return response.status(error.statusCode).json({ error: error.message });
       }
    }

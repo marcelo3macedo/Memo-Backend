@@ -13,7 +13,7 @@ export class ListSessionsController {
 
       return response.json(sessions);
     } catch (error) {
-      logger.error(`[ListSessionsController] ${error}`)
+      logger.error(`[ListSessionsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

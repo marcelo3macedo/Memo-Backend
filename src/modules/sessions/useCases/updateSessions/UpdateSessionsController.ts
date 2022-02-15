@@ -20,7 +20,7 @@ export class UpdateSessionsController {
 
       return response.status(204).send();
     } catch (error) {
-      logger.error(`[UpdateSessionsController] ${error}`)
+      logger.error(`[UpdateSessionsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });
     }
   }
