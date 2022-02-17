@@ -11,6 +11,7 @@ import CacheManager from 'lib/CacheManager';
 import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
 import { USER_DECKS } from 'constants/cacheKeys';
 import { DECK_NOTFOUND, USER_NOTFOUND } from 'constants/logger';
+import IUpdateDecksDTO from '@modules/decks/dtos/IUpdateDecksDTO';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -48,6 +49,15 @@ export class DecksRepository implements IDecksRepository {
     CacheManager.hdel(USER_DECKS, userId)
 
     this.repository.softDelete({ userId: userId, id: deckId });
+  }
+
+  async update({ deckId, name, frequencyId }: IUpdateDecksDTO): Promise<void> {
+    const deck = {
+       name,
+       frequencyId
+     }
+
+     this.repository.update({ id: deckId }, deck);
   }
 
   async list({ userId, isPublic, name, page=0 }: IListDecksDTO): Promise<Deck[]> {
