@@ -14,13 +14,13 @@ export class CreateDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ name, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
+  async execute({ name, description, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
     const userDecks = await this.decksRepository.count({ userId })
     
     if (userDecks > limit.decks) {
       throw new AppError(DECK_LIMIT_REACHED, 401);
     }
 
-    return await this.decksRepository.create({ name, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });
+    return await this.decksRepository.create({ name, description, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });
   }
 }

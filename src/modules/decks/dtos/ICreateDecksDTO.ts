@@ -1,5 +1,6 @@
 export default interface ICreateDecksDTO {
    name: string;
+   description?: string;
    userId: string;
    parentId: string;
    frequencyId: string;

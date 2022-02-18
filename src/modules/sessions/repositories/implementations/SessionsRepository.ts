@@ -16,6 +16,7 @@ export class SessionsRepository implements ISessionsRepository {
     return this.repository.createQueryBuilder('sessions')
       .leftJoinAndSelect('sessions.deck', 'deck')
       .leftJoinAndSelect('deck.frequency', 'frequency')
+      .leftJoinAndSelect("deck.theme", "theme")
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
       .where('sessions.userId = :userId')

@@ -10,7 +10,7 @@ export class UpdateDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ deckId, name, frequencyId }: IUpdateDecksDTO): Promise<void> {
-    await this.decksRepository.update({ deckId, name, frequencyId });
+  async execute({ deckId, name, description, frequencyId }: IUpdateDecksDTO): Promise<void> {
+    await this.decksRepository.update({ deckId, name, description, frequencyId });
   }
 }

@@ -20,7 +20,7 @@ export class DecksRepository implements IDecksRepository {
     this.repository = getRepository(Deck);
   }
 
-  async create({ name, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, description, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
     CacheManager.hdel(USER_DECKS, userId)
 
     if (!isPublic && clonedBy) {
@@ -31,6 +31,7 @@ export class DecksRepository implements IDecksRepository {
 
     const deck = this.repository.create({
        name,
+       description,
        userId,
        parentId,
        frequencyId,
@@ -51,9 +52,10 @@ export class DecksRepository implements IDecksRepository {
     this.repository.softDelete({ userId: userId, id: deckId });
   }
 
-  async update({ deckId, name, frequencyId }: IUpdateDecksDTO): Promise<void> {
+  async update({ deckId, name, description, frequencyId }: IUpdateDecksDTO): Promise<void> {
     const deck = {
        name,
+       description,
        frequencyId
      }
 
