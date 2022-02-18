@@ -15,6 +15,7 @@ export class SessionsRepository implements ISessionsRepository {
   async list({ userId }): Promise<Session[]> {
     return this.repository.createQueryBuilder('sessions')
       .leftJoinAndSelect('sessions.deck', 'deck')
+      .leftJoinAndSelect('deck.frequency', 'frequency')
       .loadRelationCountAndMap('sessions.sessionCards', 'sessions.cards', 'cards')
       .loadRelationCountAndMap('deck.cardsCount', 'deck.cards', 'cards')
       .where('sessions.userId = :userId')
