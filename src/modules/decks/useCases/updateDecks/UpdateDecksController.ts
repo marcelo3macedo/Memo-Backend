@@ -8,10 +8,10 @@ export class UpdateDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { deckId } = request.params;
-      const { name, frequencyId } = request.body;
+      const { name, description, frequencyId } = request.body;
       
       const updateDecksUseCase = container.resolve(UpdateDecksUseCase);
-      const deck = await updateDecksUseCase.execute({ deckId, name, frequencyId });
+      const deck = await updateDecksUseCase.execute({ deckId, name, description, frequencyId });
 
       return response.json(deck);
     } catch (error) {
