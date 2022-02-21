@@ -49,7 +49,7 @@ export class SessionsRepository implements ISessionsRepository {
   }
 
   async index({ userId, sessionId }): Promise<Session> {
-    const session = await this.repository.findOne({ where: { id:sessionId, userId: userId }, relations: [ 'cards', 'deck' ] });
+    const session = await this.repository.findOne({ where: { id:sessionId, userId: userId }, relations: [ 'cards', 'deck', 'deck.frequency' ] });
     
     if (!session) {
       throw new AppError(SESSION_NOTFOUND, 400);      
