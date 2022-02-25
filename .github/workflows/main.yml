@@ -28,4 +28,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "."
-          target: "~/memo/backend"
+          target: "~/memo/develop/backend"
