@@ -6,7 +6,7 @@ services:
         image: mariadb:10
         restart: always
         volumes:
-            - mysqldata:/var/lib/mysql
+            - ../data/mysqldata:/var/lib/mysql
         environment:
             MYSQL_DATABASE: memo
             MYSQL_USER: docker
