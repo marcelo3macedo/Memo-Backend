@@ -9,7 +9,7 @@ import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRep
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
 import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
-import { USER_NOTFOUND } from "constants/logger";
+import { USER_NOTFOUND } from "@constants/logger";
 
 @injectable()
 export default class SendForgotPasswordMailUseCases {

@@ -9,7 +9,7 @@ import { AppError } from "@shared/errors/AppError";
 
 import { router } from './routes';
 import { corsConfig } from './cors';
-import CacheManager from 'lib/CacheManager';
+import CacheManager from '@lib/CacheManager';
 
 const app = express();
 

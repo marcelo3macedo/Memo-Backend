@@ -1,4 +1,4 @@
-import CacheManager from 'lib/CacheManager';
+import CacheManager from '@lib/CacheManager';
 import { getRepository, Repository } from 'typeorm';
 
 import Category from '../../entities/Category';

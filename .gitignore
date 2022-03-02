@@ -4,6 +4,7 @@
 /node_modules
 ormconfig.json
 package-lock.json
+babel.production.config
 yarn.lock
 .env
 /logs/*

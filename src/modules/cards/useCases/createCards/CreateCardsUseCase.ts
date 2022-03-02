@@ -5,7 +5,7 @@ import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import ICreateCardsDTO from "@modules/cards/dtos/ICreateCardsDTO";
 import limit from '@config/limit';
 import { AppError } from '@shared/errors/AppError';
-import { CARDS_LIMIT_REACHED } from 'constants/logger';
+import { CARDS_LIMIT_REACHED } from '@constants/logger';
 
 @injectable()
 export class CreateCardsUseCase {

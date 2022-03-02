@@ -5,7 +5,7 @@ import SessionCard from '@modules/sessionsCards/entities/SessionCard';
 import IUpdateSessionsCardsDTO from '@modules/sessionsCards/dtos/IUpdateSessionsCardsDTO';
 import IIndexSessionsCardsDTO from '@modules/sessionsCards/dtos/IIndexSessionsCardsDTO';
 import { AppError } from '@shared/errors/AppError';
-import { SESSIONCARD_NOTFOUND } from 'constants/logger';
+import { SESSIONCARD_NOTFOUND } from '@constants/logger';
 
 export class SessionsCardsRepository implements ISessionsCardsRepository {
   private repository: Repository<SessionCard>;

@@ -9,7 +9,9 @@
     "paths": {
       "@modules/*": ["modules/*"],
       "@shared/*": ["shared/*"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@lib/*": ["lib/*"],
+      "@constants/*": ["constants/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,

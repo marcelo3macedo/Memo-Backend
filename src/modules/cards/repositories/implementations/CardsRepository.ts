@@ -10,9 +10,9 @@ import Card from '@modules/cards/entities/Card';
 import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import { AppError } from "@shared/errors/AppError";
 import ICountCardsDTO from '@modules/cards/dtos/ICountCardsDTO';
-import CacheManager from 'lib/CacheManager';
-import { DECK_CARDS } from 'constants/cacheKeys';
-import { CARD_NOTFOUND, DECK_NOTFOUND } from 'constants/logger';
+import CacheManager from '@lib/CacheManager';
+import { DECK_CARDS } from '@constants/cacheKeys';
+import { CARD_NOTFOUND, DECK_NOTFOUND } from '@constants/logger';
 
 export class CardsRepository implements ICardsRepository {
   private repository: Repository<Card>;

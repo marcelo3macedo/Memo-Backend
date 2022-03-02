@@ -5,7 +5,7 @@ import Users from "@modules/accounts/entities/Users";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IActivateUsersDTO from "@modules/accounts/dtos/IActivateUsersDTO";
 import { AppError } from "@shared/errors/AppError";
-import { USER_NOTFOUND } from "constants/logger";
+import { USER_NOTFOUND } from "@constants/logger";
 
 @injectable()
 export default class ActivateUserUseCases {

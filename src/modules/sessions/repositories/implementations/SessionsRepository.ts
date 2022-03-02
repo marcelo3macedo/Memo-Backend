@@ -3,7 +3,7 @@ import { getRepository, MoreThan, Repository } from 'typeorm';
 import { AppError } from "@shared/errors/AppError";
 import Session from '../../entities/Session';
 import { ISessionsRepository } from '../ISessionsRepository';
-import { DECK_NOTFOUND, SESSION_NOTFOUND } from 'constants/logger';
+import { DECK_NOTFOUND, SESSION_NOTFOUND } from '@constants/logger';
 
 export class SessionsRepository implements ISessionsRepository {
   private repository: Repository<Session>;

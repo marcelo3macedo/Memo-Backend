@@ -5,7 +5,7 @@ import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import Deck from '@modules/decks/entities/Deck';
 import limit from '@config/limit';
 import { AppError } from '@shared/errors/AppError';
-import { DECK_LIMIT_REACHED } from 'constants/logger';
+import { DECK_LIMIT_REACHED } from '@constants/logger';
 
 @injectable()
 export class CreateDecksUseCase {

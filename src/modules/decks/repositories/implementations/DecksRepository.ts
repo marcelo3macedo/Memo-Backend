@@ -7,10 +7,10 @@ import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import { AppError } from '@shared/errors/AppError';
 import pagination from '@config/pagination';
-import CacheManager from 'lib/CacheManager';
+import CacheManager from '@lib/CacheManager';
 import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
-import { USER_DECKS } from 'constants/cacheKeys';
-import { DECK_NOTFOUND, USER_NOTFOUND } from 'constants/logger';
+import { USER_DECKS } from '@constants/cacheKeys';
+import { DECK_NOTFOUND, USER_NOTFOUND } from '@constants/logger';
 import IUpdateDecksDTO from '@modules/decks/dtos/IUpdateDecksDTO';
 
 export class DecksRepository implements IDecksRepository {

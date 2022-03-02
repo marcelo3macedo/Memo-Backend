@@ -1,6 +1,7 @@
 const Resource = require('config')
 
 export default {
+    port: parseInt(process.env.APP_PORT),
     origin: getProperty('security.origin', []),
     allowHeaders: getProperty('security.allowHeaders', []),
     exposedHeaders: getProperty('security.exposedHeaders', []),

@@ -10,7 +10,7 @@ import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRep
 import IAuthenticateUsersDTO from "@modules/accounts/dtos/IAuthenticateUsersDTO";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 
-import { EMAIL_OR_PASSWORD_INCORRECT, VALIDATION_REQUIRED } from "constants/logger";
+import { EMAIL_OR_PASSWORD_INCORRECT, VALIDATION_REQUIRED } from "@constants/logger";
 
 @injectable()
 export default class AuthenticateUserUseCases {

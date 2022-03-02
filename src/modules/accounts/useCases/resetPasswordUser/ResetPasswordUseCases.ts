@@ -7,7 +7,7 @@ import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 
-import { TOKEN_EXPIRED, USER_NOTFOUND } from "constants/logger";
+import { TOKEN_EXPIRED, USER_NOTFOUND } from "@constants/logger";
 
 @injectable()
 export default class ResetPasswordUseCases {
