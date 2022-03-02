@@ -64,7 +64,7 @@ export default class Deck {
   @Column()
   reviewAt: Date;
 
-  owner: boolean;
+  isSaved: boolean;
 
   constructor() {
     this.id = uuid();

@@ -41,7 +41,7 @@ export class DecksRepository implements IDecksRepository {
        themeId
     });
 
-    deck.owner = true;
+    deck.isSaved = true;
 
     return await this.repository.save(deck);
   }
@@ -124,7 +124,9 @@ export class DecksRepository implements IDecksRepository {
       .setParameter('parentId', parentId)
       .getMany();
 
-    deck.owner = userId === deck.userId;
+    
+    const deckSaved = await this.repository.findOne({ where: { clonedBy: deckId } });
+    deck.isSaved = (userId === deck.userId) || !!deckSaved;
 
     return deck;
   }
