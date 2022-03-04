@@ -1,4 +1,5 @@
 import cache from "@config/cache"
+import crypto from "crypto";
 
 const IORedis = require('ioredis')
 
@@ -21,8 +22,9 @@ class CacheManager {
         return await this.client.hget(this.getKey(id), key)
     }
 
-    static async hset(id, key, data) {
-        return await this.client.hset(this.getKey(id), key, data)
+    static async hset(id, key, data, ttl=cache.expireTimeInSeconds) {
+        await this.client.hset(this.getKey(id), key, data)
+        this.client.expire(this.getKey(id), ttl)
     }
 
     static async hdel(id, key) {
@@ -54,7 +56,9 @@ class CacheManager {
     }
 
     static getId(obj) {
-        const parameters = obj.getQueryAndParameters().join('_').replace(":", "_")
+        const query = obj.getQueryAndParameters().join('_').replace(":", "_")
+        const parameters = crypto.createHash("sha256").update(query, 'utf8').digest('hex')
+
         let id = obj.getMainTableName()
 
         if (parameters) {
@@ -62,6 +66,10 @@ class CacheManager {
         }
         
         return id
+    }
+
+    static getHashId(id) {
+        return crypto.createHash("sha256").update(id, 'utf8').digest('hex')
     }
 
     static getHighTtl() {

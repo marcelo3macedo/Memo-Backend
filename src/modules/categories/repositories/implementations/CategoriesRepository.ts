@@ -1,4 +1,3 @@
-import CacheManager from '@lib/CacheManager';
 import { getRepository, Repository } from 'typeorm';
 
 import Category from '../../entities/Category';
@@ -13,8 +12,7 @@ export class CategoriesRepository implements ICategoriesRepository {
 
   async list(): Promise<Category[]> {
     const repository = this.repository.createQueryBuilder('categories')
-    
-    repository.cache(CacheManager.getId(repository), CacheManager.getHighTtl());
+    repository.cache('categories');
 
     return repository.getMany();
   }
@@ -28,7 +26,10 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async index({ categoryId }): Promise<Category> {
-    return this.repository.findOne({ id: categoryId });
+    return this.repository.createQueryBuilder('categories')
+            .where({ id: categoryId })
+            .cache('categories')
+            .getOne();
   }
 
   async remove({ categoryId }): Promise<void> {
