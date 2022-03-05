@@ -1,8 +1,7 @@
-import CacheManager from "@lib/CacheManager";
 import { Connection, QueryRunner } from "typeorm";
 import { QueryResultCache } from "typeorm/cache/QueryResultCache";
 import { QueryResultCacheOptions } from "typeorm/cache/QueryResultCacheOptions";
-
+import CacheManager from "@lib/CacheManager";
 export class CustomQueryResultCache implements QueryResultCache {
     constructor(protected connection: Connection) {        
     }
@@ -43,10 +42,17 @@ export class CustomQueryResultCache implements QueryResultCache {
         });
     }
 
-    async clear(queryRunner?: QueryRunner): Promise<void> {
+    async clear(queryRunner?: QueryRunner): Promise<void> {        
     }
 
     async remove(identifiers: string[], queryRunner?: QueryRunner): Promise<void> {
+        if (!identifiers || (typeof identifiers !== 'object')) {
+            return;
+        }
+
+        identifiers.map(i => {
+            CacheManager.remove(i)
+        })
     }
 
     protected deleteKey(key: string): Promise<void> {

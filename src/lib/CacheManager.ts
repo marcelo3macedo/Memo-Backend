@@ -35,8 +35,8 @@ class CacheManager {
         this.client.set(this.getKey(id), JSON.stringify(data), "EX", ttl)
     }
 
-    static async remove(id, path) {
-        return await this.client.remove(this.getKey(id, path))
+    static async remove(id, path?) {
+        return await this.client.del(this.getKey(id, path))
     }
 
     static generateId(args) {
