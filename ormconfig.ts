@@ -1,3 +1,5 @@
+import { CustomQueryResultCache } from  "./src/providers/CustomQueryResultCache"
+
 module.exports = {
     "type": process.env.TYPEORM_TYPE,
     "host": process.env.TYPEORM_HOST,
@@ -11,11 +13,8 @@ module.exports = {
       "migrationsDir":  process.env.TYPEORM_CLI_MIGRATIONSDIR
     },
     "cache": {
-      "type": process.env.TYPEORM_CACHE_TYPE,
-      "options": {
-        "host": process.env.TYPEORM_CACHE_OPTIONS_HOST,
-        "port": process.env.TYPEORM_CACHE_OPTIONS_PORT
-      },
-      "ignoreErrors": true
+      provider(connection) {
+        return new CustomQueryResultCache(connection);
+      }
     }
 }

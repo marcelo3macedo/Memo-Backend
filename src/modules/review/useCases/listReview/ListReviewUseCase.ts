@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
 import { ISessionsRepository } from '@modules/sessions/repositories/ISessionsRepository';
-import { IFeaturedTypeRepository } from '@modules/featured/repositories/IFeaturedTypeRepository';
 import IListSessionsDTO from "@modules/sessions/dtos/IListSessionsDTO";
 import IReviewDTO from '@modules/review/dtos/IReviewDTO';
 import { IFeaturedDecksRepository } from '@modules/featured/repositories/IFeaturedDecksRepository';
@@ -10,8 +9,6 @@ export class ListReviewUseCase {
   constructor(
     @inject('SessionsRepository')
     private sessionsRepository: ISessionsRepository,
-    @inject('FeaturedTypeRepository')
-    private featuredTypeRepository: IFeaturedTypeRepository,
     @inject('FeaturedDecksRepository')
     private featuredDecksRepository: IFeaturedDecksRepository,
   ) {}

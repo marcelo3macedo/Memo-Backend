@@ -8,7 +8,7 @@
     },
     "cache": {
         "connectionString": "redis://localhost:6379",
-        "expireTimeInSeconds": 35000,
+        "expireTimeInSeconds": 86400,
         "hashKey": "backend",
         "mailKey": "mail-sender"
     }    

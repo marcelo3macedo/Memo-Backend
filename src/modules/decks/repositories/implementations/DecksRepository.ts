@@ -1,71 +1,30 @@
 import { getRepository, Repository } from 'typeorm';
-import Deck from '../../entities/Deck';
-import { IDecksRepository } from '../IDecksRepository';
+
+import pagination from '@config/pagination';
+import { CACHE_DECKS, CACHE_PUBLIC_DECKS } from '@constants/cacheKeys';
+import { DECK_NOTFOUND } from '@constants/logger';
+import Deck from '@modules/decks/entities/Deck';
+import { IDecksRepository } from '@modules/decks/repositories/IDecksRepository';
 import IListDecksDTO from "@modules/decks/dtos/IListDecksDTO";
 import ICreateDecksDTO from "@modules/decks/dtos/ICreateDecksDTO";
 import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
-import { AppError } from '@shared/errors/AppError';
-import pagination from '@config/pagination';
-import CacheManager from '@lib/CacheManager';
 import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
-import { USER_DECKS } from '@constants/cacheKeys';
-import { DECK_NOTFOUND, USER_NOTFOUND } from '@constants/logger';
 import IUpdateDecksDTO from '@modules/decks/dtos/IUpdateDecksDTO';
+import { AppError } from '@shared/errors/AppError';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
+  private cache: any;
 
   constructor() {
     this.repository = getRepository(Deck);
-  }
-
-  async create({ name, description, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
-    CacheManager.hdel(USER_DECKS, userId)
-
-    if (!isPublic && clonedBy) {
-      const deckExists = await this.repository.findOne({ where: { userId, isPublic, clonedBy } });
-
-      if (deckExists) return deckExists;
-    }
-
-    const deck = this.repository.create({
-       name,
-       description,
-       userId,
-       parentId,
-       frequencyId,
-       categoryId,
-       isPublic,
-       clonedBy,
-       themeId
-    });
-
-    deck.isSaved = true;
-
-    return await this.repository.save(deck);
-  }
-
-  async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
-    CacheManager.hdel(USER_DECKS, userId)
-
-    this.repository.softDelete({ userId: userId, id: deckId });
-  }
-
-  async update({ deckId, name, description, frequencyId }: IUpdateDecksDTO): Promise<void> {
-    const deck = {
-       name,
-       description,
-       frequencyId
-     }
-
-     this.repository.update({ id: deckId }, deck);
+    this.cache = this.repository.manager.connection.queryResultCache;
   }
 
   async list({ userId, isPublic, name, page=0 }: IListDecksDTO): Promise<Deck[]> {
     const offset = page * pagination.limit
     const repository = this.repository.createQueryBuilder('decks')
-      .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
       .leftJoinAndSelect("decks.theme", "themes")
@@ -83,18 +42,58 @@ export class DecksRepository implements IDecksRepository {
     }
 
     repository.limit(pagination.limit).offset(offset)
-
-    if (isPublic) {
-      repository.cache(CacheManager.getId(repository), CacheManager.getHighTtl());
-    }    
+    
+    isPublic ? 
+      repository.cache(CACHE_PUBLIC_DECKS) :
+      repository.cache(`${CACHE_DECKS}:${userId}`)
     
     return repository.getMany();
+  }
+
+  async create({ name, description, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
+    const deck = this.repository.create({
+       name,
+       description,
+       userId,
+       parentId,
+       frequencyId,
+       categoryId,
+       isPublic,
+       clonedBy,
+       themeId
+    });
+
+    deck.isSaved = true;
+    this.cache.remove([ `${CACHE_DECKS}:${userId}` ])
+
+    return await this.repository.save(deck);
+  }
+
+  async remove({ deckId, userId }: IRemoveDecksDTO): Promise<void> {
+    this.repository.softDelete({ userId: userId, id: deckId });
+    this.cache.remove([ 
+      `${CACHE_DECKS}:${userId}`, 
+      `${CACHE_DECKS}:${deckId}` 
+    ])
+  }
+
+  async update({ deckId, name, description, frequencyId, userId }: IUpdateDecksDTO): Promise<void> {
+    const deck = {
+       name,
+       description,
+       frequencyId
+     }
+
+     this.repository.update({ id: deckId }, deck)
+     this.cache.remove([ 
+      `${CACHE_DECKS}:${userId}`, 
+      `${CACHE_DECKS}:${deckId}` 
+    ])
   }
 
   async personal({ userId, name, page=0 }): Promise<Deck[]> {
     const offset = page * pagination.limit
     const repository = this.repository.createQueryBuilder('decks')
-      .loadRelationCountAndMap('decks.childrenCount', 'decks.children', 'children')
       .leftJoinAndSelect("decks.frequency", "frequency")
       .leftJoinAndSelect("decks.category", "categories")
       .leftJoinAndSelect("decks.theme", "themes")
@@ -109,43 +108,27 @@ export class DecksRepository implements IDecksRepository {
     return repository.limit(pagination.limit).offset(offset).getMany();
   }
 
-  async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
-    const deck = await this.repository.findOne({ where: { id: deckId }, relations: ['cards'] });
-    
+  async index({ deckId, userId }: IIndexDecksDTO): Promise<Deck> {
+    const deck = await this.repository.createQueryBuilder('decks')
+      .leftJoinAndSelect("decks.cards", "cards")
+      .where({ id: deckId })
+      .cache(`${CACHE_DECKS}:${deckId}`)
+      .getOne();
+     
     if (!deck) {
       throw new AppError(DECK_NOTFOUND, 400);      
     }
 
-    const parentId = deck.clonedBy ? deck.clonedBy : deck.id;
-
-    deck.children = await this.repository.createQueryBuilder('decks')
-      .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
-      .where('decks.parentId = :parentId')
-      .setParameter('parentId', parentId)
-      .getMany();
-
-    
-    const deckSaved = await this.repository.findOne({ where: { clonedBy: deckId } });
+    const deckSaved = this.repository.createQueryBuilder('decks')
+      .where({ userId, clonedBy: deckId })
+      .cache(`${CACHE_DECKS}:${userId}`)
+      .getOne();
+      
     deck.isSaved = (userId === deck.userId) || !!deckSaved;
-
     return deck;
   }
 
   async count({ userId }: ICountDecksDTO): Promise<number> {
-    if (!userId) {
-      throw new AppError(USER_NOTFOUND, 400);      
-    }
-
-    const cached = await CacheManager.hget(USER_DECKS, userId)
-    
-    if (cached) {
-      return cached
-    }
-
-    const data = await this.repository.count({ userId })
-    
-    CacheManager.hset(USER_DECKS, userId, data)
-
-    return data
+    return await this.repository.count({ userId })
   }
 }

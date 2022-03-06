@@ -1,6 +1,7 @@
-import cache from '@config/cache';
-import Frequency from '@modules/frequencies/entities/Frequency';
 import { getRepository, Repository } from 'typeorm';
+
+import { CACHE_FREQUENCIES } from '@constants/cacheKeys';
+import Frequency from '@modules/frequencies/entities/Frequency';
 import IFrequenciesRepository from '../IFrequenciesRepository';
 
 
@@ -12,10 +13,15 @@ export class FrequenciesRepository implements IFrequenciesRepository {
   }
 
   async list(): Promise<Frequency[]> {
-    return this.repository.find({ cache: cache.milliseconds });
+    return this.repository.createQueryBuilder('frequencies')
+      .cache(CACHE_FREQUENCIES)
+      .getMany()
   }
 
   async getDefault(): Promise<Frequency> {
-    return this.repository.findOne({ where: { default: true } });
+    return this.repository.createQueryBuilder('frequencies')
+      .where({ default: true })
+      .cache(CACHE_FREQUENCIES)
+      .getOne()
   }
 }

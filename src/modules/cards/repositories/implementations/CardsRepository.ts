@@ -6,23 +6,27 @@ import IIndexCardsDTO from "@modules/cards/dtos/IIndexCardsDTO";
 import IFilterCardsDTO from "@modules/cards/dtos/IFilterCardsDTO";
 import IUpdateCardsDTO from "@modules/cards/dtos/IUpdateCardsDTO";
 import IRemoveCardsDTO from "@modules/cards/dtos/IRemoveCardsDTO";
+import ICountCardsDTO from '@modules/cards/dtos/ICountCardsDTO';
 import Card from '@modules/cards/entities/Card';
 import ICardsRepository from '@modules/cards/repositories/ICardsRepository';
 import { AppError } from "@shared/errors/AppError";
-import ICountCardsDTO from '@modules/cards/dtos/ICountCardsDTO';
-import CacheManager from '@lib/CacheManager';
-import { DECK_CARDS } from '@constants/cacheKeys';
 import { CARD_NOTFOUND, DECK_NOTFOUND } from '@constants/logger';
+import { CACHE_CARDS } from '@constants/cacheKeys';
 
 export class CardsRepository implements ICardsRepository {
   private repository: Repository<Card>;
+  private cache:any;
 
   constructor() {
     this.repository = getRepository(Card);
+    this.cache = this.repository.manager.connection.queryResultCache;
   }
 
   async list({ deckId }: IListCardsDTO): Promise<Card[]> {
-    return this.repository.find({ where: { deck: { id : deckId } }});
+    return this.repository.createQueryBuilder('cards')
+      .where({ id : deckId })
+      .cache(`${CACHE_CARDS}:${deckId}`)
+      .getMany();
   }
 
   async create({ deck, title, content, secretContent }: ICreateCardsDTO): Promise<Card> {
@@ -30,8 +34,6 @@ export class CardsRepository implements ICardsRepository {
       throw new AppError(DECK_NOTFOUND, 400);      
     }    
 
-    CacheManager.hdel(DECK_CARDS, deck.id)
-    
     const card = this.repository.create({
       title,
       content,
@@ -39,12 +41,17 @@ export class CardsRepository implements ICardsRepository {
       deck
     });
 
+    this.cache.remove([ `${CACHE_CARDS}:${deck.id}` ])
+
     return await this.repository.save(card);
   }
 
   async index({ deck, cardId }: IIndexCardsDTO): Promise<Card> {
-    const card = await this.repository.findOne({ where: { id: cardId, deck } });
-    
+    const card = await this.repository.createQueryBuilder('cards')
+      .where({ id: cardId, deck })
+      .cache(`${CACHE_CARDS}:${deck.id}`)
+      .getOne();
+        
     if (!card) {
       throw new AppError(CARD_NOTFOUND, 400);      
     }   
@@ -70,9 +77,8 @@ export class CardsRepository implements ICardsRepository {
       throw new AppError(CARD_NOTFOUND, 400);      
     }
 
-    CacheManager.hdel(DECK_CARDS, card.deckId)
-
     this.repository.softDelete(cardId);
+    this.cache.remove([ `${CACHE_CARDS}:${card.deckId}` ])
   }
 
   async filter({ deck, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
@@ -91,7 +97,10 @@ export class CardsRepository implements ICardsRepository {
       queryBuilder.andWhere("cards.id NOT IN (:...cards)", { cards: cardsIds });
     }
 
-    return queryBuilder.limit(limit).getMany();
+    return queryBuilder
+      .limit(limit)
+      .cache(`${CACHE_CARDS}:${deck.id}`)
+      .getMany();
   }
 
   async count({ deckId }: ICountCardsDTO): Promise<number> {
@@ -99,16 +108,6 @@ export class CardsRepository implements ICardsRepository {
       throw new AppError(DECK_NOTFOUND, 400);      
     }
 
-    const cached = await CacheManager.hget(DECK_CARDS, deckId)
-    
-    if (cached) {
-      return cached
-    }
-
-    const data = await this.repository.count({ deckId })
-    
-    CacheManager.hset(DECK_CARDS, deckId, data)
-
-    return data
+    return await this.repository.count({ deckId })
   }
 }
