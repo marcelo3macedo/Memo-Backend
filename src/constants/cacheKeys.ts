@@ -1,3 +1,10 @@
-export const USER_DECKS = 'user-decks';
-export const DECK_CARDS = 'deck-cards';
+export const CACHE_CARDS = 'cards';
+export const CACHE_DECKS = 'decks';
+export const CACHE_PUBLIC_DECKS = 'public-decks';
 export const CACHE_CATEGORIES = 'categories';
+export const CACHE_DIFFICULTIES = 'difficulties';
+export const CACHE_FEATURED_DECKS = 'featured-decks';
+export const CACHE_FEATURED_TYPE = 'featured-type';
+export const CACHE_FREQUENCIES = 'frequencies';
+export const CACHE_THEMES = 'themes';
+export const CACHE_SESSIONS = 'sessions';
