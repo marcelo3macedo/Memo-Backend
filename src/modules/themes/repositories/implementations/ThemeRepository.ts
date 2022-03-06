@@ -1,6 +1,7 @@
-import cache from '@config/cache';
-import Theme from '@modules/themes/entities/Theme';
 import { getRepository, Repository } from 'typeorm';
+
+import { CACHE_THEMES } from '@constants/cacheKeys';
+import Theme from '@modules/themes/entities/Theme';
 import IThemeRepository from '../IThemeRepository';
 
 export class ThemeRepository implements IThemeRepository {
@@ -11,6 +12,8 @@ export class ThemeRepository implements IThemeRepository {
   }
 
   async list(): Promise<Theme[]> {
-    return this.repository.find({ cache: cache.milliseconds });
+    return this.repository.createQueryBuilder('themes')
+      .cache(CACHE_THEMES)
+      .getMany()
   }
 }
