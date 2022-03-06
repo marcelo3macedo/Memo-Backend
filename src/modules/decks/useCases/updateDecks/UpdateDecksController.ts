@@ -9,9 +9,10 @@ export class UpdateDecksController {
     try {
       const { deckId } = request.params;
       const { name, description, frequencyId } = request.body;
+      const userId = request['user'].id;
       
       const updateDecksUseCase = container.resolve(UpdateDecksUseCase);
-      const deck = await updateDecksUseCase.execute({ deckId, name, description, frequencyId });
+      const deck = await updateDecksUseCase.execute({ deckId, name, description, frequencyId, userId });
 
       return response.json(deck);
     } catch (error) {

@@ -9,9 +9,11 @@ import { SESSIONCARD_NOTFOUND } from '@constants/logger';
 
 export class SessionsCardsRepository implements ISessionsCardsRepository {
   private repository: Repository<SessionCard>;
+  private cache: any;
 
   constructor() {
     this.repository = getRepository(SessionCard);
+    this.cache = this.repository.manager.connection.queryResultCache;
   }
 
   async index({ cardId, sessionId }: IIndexSessionsCardsDTO): Promise<SessionCard> {
