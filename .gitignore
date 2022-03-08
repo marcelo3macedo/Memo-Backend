@@ -2,6 +2,7 @@
 /tmp/*
 /dist
 /node_modules
+/config/default.json
 ormconfig.json
 package-lock.json
 babel.production.config
