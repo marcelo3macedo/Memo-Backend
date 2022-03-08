@@ -8,8 +8,15 @@ function toInteger(text) {
     return number
 }
 
+function toEncoded(path) {
+    const id = (Math.random() + 1).toString(36).substring(10)
+    const uri = `${path.toLowerCase()}_${id}`
+    return encodeURIComponent(uri).replace("%20", "-")
+}
+
 const ValueManager = {
-    toInteger
+    toInteger,
+    toEncoded
 }
 
 export default ValueManager

@@ -7,15 +7,16 @@ import { IndexDecksUseCase } from './IndexDecksUseCase';
 export class IndexDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const { deckId } = request.params;
+      const { deckId, path } = request.params;
       const { isPublic } = request.query;
-      const userId = request['user'].id;
+      const { id: userId } = request['user'] || {};
 
       const indexDecksUseCase = container.resolve(IndexDecksUseCase);
       const deck = await indexDecksUseCase.execute({ 
         deckId, 
         userId,
-        isPublic: !!isPublic 
+        isPublic: !!isPublic,
+        path
       });
 
       return response.json(deck);

@@ -20,6 +20,8 @@ const removeDecksController = new RemoveDecksController();
 const cloneDecksController = new CloneDecksController();
 const optionDecksController = new OptionDecksController();
 
+decksRoutes.get('/path/:path', indexDecksController.handle);
+
 decksRoutes.use(ensureAuthenticate);
 decksRoutes.get('/', listDecksController.handle);
 decksRoutes.post('/', createDecksController.handle);
