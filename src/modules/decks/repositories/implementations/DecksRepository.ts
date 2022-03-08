@@ -2,7 +2,6 @@ import { getRepository, Repository } from 'typeorm';
 
 import pagination from '@config/pagination';
 import { CACHE_DECKS, CACHE_PUBLIC_DECKS } from '@constants/cacheKeys';
-import { DECK_NOTFOUND } from '@constants/logger';
 import Deck from '@modules/decks/entities/Deck';
 import { IDecksRepository } from '@modules/decks/repositories/IDecksRepository';
 import IListDecksDTO from "@modules/decks/dtos/IListDecksDTO";
@@ -11,7 +10,8 @@ import IIndexDecksDTO from "@modules/decks/dtos/IIndexDecksDTO";
 import IRemoveDecksDTO from "@modules/decks/dtos/IRemoveDecksDTO";
 import ICountDecksDTO from '@modules/decks/dtos/ICountDecksDTO';
 import IUpdateDecksDTO from '@modules/decks/dtos/IUpdateDecksDTO';
-import { AppError } from '@shared/errors/AppError';
+import IIndexPathDecksDTO from '@modules/decks/dtos/IIndexPathDecksDTO';
+import ICheckSavedDecksDTO from '@modules/decks/dtos/ICheckSavedDecksDTO';
 
 export class DecksRepository implements IDecksRepository {
   private repository: Repository<Deck>;
@@ -109,27 +109,30 @@ export class DecksRepository implements IDecksRepository {
     return repository.limit(pagination.limit).offset(offset).getMany();
   }
 
-  async index({ deckId, userId }: IIndexDecksDTO): Promise<Deck> {
-    const deck = await this.repository.createQueryBuilder('decks')
+  async index({ deckId }: IIndexDecksDTO): Promise<Deck> {
+    return this.repository.createQueryBuilder('decks')
       .leftJoinAndSelect("decks.cards", "cards")
-      .where({ id: deckId })
-      .cache(`${CACHE_DECKS}:${deckId}`)
-      .getOne();
-     
-    if (!deck) {
-      throw new AppError(DECK_NOTFOUND, 400);      
-    }
+      .where({ id: deckId })    
+      .cache(`${CACHE_DECKS}:${deckId}`).getOne();
+  }
 
-    const deckSaved = this.repository.createQueryBuilder('decks')
-      .where({ userId, clonedBy: deckId })
-      .cache(`${CACHE_DECKS}:${userId}`)
+  async indexByPath({ path }: IIndexPathDecksDTO): Promise<Deck> {
+    return this.repository.createQueryBuilder('decks')
+      .where({ path })
+      .cache(`${CACHE_DECKS}:${path}`)
       .getOne();
-      
-    deck.isSaved = (userId === deck.userId) || !!deckSaved;
-    return deck;
   }
 
   async count({ userId }: ICountDecksDTO): Promise<number> {
     return await this.repository.count({ userId })
+  }
+
+  async checkIsSaved({ deckId, userId }: ICheckSavedDecksDTO): Promise<boolean> {
+    const savedCount = await this.repository.createQueryBuilder('decks')
+      .where({ userId, clonedBy: deckId })
+      .cache(`${CACHE_DECKS}:${userId}`)
+      .getCount()
+
+    return savedCount > 0
   }
 }
