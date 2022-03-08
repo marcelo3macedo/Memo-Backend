@@ -17,6 +17,9 @@ export default class Deck {
   description: string;
 
   @Column()
+  path: string;
+
+  @Column()
   userId: string;
 
   @Column()

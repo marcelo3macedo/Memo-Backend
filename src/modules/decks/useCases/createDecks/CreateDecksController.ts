@@ -4,12 +4,14 @@ import { container } from 'tsyringe';
 import { CreateDecksUseCase } from './CreateDecksUseCase';
 import { IndexDecksUseCase } from '../indexDecks/IndexDecksUseCase';
 import logger from '@config/logger';
+import ValueManager from '@lib/ValueManager';
 
 export class CreateDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { name, description, parentId, isPublic, clonedBy, frequencyId, categoryId, themeId } = request.body;
       const userId = request['user'].id;
+      const path = ValueManager.toEncoded(name);
         
       if (parentId) {
         const indexDecksUseCase = container.resolve(IndexDecksUseCase);
@@ -17,7 +19,7 @@ export class CreateDecksController {
       }
 
       const createDecksUseCase = container.resolve(CreateDecksUseCase);
-      const deck = await createDecksUseCase.execute({ name, description, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });
+      const deck = await createDecksUseCase.execute({ name, description, path, parentId, userId, frequencyId, isPublic, clonedBy, categoryId, themeId });
 
       return response.status(201).json(deck);
     } catch (error) {

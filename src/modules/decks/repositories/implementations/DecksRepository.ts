@@ -50,10 +50,11 @@ export class DecksRepository implements IDecksRepository {
     return repository.getMany();
   }
 
-  async create({ name, description, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
+  async create({ name, description, path, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }: ICreateDecksDTO): Promise<Deck> {
     const deck = this.repository.create({
        name,
        description,
+       path,
        userId,
        parentId,
        frequencyId,
