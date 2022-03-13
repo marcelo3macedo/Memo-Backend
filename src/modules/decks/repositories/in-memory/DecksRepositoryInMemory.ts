@@ -5,14 +5,18 @@ import IRemoveDecksDTO from "../../dtos/IRemoveDecksDTO";
 import Deck from "../../entities/Deck";
 import { IDecksRepository } from "../IDecksRepository";
 import { AppError } from "@shared/errors/AppError";
+import IIndexPathDecksDTO from "@modules/decks/dtos/IIndexPathDecksDTO";
+import ICheckSavedDecksDTO from "@modules/decks/dtos/ICheckSavedDecksDTO";
+import ICountDecksDTO from "@modules/decks/dtos/ICountDecksDTO";
+import IUpdateDecksDTO from "@modules/decks/dtos/IUpdateDecksDTO";
 
 class DecksRepositoryInMemory implements IDecksRepository {
     decks: Deck[] = [];
 
-    async create({ name, parentId, userId, isPublic }: ICreateDecksDTO): Promise<Deck> {
+    async create({ name, parentId, userId, isPublic, path, frequencyId }: ICreateDecksDTO): Promise<Deck> {
         const deck = new Deck();
         Object.assign(deck, {
-          name, userId, parentId, isPublic
+          name, userId, parentId, isPublic, path, frequencyId
         });
 
         this.decks.push(deck);
@@ -20,15 +24,15 @@ class DecksRepositoryInMemory implements IDecksRepository {
         return deck;
     }
 
-    async list({ userId } : IListDecksDTO): Promise<Deck[]> {
+    async list({ userId, isPublic, name, page } : IListDecksDTO): Promise<Deck[]> {
+        if (isPublic) {
+            return this.decks.filter(d => d.isPublic == isPublic);
+        }
+        
         return this.decks.filter(d => d.userId === userId);
     }
 
-    async index({ deckId, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
-        if (!isPublic) {
-            return this.decks.find(d => d.userId === userId && d.id === deckId)!;
-        }
-        
+    async index({ deckId }: IIndexDecksDTO): Promise<Deck> {
         return this.decks.find(d => d.id === deckId)!;
     }
 
@@ -40,6 +44,34 @@ class DecksRepositoryInMemory implements IDecksRepository {
         }
 
         this.decks.shift()
+    }
+
+    async findByPath({ path }: IIndexPathDecksDTO): Promise<Deck> {
+        const selection = this.decks.filter(d=> d.path === path);
+
+        if (!selection || (selection.length == 0)) {
+            return;
+        }
+
+        return selection[0];
+    }
+
+    async checkIsSaved({ deckId, userId }: ICheckSavedDecksDTO): Promise<boolean> {
+        const selection = this.decks.filter(d=> d.id === deckId && d.userId === userId);
+
+        if (!selection || (selection.length == 0)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async count({ userId }: ICountDecksDTO): Promise<number> {
+        return this.decks.filter(d=> d.userId === userId).length;
+    }
+
+    async update(data: IUpdateDecksDTO): Promise<void> {
+
     }
 }
 

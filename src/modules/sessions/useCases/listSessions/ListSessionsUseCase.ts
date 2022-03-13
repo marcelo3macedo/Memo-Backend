@@ -11,7 +11,11 @@ export class ListSessionsUseCase {
     private sessionsRepository: ISessionsRepository
   ) {}
 
-  async execute({ userId }:IListSessionsDTO): Promise<Session[]> {
+  async execute({ userId, isHistory }:IListSessionsDTO): Promise<Session[]> {
+    if (isHistory) {
+      return this.sessionsRepository.history({ userId });
+    }
+    
     return this.sessionsRepository.list({ userId });
   }
 }

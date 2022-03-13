@@ -1,5 +1,4 @@
 import logger from '@config/logger';
-import { ListDifficultiesUseCase } from '@modules/difficulties/useCases/listDifficulties/ListDifficultiesUseCase';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -14,13 +13,6 @@ export class IndexSessionsController {
       const indexSessionsUseCase = container.resolve(IndexSessionsUseCase);
       const sessions = await indexSessionsUseCase.execute({ userId, sessionId });
       
-      const listDifficultiesUseCase = container.resolve(ListDifficultiesUseCase);
-      const difficulties = await listDifficultiesUseCase.execute();
-
-      if (difficulties) {
-        sessions["difficulties"] = difficulties;
-      }
-
       return response.json(sessions);
     } catch (error) {
       logger.error(`[IndexSessionsController] ${error.message}`)

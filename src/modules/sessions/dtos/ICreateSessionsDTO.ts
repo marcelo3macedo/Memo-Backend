@@ -3,6 +3,7 @@ import Deck from "@modules/decks/entities/Deck";
 
 export default interface ICreateSessionsDTO {
    userId: string;
-   deck: Deck;
+   deckId?: string;
+   deck?: Deck;
    cards: Card[];
 }

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import ValueManager from "../../../../lib/ValueManager";
 import { container } from 'tsyringe';
 
 import { ListDecksUseCase } from './ListDecksUseCase';
 import logger from '@config/logger';
+import ValueManager from "@lib/ValueManager";
 
 export class ListDecksController {
   async handle(request: Request, response: Response): Promise<Response> {

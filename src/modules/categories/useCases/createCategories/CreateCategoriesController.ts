@@ -1,9 +1,8 @@
-import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CreateCategoriesUseCase } from './CreateCategoriesUseCase';
-
+import logger from '@config/logger';
 export class CreateCategoriesController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {

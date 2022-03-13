@@ -24,7 +24,7 @@ export class CategoriesRepository implements ICategoriesRepository {
     });
 
     await this.repository.save(category);
-    this.cache.remove([ CACHE_CATEGORIES ])
+    this.cache.remove([ CACHE_CATEGORIES ]);
   }
 
   async index({ categoryId }): Promise<Category> {
@@ -36,6 +36,6 @@ export class CategoriesRepository implements ICategoriesRepository {
 
   async remove({ categoryId }): Promise<void> {
     await this.repository.softDelete(categoryId);
-    this.cache.remove([ CACHE_CATEGORIES ])
+    this.cache.remove([ CACHE_CATEGORIES ]);
   }
 }

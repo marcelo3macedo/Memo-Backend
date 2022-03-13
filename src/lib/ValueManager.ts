@@ -11,7 +11,7 @@ function toInteger(text) {
 function toEncoded(path) {
     const id = (Math.random() + 1).toString(36).substring(10)
     const uri = `${path.toLowerCase()}_${id}`
-    return encodeURIComponent(uri).replace("%20", "-")
+    return encodeURIComponent(uri).replace(/%20/g, "-")
 }
 
 const ValueManager = {

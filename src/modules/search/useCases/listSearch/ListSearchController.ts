@@ -14,7 +14,7 @@ export class ListSearchController {
 
       return response.json(search);
     } catch (error) {
-      logger.error(`[ListSearchController] ${error.message}`)
+      logger.error(`[ListSearchController] ${error.message}`);
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

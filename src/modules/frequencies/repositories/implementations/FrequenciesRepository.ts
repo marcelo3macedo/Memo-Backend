@@ -4,7 +4,6 @@ import { CACHE_FREQUENCIES } from '@constants/cacheKeys';
 import Frequency from '@modules/frequencies/entities/Frequency';
 import IFrequenciesRepository from '../IFrequenciesRepository';
 
-
 export class FrequenciesRepository implements IFrequenciesRepository {
   private repository: Repository<Frequency>;
 

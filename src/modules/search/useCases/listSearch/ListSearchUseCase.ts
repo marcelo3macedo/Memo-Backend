@@ -25,6 +25,6 @@ export class ListSearchUseCase {
       decks,
       categories,
       featured
-    }
+    };
   }
 }

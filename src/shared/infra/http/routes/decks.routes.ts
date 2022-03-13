@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { ensureAuthenticate } from "../middlewares/ensureAuthenticate";
 import { ListDecksController } from '@modules/decks/useCases/listDecks/ListDecksController';
-import { PersonalDecksController } from '@modules/decks/useCases/personalDecks/PersonalDecksController';
 import { IndexDecksController } from '@modules/decks/useCases/indexDecks/IndexDecksController';
 import { CreateDecksController } from '@modules/decks/useCases/createDecks/CreateDecksController';
 import { RemoveDecksController } from '@modules/decks/useCases/removeDecks/RemoveDecksController';
@@ -12,7 +11,6 @@ import { UpdateDecksController } from '@modules/decks/useCases/updateDecks/Updat
 const decksRoutes = Router();
 
 const listDecksController = new ListDecksController();
-const personalDecksController = new PersonalDecksController();
 const indexDecksController = new IndexDecksController();
 const createDecksController = new CreateDecksController();
 const updateDecksController = new UpdateDecksController();
@@ -25,7 +23,6 @@ decksRoutes.get('/path/:path', indexDecksController.handle);
 decksRoutes.use(ensureAuthenticate);
 decksRoutes.get('/', listDecksController.handle);
 decksRoutes.post('/', createDecksController.handle);
-decksRoutes.get('/personal', personalDecksController.handle);
 decksRoutes.get('/options', optionDecksController.handle);
 decksRoutes.get('/:deckId', indexDecksController.handle);
 decksRoutes.put('/:deckId', updateDecksController.handle);

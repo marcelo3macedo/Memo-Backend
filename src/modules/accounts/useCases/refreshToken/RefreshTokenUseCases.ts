@@ -2,11 +2,14 @@ import { inject, injectable } from "tsyringe";
 import { verify, sign } from "jsonwebtoken";
 
 import auth from "@config/auth";
+import { UserMap } from "@modules/accounts/mapper/UserMap";
 import IUsersTokenRepository from "@modules/accounts/repositories/IUsersTokenRepository";
 import IRefreshTokenDTO from "@modules/accounts/dtos/IRefreshTokenDTO";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import ITokenResponseDTO from "@modules/accounts/dtos/ITokenResponseDTO";
+import { AppError } from "@shared/errors/AppError";
+import { TOKEN_NOT_FOUND } from "@constants/logger";
 
 interface IPayload {
    sub: string;
@@ -25,9 +28,12 @@ export default class RefreshTokenUseCases {
    ) {}
 
    async execute({ token }: IRefreshTokenDTO): Promise<ITokenResponseDTO> {
+      if (!token) {
+         throw new AppError(TOKEN_NOT_FOUND);
+      }
+
       const { email, sub } = verify(token, auth.secretRefreshToken) as IPayload;
-      const userId = sub;
-      
+      const userId = sub;      
       const userToken = await this.usersTokenRepository.findByUserId({ userId, refreshToken: token }); 
       
       await this.usersTokenRepository.removeById({ id: userToken.id });
@@ -55,7 +61,7 @@ export default class RefreshTokenUseCases {
       return {
          refreshToken,
          token: newToken,
-         user
+         user: UserMap.toDTO(user)
       };
    }
 }

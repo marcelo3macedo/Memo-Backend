@@ -1,6 +1,4 @@
-import Deck from "../entities/Deck";
-
 export default interface ICloneDecksDTO {
-   deck: Deck;
+   deckId: string;
    userId: string;
 }

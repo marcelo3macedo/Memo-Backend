@@ -1,3 +1,4 @@
 export default interface IRemoveCardsDTO {
-   cardId: string;   
+   cardId: string;
+   deckId?: string; 
 }

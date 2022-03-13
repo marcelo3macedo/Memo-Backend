@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CreateFeaturedUseCase } from './CreateFeaturedUseCase';
-import { IndexDecksUseCase } from '@modules/decks/useCases/indexDecks/IndexDecksUseCase';
 import logger from '@config/logger';
 
 export class CreateFeaturedController {
@@ -10,13 +9,9 @@ export class CreateFeaturedController {
     try {
       const userId = request['user'].id;
       const { deckId } = request.body;
-      const isPublic = true;
       
-      const indexDecksUseCase = container.resolve(IndexDecksUseCase);
-      const deck = await indexDecksUseCase.execute({ deckId, isPublic });
-
       const createFeaturedUseCase = container.resolve(CreateFeaturedUseCase);
-      await createFeaturedUseCase.execute({ deck });
+      await createFeaturedUseCase.execute({ deckId });
 
       return response.status(201).send();
     } catch (error) {

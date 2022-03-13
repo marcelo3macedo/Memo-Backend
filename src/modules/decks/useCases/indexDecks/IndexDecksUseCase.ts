@@ -13,22 +13,21 @@ export class IndexDecksUseCase {
     private decksRepository: IDecksRepository
   ) {}
 
-  async execute({ deckId, path, userId, isPublic }: IIndexDecksDTO): Promise<Deck> {
-    let deck = null
-
-    if (!deckId && !path) {
-      throw new AppError(DECK_NOTFOUND, 400);      
+  async execute({ deckId, path, userId }: IIndexDecksDTO): Promise<Deck> {
+    if (path) {
+      return this.decksRepository.findByPath({ path });
     }
 
-    deck = path ?
-      await this.decksRepository.indexByPath({ path }) :
-      await this.decksRepository.index({ deckId, userId, isPublic })
-
+    const deck = await this.decksRepository.index({ deckId });
     if (!deck) {
       throw new AppError(DECK_NOTFOUND, 400);      
     }
 
-    deck.isSaved = await this.decksRepository.checkIsSaved({ userId, deckId: deck.id })
+    if (deck.isPublic == false && deck.userId !== userId) {
+      throw new AppError(DECK_NOTFOUND, 400);    
+    }
+
+    deck.isSaved = await this.decksRepository.checkIsSaved({ userId, deckId: deck.id });
 
     return deck
   }
