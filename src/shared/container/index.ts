@@ -19,6 +19,9 @@ import { CardsRepository } from '@modules/cards/repositories/implementations/Car
 import { ISessionsRepository } from '@modules/sessions/repositories/ISessionsRepository';
 import { SessionsRepository } from '@modules/sessions/repositories/implementations/SessionsRepository';
 
+import { ISessionsCardRepository } from '@modules/sessions/repositories/ISessionsCardRepository';
+import { SessionsCardRepository } from '@modules/sessions/repositories/implementations/SessionsCardRepository';
+
 import { IFeaturedTypeRepository } from '@modules/featured/repositories/IFeaturedTypeRepository';
 import { FeaturedTypeRepository } from '@modules/featured/repositories/implementations/FeaturedTypeRepository';
 
@@ -43,6 +46,7 @@ container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
 container.registerSingleton<IUsersTokenRepository>("UserTokenRepository", UserTokenRepository);
 container.registerSingleton<ISessionsRepository>("SessionsRepository", SessionsRepository);
+container.registerSingleton<ISessionsCardRepository>("SessionsCardRepository", SessionsCardRepository);
 container.registerSingleton<IFeaturedDecksRepository>("FeaturedDecksRepository", FeaturedDecksRepository);
 container.registerSingleton<IFeaturedTypeRepository>("FeaturedTypeRepository", FeaturedTypeRepository);
 container.registerSingleton<IDifficultiesRepository>("DifficultiesRepository", DifficultiesRepository);

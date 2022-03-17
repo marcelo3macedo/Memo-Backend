@@ -1,9 +1,7 @@
 import { getRepository, Repository } from 'typeorm';
 
-import { AppError } from "@shared/errors/AppError";
 import Session from '../../entities/Session';
 import { ISessionsRepository } from '../ISessionsRepository';
-import { SESSION_NOTFOUND } from '@constants/logger';
 import { CACHE_SESSIONS } from '@constants/cacheKeys';
 
 export class SessionsRepository implements ISessionsRepository {
@@ -26,6 +24,11 @@ export class SessionsRepository implements ISessionsRepository {
     this.cache.remove([ `${CACHE_SESSIONS}:${userId}` ])
 
     return session;
+  }
+
+  async update({ userId, sessionId, cards }): Promise<void> {
+    this.repository.update({ id: sessionId }, cards);
+    this.cache.remove([ `${CACHE_SESSIONS}:${userId}` ])
   }
 
   async exists({ userId, deckId }): Promise<Session> {
@@ -85,15 +88,9 @@ export class SessionsRepository implements ISessionsRepository {
       .getOne();
   }
 
-  
-
   async indexByDeck({ userId, deck }): Promise<Session> {
     return await this.repository.findOne({ where: { deck, userId: userId }, relations: [ 'cards', 'deck' ] });
   }
-
-  
-
-  
 
   async filter({ olderThen, deckId }):Promise<Session[]> {
     let queryBuilder = this.repository.createQueryBuilder("sessions")

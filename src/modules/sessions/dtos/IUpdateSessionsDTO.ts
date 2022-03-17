@@ -1,8 +1,7 @@
-import Session from "../entities/Session";
+import Card from "@modules/sessions/entities/Card";
 
 export default interface IUpdateSessionsDTO {
-   session?: Session;
+   cards: Card[];
    sessionId: string;
    userId: string;
-   finished_at: string;
 }

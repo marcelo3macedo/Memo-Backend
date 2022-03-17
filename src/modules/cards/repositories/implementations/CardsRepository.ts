@@ -66,15 +66,8 @@ export class CardsRepository implements ICardsRepository {
   }
 
   async filter({ deck, cards, limit }:IFilterCardsDTO): Promise<Card[]> {
-    let deckIds = deck.children.map(d => { return d.id });
-    deckIds.push(deck.id);
-
-    if (deck.clonedBy) {
-      deckIds.push(deck.clonedBy);
-    }
-
-    let queryBuilder = this.repository.createQueryBuilder("cards")
-      .where("cards.deck.id IN (:...deckIds)", { deckIds });
+    const queryBuilder = this.repository.createQueryBuilder("cards")
+      .where("cards.deck.id = :deckId", { deckId: deck.id });
 
     if (cards && cards.length > 0) {
       let cardsIds = cards.map(c => { return c.id }).toString();

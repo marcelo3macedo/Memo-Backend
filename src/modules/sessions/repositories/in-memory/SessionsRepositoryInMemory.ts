@@ -47,6 +47,9 @@ class SessionsRepositoryInMemory implements ISessionsRepository {
     async history({}): Promise<Session[]> {
         return
     }
+
+    async update({}): Promise<void> {        
+    }
 }
 
 export { SessionsRepositoryInMemory }
