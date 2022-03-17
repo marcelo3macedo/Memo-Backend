@@ -55,6 +55,7 @@ export class DecksRepository implements IDecksRepository {
   async checkIsSaved({ deckId, userId }): Promise<boolean> {
     const savedCount = await this.repository.createQueryBuilder('decks')
       .where({ userId, clonedBy: deckId })
+      .orWhere({ userId, id: deckId })
       .cache(`${CACHE_DECKS}:${userId}`)
       .getCount();
 
