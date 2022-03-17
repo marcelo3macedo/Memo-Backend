@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
   
   workflow_dispatch:
 
@@ -28,4 +28,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "."
-          target: "~/memo/main/backend"
+          target: "~/memo/develop/backend"
