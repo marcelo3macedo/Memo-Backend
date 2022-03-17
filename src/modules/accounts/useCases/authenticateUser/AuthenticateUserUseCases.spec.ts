@@ -5,10 +5,12 @@ import CreateUserUseCases from "../createUser/CreateUserUseCases";
 import AuthenticateUserUseCases from "./AuthenticateUserUseCases";
 import { UsersTokenRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokenRepositoryInMemory";
 import { DaysDateProvider } from "@shared/container/providers/DateProvider/implementations/DaysDateProvider";
+import MailSchedulerRepositoryInMemory from "@modules/validation/repositories/in-memory/MailSchedulerRepositoryInMemory";
 
 let authenticateUserUseCases: AuthenticateUserUseCases;
 let usersRepositoryInMemory: UsersRepositoryInMemory;
 let usersTokenRepositoryInMemory: UsersTokenRepositoryInMemory;
+let mailSchedulerRepositoryInMemory: MailSchedulerRepositoryInMemory;
 let createUserUseCases: CreateUserUseCases;
 let daysDateProvider: DaysDateProvider;
 
@@ -16,9 +18,10 @@ describe("Authenticate User", () => {
     beforeEach(() => {
         usersRepositoryInMemory = new UsersRepositoryInMemory();
         usersTokenRepositoryInMemory = new UsersTokenRepositoryInMemory();
+        mailSchedulerRepositoryInMemory = new MailSchedulerRepositoryInMemory();
         daysDateProvider = new DaysDateProvider();
         authenticateUserUseCases = new AuthenticateUserUseCases(usersRepositoryInMemory, usersTokenRepositoryInMemory, daysDateProvider);
-        createUserUseCases = new CreateUserUseCases(usersRepositoryInMemory);
+        createUserUseCases = new CreateUserUseCases(usersRepositoryInMemory, mailSchedulerRepositoryInMemory);
     });
 
     it("Should be able to authenticate an user", async () => {

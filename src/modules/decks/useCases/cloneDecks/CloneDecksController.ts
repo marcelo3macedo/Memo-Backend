@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CloneDecksUseCase } from './CloneDecksUseCase';
-import { IndexDecksUseCase } from '../indexDecks/IndexDecksUseCase';
 import logger from '@config/logger';
 
 export class CloneDecksController {
@@ -11,11 +10,8 @@ export class CloneDecksController {
       const userId = request['user'].id;
       const { deckId } = request.params;
 
-      const indexDecksUseCase = container.resolve(IndexDecksUseCase);
-      const deck = await indexDecksUseCase.execute({ deckId, isPublic: true });
-
       const cloneDecksUseCase = container.resolve(CloneDecksUseCase);
-      const clonedDeck = await cloneDecksUseCase.execute({ deck, userId });
+      const clonedDeck = await cloneDecksUseCase.execute({ deckId, userId });
 
       return response.status(201).json(clonedDeck);
     } catch (error) {

@@ -1,47 +1,19 @@
+import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import { IndexDecksUseCase } from '@modules/decks/useCases/indexDecks/IndexDecksUseCase';
-import { CreateSessionsUseCase } from '@modules/sessions/useCases/createSessions/CreateSessionsUseCase';
 import { FeedSessionsUseCase } from './FeedSessionsUseCase';
-import { IndexDeckSessionsUseCase } from '../indexDeckSessions/IndexDeckSessionsUseCase';
-import { ListDifficultiesUseCase } from '@modules/difficulties/useCases/listDifficulties/ListDifficultiesUseCase';
-import logger from '@config/logger';
 
 export class FeedSessionsController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const userId = request['user'].id;
-      const { deckId } = request.params;   
-
-      const indexDecksUseCase = container.resolve(IndexDecksUseCase);
-      const deck = await indexDecksUseCase.execute({ deckId, userId });
-
-      const indexDeckSessionsUseCase = container.resolve(IndexDeckSessionsUseCase);
-      const sessionExists = await indexDeckSessionsUseCase.execute({ deck, userId }); 
-
-      const listDifficultiesUseCase = container.resolve(ListDifficultiesUseCase);
-      const difficulties = await listDifficultiesUseCase.execute();
-
-      if (sessionExists) {
-        if (difficulties) {
-          sessionExists["difficulties"] = difficulties;
-        }
-
-        return response.json(sessionExists);
-      }
-
+      const { id: userId } = request["user"] || {};
+      const { deckId } = request.params || {};
+      
       const feedSessionsUseCase = container.resolve(FeedSessionsUseCase);
-      const cards = await feedSessionsUseCase.execute({ deck });
+      const sessions = await feedSessionsUseCase.execute({ userId, deckId });
 
-      const createSessionsUseCase = container.resolve(CreateSessionsUseCase);
-      const session = await createSessionsUseCase.execute({ userId, deck, cards });
-
-      if (difficulties) {
-        session["difficulties"] = difficulties;
-      }
-
-      return response.json(session);
+      return response.json(sessions);
     } catch (error) {
       logger.error(`[FeedSessionsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });

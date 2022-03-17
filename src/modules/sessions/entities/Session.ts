@@ -10,6 +10,9 @@ export default class Session {
 
   @Column()
   userId: string;
+  
+  @Column()
+  deckId: string;
 
   @OneToOne(() => Deck)
   @JoinColumn()

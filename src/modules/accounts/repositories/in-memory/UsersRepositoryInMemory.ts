@@ -1,3 +1,4 @@
+import IActivateUsersDTO from "@modules/accounts/dtos/IActivateUsersDTO";
 import IUpdateProfileUserDTO from "@modules/accounts/dtos/IUpdateProfileUserDTO";
 import ICreateUsersDTO from "../../dtos/ICreateUsersDTO";
 import Users from "../../entities/Users";
@@ -35,6 +36,14 @@ class UsersRepositoryInMemory implements IUsersRepository {
         this.users.shift();
         this.users.unshift(user);
     }
+
+    async active({ id }: IUpdateProfileUserDTO): Promise<void> {
+        const user = this.users.find(user => user.id === id)!;
+        user.validated = true;
+
+        this.users.shift();
+        this.users.unshift(user);
+    }    
 }
 
 export { UsersRepositoryInMemory }

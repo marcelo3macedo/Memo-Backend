@@ -1,9 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { hash } from "bcrypt";
 
-import cache from "@config/cache";
 import MailManager from "@lib/MailManager";
-import CacheManager from "@lib/CacheManager";
 import ICreateUsersDTO from "@modules/accounts/dtos/ICreateUsersDTO";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 import IMailSchedulerRepository from "@modules/validation/repositories/IMailSchedulerRepository";
@@ -32,14 +30,11 @@ export default class CreateUserUseCases {
       await this.userRepository.create({ password: passwordHash, name, email, authToken });
 
       const activationLink = MailManager.getActivationLink(authToken);
-
       const params = [
          { "key": "{{activationLink}}", "value": activationLink},
          { "key": "{{userName}}", "value": name }
       ]
 
       await this.mailSchedulerRepository.create({ type: 'new-user', destination: email, params: JSON.stringify(params) });
-
-      CacheManager.remove('scheduled', cache.mailKey)
    }
 }

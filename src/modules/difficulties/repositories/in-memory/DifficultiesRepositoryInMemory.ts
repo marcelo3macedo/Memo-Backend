@@ -8,6 +8,10 @@ class DifficultiesRepositoryInMemory implements IDifficultiesRepository {
     async all(): Promise<Difficulty[]> {
         return this.difficulties;
     }
+    
+    async find({ id }): Promise<Difficulty> {
+        return this.difficulties.find(d => d.id === id);
+    }
 
     async create({ name }): Promise<void> {
         const difficulty = new Difficulty();

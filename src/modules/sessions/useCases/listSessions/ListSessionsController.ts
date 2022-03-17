@@ -7,9 +7,12 @@ import { ListSessionsUseCase } from './ListSessionsUseCase';
 export class ListSessionsController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const userId = request['user'].id;
+      const { id: userId } = request["user"] || {};
+      const { history } = request.query || {};
+      
+      const isHistory = !!history;
       const listSessionsUseCase = container.resolve(ListSessionsUseCase);
-      const sessions = await listSessionsUseCase.execute({ userId });
+      const sessions = await listSessionsUseCase.execute({ userId, isHistory });
 
       return response.json(sessions);
     } catch (error) {

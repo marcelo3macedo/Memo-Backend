@@ -1,7 +1,7 @@
-import logger from '@config/logger';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import logger from '@config/logger';
 import { CreateDifficultiesUseCase } from './CreateDifficultiesUseCase';
 
 export class CreateDifficultiesController {

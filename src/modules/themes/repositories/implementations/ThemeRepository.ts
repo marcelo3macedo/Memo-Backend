@@ -14,6 +14,6 @@ export class ThemeRepository implements IThemeRepository {
   async list(): Promise<Theme[]> {
     return this.repository.createQueryBuilder('themes')
       .cache(CACHE_THEMES)
-      .getMany()
+      .getMany();
   }
 }

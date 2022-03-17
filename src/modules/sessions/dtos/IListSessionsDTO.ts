@@ -1,3 +1,4 @@
 export default interface IListSessionsDTO {
-   userId: string;   
+   userId: string;
+   isHistory?: boolean;
 }

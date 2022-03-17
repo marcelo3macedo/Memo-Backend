@@ -8,20 +8,18 @@ export class IndexDecksController {
   async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { deckId, path } = request.params;
-      const { isPublic } = request.query;
       const { id: userId } = request['user'] || {};
 
       const indexDecksUseCase = container.resolve(IndexDecksUseCase);
       const deck = await indexDecksUseCase.execute({ 
         deckId, 
         userId,
-        isPublic: !!isPublic,
         path
       });
 
       return response.json(deck);
     } catch (error) {
-      logger.error(`[IndexDecksController] ${error.message}`)
+      logger.error(`[IndexDecksController] ${error.message}`);
       return response.status(error.statusCode).json({ error: error.message });
     }
   }

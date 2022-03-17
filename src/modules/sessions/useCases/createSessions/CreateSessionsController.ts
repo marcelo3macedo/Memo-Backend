@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CreateSessionsUseCase } from './CreateSessionsUseCase';
-import { IndexDecksUseCase } from '@modules/decks/useCases/indexDecks/IndexDecksUseCase';
 import logger from '@config/logger';
 
 export class CreateSessionsController {
@@ -12,13 +11,10 @@ export class CreateSessionsController {
       const { deckId } = request.params;
       const { cards  } = request.body;
 
-      const indexDecksUseCase = container.resolve(IndexDecksUseCase);
-      const deck = await indexDecksUseCase.execute({ deckId, userId });
-
       const createSessionsUseCase = container.resolve(CreateSessionsUseCase);
-      await createSessionsUseCase.execute({ userId, deck, cards });
+      const session = await createSessionsUseCase.execute({ userId, deckId, cards });
 
-      return response.status(201).send();
+      return response.status(201).send(session);
     } catch (error) {
       logger.error(`[CreateSessionsController] ${error.message}`)
       return response.status(error.statusCode).json({ error: error.message });

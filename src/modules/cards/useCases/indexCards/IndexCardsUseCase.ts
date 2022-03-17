@@ -11,7 +11,7 @@ export class IndexCardsUseCase {
     private cardsRepository: ICardsRepository
   ) {}
 
-  async execute({ deck, cardId }:IIndexCardsDTO): Promise<Card> {
-    return this.cardsRepository.index({ deck, cardId });
+  async execute({ cardId }:IIndexCardsDTO): Promise<Card> {
+    return this.cardsRepository.index({ cardId });
   }
 }

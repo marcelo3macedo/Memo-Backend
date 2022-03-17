@@ -33,11 +33,11 @@ export class DifficultiesRepository implements IDifficultiesRepository {
     });
 
     await this.repository.save(difficulty);
-    this.cache.remove([ CACHE_DIFFICULTIES ])
+    this.cache.remove([ CACHE_DIFFICULTIES ]);
   }
 
   async remove({ difficultyId }: IRemoveDifficultiesDTO): Promise<void> {
     await this.repository.softDelete(difficultyId);
-    this.cache.remove([ CACHE_DIFFICULTIES ])
+    this.cache.remove([ CACHE_DIFFICULTIES ]);
   }
 }
