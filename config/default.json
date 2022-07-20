@@ -1,15 +1,21 @@
 {
     "security": {
-        "origin": [ "http://localhost:3000" ],
+        "origin": [ "http://localhost:3000", "http://192.168.1.140:3000", "https://memorizou.com.br", "https://www.memorizou.com.br" ],
         "allowHeaders": [ "x-access-token", "Accept", "Accept-Language", "Content-Language", "Content-Type", "authorization", "xsrf-token"],
         "exposedHeaders": [ "set-cookie", "location"],
         "credentials": true,
         "preflightMaxAge": 5
     },
     "cache": {
-        "connectionString": "redis://localhost:6379",
+        "connectionString": "redis://redis-memo:6379",
         "expireTimeInSeconds": 86400,
         "hashKey": "backend",
         "mailKey": "mail-sender"
-    }    
+    },
+    "queue": {
+        "url": "amqp://rabbit-memo:5672",
+        "actions": {
+            "mailValidation": "mail-validation"
+        }
+    }
 }

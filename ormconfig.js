@@ -1,4 +1,4 @@
-import { CustomQueryResultCache } from  "./src/providers/CustomQueryResultCache"
+const CustomQueryResultCache = require("./dist/providers/CustomQueryResultCache");
 
 module.exports = {
     "type": process.env.TYPEORM_TYPE,
@@ -14,7 +14,7 @@ module.exports = {
     },
     "cache": {
       provider(connection) {
-        return new CustomQueryResultCache(connection);
+          return new CustomQueryResultCache.CustomQueryResultCache(connection);
       }
     }
 }

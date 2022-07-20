@@ -3,10 +3,8 @@ export default interface ICreateDecksDTO {
    path?: string;
    description?: string;
    userId: string;
-   parentId: string;
    frequencyId: string;
    categoryId?: string;
    isPublic?: boolean;
    clonedBy?: string;
-   themeId?: string;
 }

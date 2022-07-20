@@ -12,6 +12,7 @@
     "prod": "node dist/shared/infra/http/server.js"
   },
   "dependencies": {
+    "amqplib": "^0.8.0",
     "aws-sdk": "^2.937.0",
     "bcrypt": "^5.0.1",
     "bull": "^3.22.8",

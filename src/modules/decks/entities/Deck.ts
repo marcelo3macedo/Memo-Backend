@@ -23,9 +23,6 @@ export default class Deck {
   userId: string;
 
   @Column()
-  parentId: string;
-
-  @Column()
   clonedBy: string;
 
   @Column()
@@ -37,15 +34,6 @@ export default class Deck {
   @Column()
   categoryId: string; 
 
-  @Column()
-  themeId: string; 
-
-  @ManyToOne(type => Deck, deck => deck.children)
-  parent: Deck;
-
-  @OneToMany(type => Deck, deck => deck.parent)
-  children: Deck[];
-
   @OneToMany(() => Card, (card: Card) => card.deck)
   cards: Card[];
 
@@ -54,9 +42,6 @@ export default class Deck {
 
   @ManyToOne(type => Category, category => category.id)
   category: Category;
-
-  @ManyToOne(type => Theme, theme => theme.id)
-  theme: Theme;
 
   @CreateDateColumn()
   createdAt: Date;

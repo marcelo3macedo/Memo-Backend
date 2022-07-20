@@ -17,9 +17,9 @@ export class DecksRepository implements IDecksRepository {
   async list({ userId, isPublic, name, page=0 }): Promise<Deck[]> {
     const offset = page * pagination.limit
     const repository = this.repository.createQueryBuilder('decks')
+      .loadRelationCountAndMap('decks.cardsCount', 'decks.cards', 'cards')
       .leftJoinAndSelect("decks.frequency", "frequency")
-      .leftJoinAndSelect("decks.category", "categories")
-      .leftJoinAndSelect("decks.theme", "themes")
+      .leftJoinAndSelect("decks.category", "categories");
 
     isPublic ?
       repository.where('decks.isPublic = :isPublic')
@@ -66,21 +66,21 @@ export class DecksRepository implements IDecksRepository {
     return this.repository.count({ userId })
   }
 
-  async create({ name, description, path, userId, parentId, frequencyId, isPublic, clonedBy, categoryId, themeId }): Promise<Deck> {
+  async create({ name, description, path, userId, frequencyId, isPublic, clonedBy, categoryId }): Promise<Deck> {
     const deck = this.repository.create({
        name,
        description,
        path,
        userId,
-       parentId,
        frequencyId,
        categoryId,
        isPublic,
-       clonedBy,
-       themeId
+       clonedBy
     });
 
     await this.repository.save(deck);
+    console.log(this.cache)
+    console.log(this.repository)
     this.cache.remove([ `${CACHE_DECKS}:${userId}` ])
     
     return deck;

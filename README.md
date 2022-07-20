@@ -4,11 +4,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/marcelo3macedo/Memo-Backend">
+  <a href="https://github.com/marcelo3macedo/memo-api">
     <img src="images/logo.png" alt="Logo" width="120" height="120">
   </a>
 
-  <h3 align="center">Memo Project</h3>
+  <h3 align="center">Memo API</h3>
 
   <p align="center">
     A tool to improve your studying and productivity
@@ -16,11 +16,11 @@
     <a><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://memo.professoraantenada.com.br/">View Demo</a>
+    <a href="https://memorizou.com.br/">View Demo</a>
     ·
-    <a href="https://github.com/marcelo3macedo/Memo-Backend/issues">Report Bug</a>
+    <a href="https://github.com/marcelo3macedo/memo-api/issues">Report Bug</a>
     ·
-    <a href="https://github.com/marcelo3macedo/Memo-Backend/issues">Request Feature</a>
+    <a href="https://github.com/marcelo3macedo/memo-api/issues">Request Feature</a>
   </p>
 </div>
 
@@ -63,10 +63,8 @@ The use of spaced repetition has been proven to increase rate of learning.
 
 Read more: https://en.wikipedia.org/wiki/Spaced_repetition
 
-This project is divided in:
-* Memo-Backend (https://github.com/marcelo3macedo/Memo-Backend): Backend logic of application 
-* Memo-Frontend (https://github.com/marcelo3macedo/Memo-Frontend): Frontend logic of application
-* Memo-Feeder (https://github.com/marcelo3macedo/Memo-Feeder): Scripts to feed the project database.
+This service is responsible for handling requests from Web and Mobile applications.
+Allows integration between systems using REST technology.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -109,7 +107,7 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcelo3macedo/Memo-Backend.git   
+   git clone https://github.com/marcelo3macedo/memo-api.git   
    ```
 2. Copy .env.example to .env
 3. Build with Docker
@@ -154,7 +152,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Marcelo Alberico Macedo - marcelo3macedo@gmail.com
 
-Project Link: [https://github.com/marcelo3macedo/Memo-Backend](https://github.com/marcelo3macedo/Memo-Backend)
+Project Link: [https://github.com/marcelo3macedo/memo-api](https://github.com/marcelo3macedo/memo-api)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -164,15 +162,15 @@ Project Link: [https://github.com/marcelo3macedo/Memo-Backend](https://github.co
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/marcelo3macedo/Memo-Backend/graphs/contributors
+[contributors-url]: https://github.com/marcelo3macedo/memo-api/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/marcelo3macedo/Memo-Backend/network/members
+[forks-url]: https://github.com/marcelo3macedo/memo-api/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/marcelo3macedo/Memo-Backend/stargazers
+[stars-url]: https://github.com/marcelo3macedo/memo-api/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/marcelo3macedo/Memo-Backend/issues
+[issues-url]: https://github.com/marcelo3macedo/memo-api/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/marcelo3macedo/Memo-Backend/blob/master/LICENSE
+[license-url]: https://github.com/marcelo3macedo/memo-api/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/marcelo-alberico-macedo-23639630
 [product-screenshot]: images/logo.png

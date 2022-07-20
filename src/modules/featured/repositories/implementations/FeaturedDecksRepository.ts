@@ -16,6 +16,7 @@ export class FeaturedDecksRepository implements IFeaturedDecksRepository {
   async all(): Promise<FeaturedDecks[]> {
     return this.repository.createQueryBuilder('featured')
       .leftJoinAndSelect("featured.deck", "decks")
+      .loadRelationCountAndMap('featured.cardsCount', 'decks.cards', 'cards')
       .cache(CACHE_FEATURED_DECKS)
       .getMany()
   }

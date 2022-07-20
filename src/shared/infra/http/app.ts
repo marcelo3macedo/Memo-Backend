@@ -10,6 +10,7 @@ import { AppError } from "@shared/errors/AppError";
 import { router } from './routes';
 import { corsConfig } from './cors';
 import CacheManager from '@lib/CacheManager';
+import QueueManager from '@lib/QueueManager';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use(router);
 
+QueueManager.start()
 CacheManager.connect()
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {

@@ -1,4 +1,5 @@
-#!/bin/sh
-npm run typeorm migration:run
+# entrypoint.sh
 
-npm run dev:server
+yarn typeorm migration:run
+
+yarn run dev

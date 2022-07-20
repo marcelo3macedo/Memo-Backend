@@ -4,18 +4,17 @@ import { hash } from "bcrypt";
 import MailManager from "@lib/MailManager";
 import ICreateUsersDTO from "@modules/accounts/dtos/ICreateUsersDTO";
 import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
-import IMailSchedulerRepository from "@modules/validation/repositories/IMailSchedulerRepository";
 import { AppError } from "@shared/errors/AppError";
 
 import { EMAIL_ALREADY_IN_USE } from "@constants/logger";
+import QueueManager from "@lib/QueueManager";
+import queue from "@config/queue";
 
 @injectable()
 export default class CreateUserUseCases {
    constructor(
       @inject("UserRepository")
-      private userRepository: IUsersRepository,
-      @inject("MailSchedulerRepository")
-      private mailSchedulerRepository: IMailSchedulerRepository
+      private userRepository: IUsersRepository
    ) {}
 
    async execute({ email, name, password }: ICreateUsersDTO): Promise<void> {
@@ -33,8 +32,13 @@ export default class CreateUserUseCases {
       const params = [
          { "key": "{{activationLink}}", "value": activationLink},
          { "key": "{{userName}}", "value": name }
-      ]
+      ];
 
-      await this.mailSchedulerRepository.create({ type: 'new-user', destination: email, params: JSON.stringify(params) });
+      QueueManager.publishInQueue(queue.mailValidation, JSON.stringify({ 
+            type: 'new-user', 
+            name,
+            email, 
+            params
+      }));
    }
 }

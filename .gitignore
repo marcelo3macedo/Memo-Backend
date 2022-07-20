@@ -2,11 +2,12 @@
 /tmp/*
 /dist
 /node_modules
-/config/default.json
 ormconfig.json
 package-lock.json
-babel.production.config
+babel.production.config.js
 yarn.lock
-.env
 /logs/*
-todo.txt
+
+.env
+.env.production
+babel.production.config.js
